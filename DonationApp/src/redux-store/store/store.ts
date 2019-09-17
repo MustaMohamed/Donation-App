@@ -2,7 +2,7 @@
 import { applyMiddleware, combineReducers, createStore } from 'redux';
 import thunkMiddleware from 'redux-thunk';
 import { composeWithDevTools } from 'redux-devtools-extension';
-import { persistStore, persistReducer } from 'redux-persist';
+import { persistReducer, persistStore } from 'redux-persist';
 import { AsyncStorage } from 'react-native';
 import { appReducer } from '../reducers';
 

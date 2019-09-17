@@ -1,11 +1,11 @@
-import axios from "axios";
+import axios from 'axios';
 
 export default axios.create({
-  baseURL: "https://api.rsh.im/api/",
-  responseType: "json",
+  baseURL: 'https://api.rsh.im/api/',
+  responseType: 'json',
   headers: {
     'Content-Type': 'application/json',
-    'Accept': 'application/json'
+    'Accept': 'application/json',
   },
-  timeout: 5000
+  timeout: 5000,
 });
