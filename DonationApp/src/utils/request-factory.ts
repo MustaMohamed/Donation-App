@@ -1,4 +1,5 @@
 import API from './api';
+import axios from 'axios';
 
 export default {
   post(endpoint: string, data: {} = {}, headers: {} = {}): Promise<any> {
@@ -48,8 +49,8 @@ export default {
   },
   all(ajaxCalls: Promise<any>[]): Promise<any> {
     return new Promise((resolve, reject) => {
-      API.all(ajaxCalls)
-        .then(API.spread((acct, perms) => {
+      axios.all(ajaxCalls)
+        .then(axios.spread((acct, perms) => {
           // Both requests are now complete
           resolve(acct);
         })).catch((error) => {
