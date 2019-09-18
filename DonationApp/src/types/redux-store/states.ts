@@ -2,5 +2,9 @@ import { Languages } from '../common';
 
 export interface AppState {
   uiLoaderIsActive?: boolean;
-  currentLanguage?: Languages;
+  language: {
+    currentLanguage: Languages;
+    prevLanguage: Languages;
+    isRTL: boolean;
+  }
 }

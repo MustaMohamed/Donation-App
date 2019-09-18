@@ -9,12 +9,14 @@
  */
 
 import React from 'react';
-import { StyleSheet, Text } from 'react-native';
+import { StyleSheet } from 'react-native';
+import Application from './src/Application';
 
 
 const App = () => {
   return (
-    <Text>Text</Text>
+    <Application/>
+
   );
 };
 

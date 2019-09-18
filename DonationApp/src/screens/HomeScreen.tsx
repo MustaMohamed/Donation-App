@@ -33,7 +33,7 @@ class HomeScreen extends Component<Props, State> {
   };
 
   toggleLanguage = () => {
-    const nextLanguage = this.props.app.currentLanguage === Languages.En ? Languages.Ar : Languages.En;
+    const nextLanguage = this.props.app.language.currentLanguage === Languages.En ? Languages.Ar : Languages.En;
     this.props.changeAppCurrentLanguage(nextLanguage);
   };
 
@@ -41,8 +41,7 @@ class HomeScreen extends Component<Props, State> {
     return (
       <View style={[styles.startupContainer]}>
         <Text style={[styles.text]}>
-          {/* <FormattedMessage id={translationConstants.HELLO}/>
-       */}Hello from app
+           <FormattedMessage id={translationConstants.HELLO}/>
         </Text>
         <Button title={'change language'} onPress={this.toggleLanguage}/>
       </View>

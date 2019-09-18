@@ -5,11 +5,19 @@
   "scripts": {
     "start": "react-native start",
     "android": "react-native run-android",
-    "test": "jest"
+    "test": "jest",
+    "postinstall": "rndebugger-open"
   },
   "dependencies": {
+    "intl": "^1.2.5",
     "react": "16.8.6",
-    "react-native": "0.59.10"
+    "react-intl": "^3.2.3",
+    "react-native": "0.59.10",
+    "react-native-restart": "^0.0.13",
+    "react-redux": "^7.1.1",
+    "redux": "^4.0.4",
+    "redux-persist": "^6.0.0",
+    "redux-thunk": "^2.3.0"
   },
   "devDependencies": {
     "@babel/core": "^7.5.0",
@@ -18,11 +26,16 @@
     "@types/jest": "^24.0.18",
     "@types/react": "^16.9.2",
     "@types/react-native": "^0.60.14",
+    "@types/react-native-restart": "^0.0.0",
+    "@types/react-redux": "^7.1.2",
     "@types/react-test-renderer": "^16.9.0",
+    "@types/redux-thunk": "^2.1.0",
     "babel-jest": "^24.1.0",
     "jest": "^24.1.0",
     "metro-react-native-babel-preset": "0.54.1",
+    "react-native-debugger-open": "^0.3.22",
     "react-test-renderer": "16.8.6",
+    "redux-devtools-extension": "^2.13.8",
     "typescript": "^3.6.3"
   },
   "jest": {
