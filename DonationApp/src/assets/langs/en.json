@@ -1,4 +1,6 @@
 {
   "HELLO": "Hello to our donation app",
-  "APP_TITLE": "Donations App"
+  "APP_TITLE": "Donations App",
+  "HOME_SCREEN_TITLE": "Home"
+
 }

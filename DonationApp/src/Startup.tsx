@@ -9,9 +9,9 @@ import lang_ar from './assets/langs/ar.json';
 import { AppState, Languages } from './types';
 import { connect } from 'react-redux';
 import { ApplicationState, persistor } from './redux-store/store';
-import { HomeScreen } from './screens';
 import { IntlProvider } from 'react-intl';
 import ReactNativeRestart from 'react-native-restart';
+import { LocalizedAppNavigator } from './navigations';
 
 const langs = {
   [Languages.En]: lang_en,
@@ -41,8 +41,6 @@ class Startup extends Component<Props, State> {
       UIManager.setLayoutAnimationEnabledExperimental(true);
     if (!this.props.app.language)
       this.detectLocalLanguage();
-
-    console.log('From constructor => ', this.props.app.language, this.state, I18nManager.isRTL);
     if (I18nManager.isRTL !== this.state.isRTL) {
       I18nManager.forceRTL(this.state.isRTL);
       I18nManager.isRTL = this.state.isRTL;
@@ -72,25 +70,21 @@ class Startup extends Component<Props, State> {
       this.updateLanguage(language, isRTL);
   };
 
-  updateLanguage =  (language: string, isRTL: boolean) => {
+  updateLanguage = (language: string, isRTL: boolean) => {
     this.setState(prevState => {
       return { localLang: language, isRTL: isRTL };
-    },  () => {
+    }, async () => {
       I18nManager.forceRTL(this.state.isRTL);
       I18nManager.isRTL = this.state.isRTL;
-      console.log('update !', this.props.app.language, this.state, I18nManager.isRTL);
-      persistor.flush().then(() => {
-        ReactNativeRestart.Restart();
-      });
-      // if (this.props.app.language.currentLanguage !== this.props.app.language.prevLanguage)
-
+      await persistor.flush();
+      ReactNativeRestart.Restart();
     });
   };
 
   render() {
     return (
       <IntlProvider messages={langs[this.state.localLang]} locale={this.state.localLang} defaultLocale={'en'}>
-        <HomeScreen/>
+        <LocalizedAppNavigator/>
       </IntlProvider>
     );
   }

@@ -4,7 +4,7 @@
 
 import React, { Component } from 'react';
 import { Button, StyleSheet, Text, View } from 'react-native';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, injectIntl, IntlShape } from 'react-intl';
 import { translationConstants } from '../constants';
 import { AppState, Languages } from '../types';
 import { connect } from 'react-redux';
@@ -13,7 +13,8 @@ import { changeCurrentLanguageAction } from '../redux-store/actions';
 
 interface Props {
   changeAppCurrentLanguage: typeof changeCurrentLanguageAction;
-  app: AppState
+  app: AppState;
+  intl: IntlShape;
 }
 
 interface State {
@@ -26,12 +27,13 @@ class HomeScreen extends Component<Props, State> {
     this.state = {};
   }
 
-  static navigationOptions = () => {
+  static navigationOptions = ({ screenProps }) => {
+    const title = screenProps.intl.formatMessage({ id: translationConstants.APP_TITLE, defaultMessage: 'Home' });
     return {
-      title: 'Home',
+      title: title,
     };
   };
-
+  
   toggleLanguage = () => {
     const nextLanguage = this.props.app.language.currentLanguage === Languages.En ? Languages.Ar : Languages.En;
     this.props.changeAppCurrentLanguage(nextLanguage);
@@ -41,7 +43,7 @@ class HomeScreen extends Component<Props, State> {
     return (
       <View style={[styles.startupContainer]}>
         <Text style={[styles.text]}>
-           <FormattedMessage id={translationConstants.HELLO}/>
+          <FormattedMessage id={translationConstants.HELLO}/>
         </Text>
         <Button title={'change language'} onPress={this.toggleLanguage}/>
       </View>
@@ -56,7 +58,8 @@ const mapStateToProps = (state: ApplicationState) => {
 
 export default connect(mapStateToProps, {
   changeAppCurrentLanguage: changeCurrentLanguageAction,
-})(HomeScreen);
+})(injectIntl(HomeScreen));
+
 
 const styles = StyleSheet.create({
   startupContainer: {
