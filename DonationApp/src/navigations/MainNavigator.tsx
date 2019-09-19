@@ -9,6 +9,12 @@ export const MainNavigator = createStackNavigator({
   },
   {
     initialRouteName: 'Home',
+    defaultNavigationOptions: {
+      headerTintColor: '#000000',
+      headerStyle: {
+        backgroundColor: '#ecf0f1'
+      }
+    }
   },
 );
 export const AppNavigator = createAppContainer(MainNavigator);

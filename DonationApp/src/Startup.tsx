@@ -3,7 +3,7 @@
  */
 
 import React, { Component } from 'react';
-import { I18nManager, LayoutAnimation, UIManager } from 'react-native';
+import { I18nManager, LayoutAnimation, StatusBar, UIManager } from 'react-native';
 import lang_en from './assets/langs/en.json';
 import lang_ar from './assets/langs/ar.json';
 import { AppState, Languages } from './types';
@@ -12,6 +12,7 @@ import { ApplicationState, persistor } from './redux-store/store';
 import { IntlProvider } from 'react-intl';
 import ReactNativeRestart from 'react-native-restart';
 import { LocalizedAppNavigator } from './navigations';
+import { Button, ThemeProvider } from 'react-native-elements';
 
 const langs = {
   [Languages.En]: lang_en,
@@ -84,7 +85,10 @@ class Startup extends Component<Props, State> {
   render() {
     return (
       <IntlProvider messages={langs[this.state.localLang]} locale={this.state.localLang} defaultLocale={'en'}>
-        <LocalizedAppNavigator/>
+        <StatusBar backgroundColor={'#95a5a6'} barStyle='light-content' />
+        <ThemeProvider>
+          <LocalizedAppNavigator/>
+        </ThemeProvider>
       </IntlProvider>
     );
   }
