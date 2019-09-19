@@ -14,14 +14,13 @@ interface Project {
   done: number;
 }
 
-const ProjectsList = ({ projects }: { projects: Project[] }) => {
+const ProjectsList = ({ projects, onItemPress }: { projects: Project[] }) => {
   return (
     <View style={styles.projectsCardsView}>
       <FlatList
         data={projects}
         renderItem={({ item }) => {
-          console.log(item);
-          return <ProjectCard project={item}/>;
+          return <ProjectCard onCardPress={() => onItemPress && onItemPress(item)} project={item}/>;
         }}
         keyExtractor={item => 'x_' + item.id}
       />

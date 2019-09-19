@@ -12,7 +12,7 @@ import { Progress } from '../components/ProgressBar';
 
 interface Props {
   intl: IntlShape;
-  onPress: Function;
+  onCardPress: Function;
   project: {
     id: number;
     title: string;
@@ -25,16 +25,14 @@ interface Props {
 class ProjectCard extends Component<Props> {
   constructor(props) {
     super(props);
-    console.log(props);
   }
 
   componentDidMount(): void {
   }
 
   _onCardPress = () => {
-    console.log('Card Pressed!');
-    if (this.props.onPress) {
-      this.props.onPress();
+    if (this.props.onCardPress) {
+      this.props.onCardPress();
     }
   };
 
