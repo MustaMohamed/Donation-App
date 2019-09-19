@@ -3,14 +3,14 @@
  */
 
 import React, { Component } from 'react';
-import { Button, FlatList, StyleSheet, Text, View } from 'react-native';
+import { Button, StyleSheet, Text, View } from 'react-native';
 import { FormattedMessage, injectIntl, IntlShape } from 'react-intl';
 import { translationConstants } from '../constants';
 import { AppState, Languages } from '../types';
 import { connect } from 'react-redux';
 import { ApplicationState } from '../redux-store/store';
 import { changeCurrentLanguageAction } from '../redux-store/actions';
-import ProjectCard from '../components/ProjectCard';
+import { ProjectsList } from '../components';
 
 interface Props {
   changeAppCurrentLanguage: typeof changeCurrentLanguageAction;
@@ -23,11 +23,30 @@ interface State {
 }
 
 const projects = [
-  { id: 0, title: 'Make new hospital', description: 'Lorem ipsum dolor sit amet.', progress: 0.7 },
-  { id: 1, title: 'Make new hospital', description: 'Lorem ipsum dolor sit amet.', progress: 0.5 },
-  { id: 2, title: 'Make new hospital', description: 'Lorem ipsum dolor sit amet.', progress: 0.1 },
-  { id: 3, title: 'Make new hospital', description: 'Lorem ipsum dolor sit amet.', progress: 0.3 },
-  { id: 4, title: 'Make new hospital', description: 'Lorem ipsum dolor sit amet.', progress: 0.8 },
+  {
+    id: 0,
+    title: 'Make new hospital',
+    description: 'Lorem ipsum dolor sit amet.',
+    total: 500,
+    done: 70,
+  },
+  {
+    id: 1, title: 'Make new hospital',
+    description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Doloribus, nobis, possimus? Dolor ipsam repudiandae veritatis?', total: 500,
+    done: 370,
+  },
+  {
+    id: 2, title: 'Make new hospital', description: 'Lorem ipsum dolor sit amet.', total: 500,
+    done: 30,
+  },
+  {
+    id: 3, title: 'Make new hospital', description: 'Lorem ipsum dolor sit amet.', total: 500,
+    done: 177,
+  },
+  {
+    id: 4, title: 'Make new hospital', description: 'Lorem ipsum dolor sit amet.', total: 500,
+    done: 400,
+  },
 ];
 
 class HomeScreen extends Component<Props, State> {
@@ -55,16 +74,7 @@ class HomeScreen extends Component<Props, State> {
           <FormattedMessage id={translationConstants.HELLO}/>
         </Text>
         <Button title={'change language'} onPress={this.toggleLanguage}/>
-        <View style={styles.projectsCardsView}>
-          <FlatList
-            data={projects}
-            renderItem={({ item }) => {
-              console.log(item);
-              return <ProjectCard project={item}/>;
-            }}
-            keyExtractor={item => 'x_' + item.id}
-          />
-        </View>
+        <ProjectsList projects={projects}/>
       </View>
     );
   }
@@ -96,7 +106,5 @@ const styles = StyleSheet.create({
   rtlView: {
     // flexDirection: 'row-reverse',
   },
-  projectsCardsView: {
-    marginBottom: 20, flex: 1, flexDirection: 'column',
-  },
+
 });

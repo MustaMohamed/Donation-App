@@ -9,13 +9,14 @@
     "postinstall": "rndebugger-open && jetifier -r"
   },
   "dependencies": {
+    "@rn-components-kit/progress": "^1.0.1",
     "intl": "^1.2.5",
     "react": "16.8.6",
     "react-intl": "^3.2.3",
     "react-native": "0.59.10",
     "react-native-elements": "^1.2.0",
     "react-native-gesture-handler": "^1.4.1",
-    "react-native-progress": "^3.6.0",
+    "react-native-linear-gradient": "^2.5.6",
     "react-native-reanimated": "^1.2.0",
     "react-native-restart": "^0.0.13",
     "react-native-screens": "1.0.0-alpha.23",

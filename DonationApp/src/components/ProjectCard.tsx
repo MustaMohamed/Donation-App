@@ -6,9 +6,9 @@ import React, { Component } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Card } from 'react-native-elements';
 import { injectIntl, IntlShape } from 'react-intl';
-import { Bar } from 'react-native-progress';
-import { Languages } from '../types';
-
+// import { Progress } from '@rn-components-kit/progress';
+import { translationConstants } from '../constants/translation';
+import { Progress } from '../components/ProgressBar';
 
 interface Props {
   intl: IntlShape;
@@ -17,7 +17,8 @@ interface Props {
     id: number;
     title: string;
     description: string;
-    progress: number;
+    total: number;
+    done: number;
   }
 }
 
@@ -44,8 +45,15 @@ class ProjectCard extends Component<Props> {
           <View>
             <Text style={styles.descriptionText}>{this.props.project.description}</Text>
           </View>
-          <View style={[styles.progress, this.props.intl.locale === Languages.Ar ? styles.progressRTL : null]}>
-            <Bar progress={this.props.project.progress} width={null} height={10}/>
+          <View style={styles.progress}>
+            {/*<Bar progress={this.props.project.progress} width={null} height={10}/>*/}
+            <Progress isRTL
+                      lineWidth={12}
+                      percent={this.props.project.done / this.props.project.total * 100}
+                      showInfo type={'line'}
+                      renderInfo={() =>
+                        <Text
+                          style={styles.progressText}>{`${this.props.intl.formatNumber(this.props.project.done)} ${this.props.intl.formatMessage({ id: translationConstants.FROM })} ${this.props.intl.formatNumber(this.props.project.total)}`}</Text>}/>
           </View>
           {/* <View style={styles.cardActions}>
           <Button buttonStyle={styles.actionButton}
@@ -79,9 +87,10 @@ const styles = StyleSheet.create({
   progress: {
     marginVertical: 10,
   },
-  progressRTL: {
-    transform: [{ rotate: '180deg' }],
+  progressText: {
+    marginLeft: 10,
   },
+
 });
 
 export default injectIntl(ProjectCard);
