@@ -3,26 +3,27 @@
  */
 
 import React, { Component } from 'react';
-import { Button, I18nManager, StyleSheet, Text, View } from 'react-native';
+import { Button, StyleSheet, Text, View } from 'react-native';
 import { FormattedMessage } from 'react-intl';
 import { translationConstants } from '../constants';
-import { Languages } from '../types';
+import { AppState, Languages } from '../types';
+import { connect } from 'react-redux';
+import { ApplicationState } from '../redux-store/store';
+import { changeCurrentLanguageAction } from '../redux-store/actions';
 
 interface Props {
+  changeAppCurrentLanguage: typeof changeCurrentLanguageAction;
+  app: AppState
 }
 
 interface State {
-  localLang: string;
-  isRTL: boolean;
+
 }
 
 class HomeScreen extends Component<Props, State> {
   constructor(props) {
     super(props);
-    this.state = {
-      localLang: Languages.En,
-      isRTL: false,
-    };
+    this.state = {};
   }
 
   static navigationOptions = () => {
@@ -32,26 +33,30 @@ class HomeScreen extends Component<Props, State> {
   };
 
   toggleLanguage = () => {
-    this.setState(prevState => ({
-      isRTL: !prevState.isRTL,
-      localLang: prevState.localLang === Languages.En ? Languages.Ar : Languages.En,
-    }), async () => {
-      I18nManager.forceRTL(!this.state.isRTL);
-      // await Updates.reload();
-    });
+    const nextLanguage = this.props.app.language.currentLanguage === Languages.En ? Languages.Ar : Languages.En;
+    this.props.changeAppCurrentLanguage(nextLanguage);
   };
 
   render() {
     return (
-      <View style={[styles.startupContainer, this.state.isRTL && styles.rtlView]}>
+      <View style={[styles.startupContainer]}>
         <Text style={[styles.text]}>
-          <FormattedMessage id={translationConstants.HELLO}/>
+           <FormattedMessage id={translationConstants.HELLO}/>
         </Text>
         <Button title={'change language'} onPress={this.toggleLanguage}/>
       </View>
     );
   }
 }
+
+const mapStateToProps = (state: ApplicationState) => {
+  const { app } = state;
+  return { app };
+};
+
+export default connect(mapStateToProps, {
+  changeAppCurrentLanguage: changeCurrentLanguageAction,
+})(HomeScreen);
 
 const styles = StyleSheet.create({
   startupContainer: {
@@ -70,5 +75,3 @@ const styles = StyleSheet.create({
     // flexDirection: 'row-reverse',
   },
 });
-
-export default HomeScreen;
