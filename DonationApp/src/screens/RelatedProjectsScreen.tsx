@@ -6,26 +6,26 @@ import React, { Component } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { projects } from '../utils';
 import { ProjectsList } from '../components';
-import { translationConstants } from '../constants/translation';
-import { NavigationParams, NavigationScreenProp, NavigationState } from 'react-navigation';
+import { NavigationParams, NavigationState } from 'react-navigation';
+import { NavigationStackProp } from 'react-navigation-stack';
+import { Project } from '../types';
 
 interface Props {
-  navigation: NavigationScreenProp<NavigationState, NavigationParams>;
+  navigation: NavigationStackProp<NavigationState, NavigationParams>;
 }
 
 class RelatedProjectsScreen extends Component<Props> {
   static navigationOptions = ({ screenProps, navigation }) => {
-    const project = navigation.getParam('relatedProject');
-    const title = screenProps.intl.formatMessage({ id: translationConstants.APP_TITLE, defaultMessage: 'Home' });
+    const project: Project = navigation.getParam('relatedProject');
     return {
       title: project.title,
     };
   };
 
-  onProjectItemPress = (item) => {
+  onProjectItemPress = (item: Project) => {
     // this.props.navigation.setParams({ relatedProject: item });
-    this.props.navigation.navigate('RelatedProjects', {
-      relatedProject: item,
+    this.props.navigation.push('ProjectDetails', {
+      projectDetails: item,
     });
   };
 

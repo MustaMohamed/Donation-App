@@ -1,12 +1,13 @@
 import React from 'react';
 import { createStackNavigator } from 'react-navigation-stack';
 import { createAppContainer } from 'react-navigation';
-import { HomeScreen, RelatedProjectsScreen } from '../screens';
+import { HomeScreen, ProjectDetailsScreen, RelatedProjectsScreen } from '../screens';
 import { injectIntl } from 'react-intl';
 
 export const MainNavigator = createStackNavigator({
     Home: HomeScreen,
     RelatedProjects: RelatedProjectsScreen,
+    ProjectDetails: ProjectDetailsScreen,
   },
   {
     initialRouteName: 'Home',

@@ -5,14 +5,8 @@
 import React, { PureComponent } from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
 import ProjectCard from './ProjectCard';
+import { Project } from '../types';
 
-interface Project {
-  id: number;
-  title: string;
-  description: string;
-  total: number;
-  done: number;
-}
 
 interface Props {
   projects: Project[];

@@ -6,16 +6,17 @@ import React, { Component } from 'react';
 import { Button, StyleSheet, Text, View } from 'react-native';
 import { FormattedMessage, injectIntl, IntlShape } from 'react-intl';
 import { translationConstants } from '../constants';
-import { AppState, Languages } from '../types';
+import { AppState, Languages, Project } from '../types';
 import { connect } from 'react-redux';
 import { ApplicationState } from '../redux-store/store';
 import { changeCurrentLanguageAction } from '../redux-store/actions';
 import { ProjectsList } from '../components';
 import { projects } from '../utils';
-import { NavigationParams, NavigationScreenProp, NavigationState } from 'react-navigation';
+import { NavigationParams, NavigationState } from 'react-navigation';
+import { NavigationStackProp } from 'react-navigation-stack';
 
 interface Props {
-  navigation: NavigationScreenProp<NavigationState, NavigationParams>;
+  navigation: NavigationStackProp<NavigationState, NavigationParams>;
   changeAppCurrentLanguage: typeof changeCurrentLanguageAction;
   app: AppState;
   intl: IntlShape;
@@ -44,9 +45,9 @@ class HomeScreen extends Component<Props, State> {
     this.props.changeAppCurrentLanguage(nextLanguage);
   };
 
-  onProjectItemPress = (item) => {
-    this.props.navigation.navigate('RelatedProjects', {
-      relatedProject: item,
+  onProjectItemPress = (item: Project) => {
+    this.props.navigation.navigate('ProjectDetails', {
+      projectDetails: item,
     });
   };
 

@@ -8,17 +8,12 @@ import { Card } from 'react-native-elements';
 import { injectIntl, IntlShape } from 'react-intl';
 import { translationConstants } from '../constants/translation';
 import { Progress } from './ProgressBar';
+import { Project } from '../types';
 
 interface Props {
   intl: IntlShape;
   onCardPress: Function;
-  project: {
-    id: number;
-    title: string;
-    description: string;
-    total: number;
-    done: number;
-  }
+  project: Project
 }
 
 class ProjectCard extends PureComponent<Props> {
@@ -51,17 +46,6 @@ class ProjectCard extends PureComponent<Props> {
 const styles = StyleSheet.create({
   descriptionText: {
     textAlign: 'left',
-  },
-  cardActions: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  actionButton: {
-    paddingHorizontal: 10,
-    marginVertical: 10,
-  },
-  actionButtonText: {
-    fontSize: 14,
   },
   progress: {
     marginVertical: 10,
