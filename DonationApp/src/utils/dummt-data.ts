@@ -1,4 +1,6 @@
-export const projects = [
+import { Project } from '../types/models';
+
+export const projects: Project[] = [
   {
     id: 0,
     title: 'Make new hospital #1',
