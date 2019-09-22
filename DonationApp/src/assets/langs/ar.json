@@ -9,5 +9,7 @@
   "DONATE": "تبرع",
   "DONOR_NAME_PLACEHOLDER": "اسم المتبرع",
   "DONOR_PHONE_PLACEHOLDER": "رقم الوتساب",
-  "DONOR_MONEY_AMOUNT": "مبلغ التبرع"
+  "DONOR_MONEY_AMOUNT": "مبلغ التبرع",
+  "SWITCH_DONOR_PERSONAL_DETAILS": "إذا كنت تريد اضافة بياناتك الى قائمة المتبرعين لهذا المشروع، اضغط هنا"
+
 }
