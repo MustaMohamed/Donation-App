@@ -1,16 +1,18 @@
 import React from 'react';
 import { createStackNavigator } from 'react-navigation-stack';
 import { createAppContainer } from 'react-navigation';
-import { HomeScreen, ProjectDetailsScreen, RelatedProjectsScreen } from '../screens';
+import { DonationFormScreen, HomeScreen, ProjectDetailsScreen, RelatedProjectsScreen } from '../screens';
 import { injectIntl } from 'react-intl';
+import { navigationConstants } from '../constants';
 
 export const MainNavigator = createStackNavigator({
-    Home: HomeScreen,
-    RelatedProjects: RelatedProjectsScreen,
-    ProjectDetails: ProjectDetailsScreen,
+    [navigationConstants.SCREEN_HOME]: HomeScreen,
+    [navigationConstants.SCREEN_RELATED_PROJECTS]: RelatedProjectsScreen,
+    [navigationConstants.SCREEN_PROJECT_DETAILS]: ProjectDetailsScreen,
+    [navigationConstants.SCREEN_DONATE_FORM]: DonationFormScreen,
   },
   {
-    initialRouteName: 'Home',
+    initialRouteName: navigationConstants.SCREEN_HOME,
     defaultNavigationOptions: {
       headerTintColor: '#000000',
       headerStyle: {

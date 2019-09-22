@@ -1,1 +1,1 @@
-export * from './dummt-data';
+export * from './dummy-data';

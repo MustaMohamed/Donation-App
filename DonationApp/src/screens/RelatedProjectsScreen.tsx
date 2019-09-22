@@ -9,6 +9,7 @@ import { ProjectsList } from '../components';
 import { NavigationParams, NavigationState } from 'react-navigation';
 import { NavigationStackProp } from 'react-navigation-stack';
 import { Project } from '../types';
+import { navigationConstants } from '../constants';
 
 interface Props {
   navigation: NavigationStackProp<NavigationState, NavigationParams>;
@@ -16,7 +17,7 @@ interface Props {
 
 class RelatedProjectsScreen extends Component<Props> {
   static navigationOptions = ({ screenProps, navigation }) => {
-    const project: Project = navigation.getParam('relatedProject');
+    const project: Project = navigation.getParam(navigationConstants.SCREEN_PARAM_PROJECT);
     return {
       title: project.title,
     };
@@ -24,8 +25,8 @@ class RelatedProjectsScreen extends Component<Props> {
 
   onProjectItemPress = (item: Project) => {
     // this.props.navigation.setParams({ relatedProject: item });
-    this.props.navigation.push('ProjectDetails', {
-      projectDetails: item,
+    this.props.navigation.push(navigationConstants.SCREEN_PROJECT_DETAILS, {
+      [navigationConstants.SCREEN_PARAM_PROJECT]: item,
     });
   };
 

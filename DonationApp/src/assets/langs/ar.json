@@ -5,5 +5,9 @@
   "PROJECT_ACTION_TEXT_PREV_PROJECT_WORK": "الاعمال السابقة للمشروع",
   "PROJECT_ACTION_TEXT_VILLAGE_PREV_PROJECTS": "المشاريع السابقة للقرية",
   "LOREM": "للمهتمين قمنا بوضع نص لوريم إبسوم القياسي والمُستخدم منذ القرن الخامس عشر في الأسفل. وتم أيضاً توفير الأقسام 1.10.32 و 1.10.33 من \"حول أقاصي الخير والشر\" (de Finibus Bonorum et Malorum) لمؤلفه شيشيرون (Cicero) بصيغها الأصلية، مرفقة بالنسخ الإنكليزية لها والتي قام بترجمتها هـ.راكهام (H. Rackham) في عام 1914",
-  "FROM": "من"
+  "FROM": "من",
+  "DONATE": "تبرع",
+  "DONOR_NAME_PLACEHOLDER": "اسم المتبرع",
+  "DONOR_PHONE_PLACEHOLDER": "رقم الوتساب",
+  "DONOR_MONEY_AMOUNT": "مبلغ التبرع"
 }

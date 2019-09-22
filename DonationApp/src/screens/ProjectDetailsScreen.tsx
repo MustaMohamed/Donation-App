@@ -10,6 +10,7 @@ import { injectIntl, IntlShape } from 'react-intl';
 import { translationConstants } from '../constants/translation';
 import { Button } from 'react-native-elements';
 import { NavigationStackProp } from 'react-navigation-stack';
+import { navigationConstants } from '../constants';
 
 interface Props {
   navigation: NavigationStackProp<NavigationState, NavigationParams>;
@@ -25,36 +26,42 @@ class ProjectDetailsScreen extends PureComponent<Props, State> {
     project: new Project(),
   };
   static navigationOptions = ({ screenProps, navigation }) => {
-    const project = navigation.getParam('projectDetails');
+    const project = navigation.getParam(navigationConstants.SCREEN_PARAM_PROJECT);
     return {
       title: project.title,
     };
   };
 
   componentDidMount(): void {
-    const project = this.props.navigation.getParam('projectDetails');
+    const project = this.props.navigation.getParam(navigationConstants.SCREEN_PARAM_PROJECT);
     this.setState({ project });
   }
 
   _onRelatedProjectsActionPress = () => {
-    this.props.navigation.push('RelatedProjects', {
-      relatedProject: this.state.project,
+    this.props.navigation.push(navigationConstants.SCREEN_RELATED_PROJECTS, {
+      [navigationConstants.SCREEN_PARAM_PROJECT]: this.state.project,
     });
   };
 
   _onPrevProjectsActionPress = () => {
-    this.props.navigation.push('RelatedProjects', {
-      relatedProject: this.state.project,
+    this.props.navigation.push(navigationConstants.SCREEN_RELATED_PROJECTS, {
+      [navigationConstants.SCREEN_PARAM_PROJECT]: this.state.project,
+    });
+  };
+
+  _onDonateActionPress = () => {
+    this.props.navigation.push(navigationConstants.SCREEN_DONATE_FORM, {
+      [navigationConstants.SCREEN_PARAM_PROJECT]: this.state.project,
     });
   };
 
   render() {
     return (
       <View>
-        <Text>{this.state.project.title}</Text>
-        <Text>{this.state.project.description}</Text>
-        <Text>{this.state.project.total}</Text>
-        <Text>{this.state.project.done}</Text>
+        <Text style={styles.text}>{this.state.project.title}</Text>
+        <Text style={styles.text}>{this.state.project.description}</Text>
+        <Text style={styles.text}>{this.state.project.total}</Text>
+        <Text style={styles.text}>{this.state.project.done}</Text>
         <View style={styles.actionsView}>
           <Button buttonStyle={styles.actionBtn}
                   titleStyle={styles.actionBtnText}
@@ -66,6 +73,11 @@ class ProjectDetailsScreen extends PureComponent<Props, State> {
                   title={this.props.intl.formatMessage({
                     id: translationConstants.PROJECT_ACTION_TEXT_PREV_PROJECT_WORK,
                   })} onPress={this._onRelatedProjectsActionPress}/>
+          <Button buttonStyle={styles.actionBtn}
+                  titleStyle={styles.actionBtnText}
+                  title={this.props.intl.formatMessage({
+                    id: translationConstants.DONATE,
+                  })} onPress={this._onDonateActionPress}/>
         </View>
       </View>
     );
@@ -83,6 +95,9 @@ const styles = StyleSheet.create({
   },
   actionBtnText: {
     fontSize: 14,
+  },
+  text: {
+    textAlign: 'left',
   },
 });
 

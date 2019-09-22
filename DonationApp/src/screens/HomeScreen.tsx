@@ -5,7 +5,7 @@
 import React, { Component } from 'react';
 import { Button, StyleSheet, Text, View } from 'react-native';
 import { FormattedMessage, injectIntl, IntlShape } from 'react-intl';
-import { translationConstants } from '../constants';
+import { navigationConstants, translationConstants } from '../constants';
 import { AppState, Languages, Project } from '../types';
 import { connect } from 'react-redux';
 import { ApplicationState } from '../redux-store/store';
@@ -46,8 +46,8 @@ class HomeScreen extends Component<Props, State> {
   };
 
   onProjectItemPress = (item: Project) => {
-    this.props.navigation.navigate('ProjectDetails', {
-      projectDetails: item,
+    this.props.navigation.navigate(navigationConstants.SCREEN_PROJECT_DETAILS, {
+      [navigationConstants.SCREEN_PARAM_PROJECT]: item,
     });
   };
 
