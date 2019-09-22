@@ -2,7 +2,7 @@
  * created by musta at 9/19/2019
  */
 
-import React from 'react';
+import React, { PureComponent } from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
 import ProjectCard from './ProjectCard';
 
@@ -14,19 +14,30 @@ interface Project {
   done: number;
 }
 
-const ProjectsList = ({ projects, onItemPress }: { projects: Project[] }) => {
-  return (
-    <View style={styles.projectsCardsView}>
-      <FlatList
-        data={projects}
-        renderItem={({ item }) => {
-          return <ProjectCard onCardPress={() => onItemPress && onItemPress(item)} project={item}/>;
-        }}
-        keyExtractor={item => 'x_' + item.id}
-      />
-    </View>
-  );
-};
+interface Props {
+  projects: Project[];
+  onItemPress: Function;
+}
+
+class ProjectsList extends PureComponent<Props> {
+  _onItemPress = (item) => {
+    this.props.onItemPress && this.props.onItemPress(item);
+  };
+
+  render() {
+    return (
+      <View style={styles.projectsCardsView}>
+        <FlatList
+          data={this.props.projects || []}
+          renderItem={({ item }) => {
+            return <ProjectCard onCardPress={this._onItemPress} project={item}/>;
+          }}
+          keyExtractor={item => 'x_' + item.id}
+        />
+      </View>
+    );
+  }
+}
 
 const styles = StyleSheet.create({
   projectsCardsView: {

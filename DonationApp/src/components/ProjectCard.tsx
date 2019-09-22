@@ -2,13 +2,12 @@
  * created by musta at 9/19/2019
  */
 
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Card } from 'react-native-elements';
 import { injectIntl, IntlShape } from 'react-intl';
-// import { Progress } from '@rn-components-kit/progress';
 import { translationConstants } from '../constants/translation';
-import { Progress } from '../components/ProgressBar';
+import { Progress } from './ProgressBar';
 
 interface Props {
   intl: IntlShape;
@@ -22,18 +21,9 @@ interface Props {
   }
 }
 
-class ProjectCard extends Component<Props> {
-  constructor(props) {
-    super(props);
-  }
-
-  componentDidMount(): void {
-  }
-
+class ProjectCard extends PureComponent<Props> {
   _onCardPress = () => {
-    if (this.props.onCardPress) {
-      this.props.onCardPress();
-    }
+    this.props.onCardPress && this.props.onCardPress(this.props.project);
   };
 
   render() {
@@ -44,7 +34,6 @@ class ProjectCard extends Component<Props> {
             <Text style={styles.descriptionText}>{this.props.project.description}</Text>
           </View>
           <View style={styles.progress}>
-            {/*<Bar progress={this.props.project.progress} width={null} height={10}/>*/}
             <Progress isRTL
                       lineWidth={12}
                       percent={this.props.project.done / this.props.project.total * 100}
@@ -53,14 +42,6 @@ class ProjectCard extends Component<Props> {
                         <Text
                           style={styles.progressText}>{`${this.props.intl.formatNumber(this.props.project.done)} ${this.props.intl.formatMessage({ id: translationConstants.FROM })} ${this.props.intl.formatNumber(this.props.project.total)}`}</Text>}/>
           </View>
-          {/* <View style={styles.cardActions}>
-          <Button buttonStyle={styles.actionButton}
-                  titleStyle={styles.actionButtonText}
-                  title={this.props.intl.formatMessage({ id: translationConstants.CARD_ACTION_TEXT_PREV_PROJECT_WORK })}/>
-          <Button buttonStyle={styles.actionButton}
-                  titleStyle={styles.actionButtonText}
-                  title={this.props.intl.formatMessage({ id: translationConstants.CARD_ACTION_TEXT_VILLAGE_PREV_PROJECTS })}/>
-        </View>*/}
         </Card>}
       </TouchableOpacity>
     );
