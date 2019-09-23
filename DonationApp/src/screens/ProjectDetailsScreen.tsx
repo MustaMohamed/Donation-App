@@ -63,7 +63,14 @@ class ProjectDetailsScreen extends PureComponent<Props, State> {
           <ListItem
             title={this.props.intl.formatMessage({ id: translationConstants.COUNTRY })}
             titleProps={{ style: [styles.text, styles.listItemTitle] }}
-            subtitle={this.state.project.country || 'Egypt'}
+            rightSubtitle={this.state.project.country || 'Egypt'}
+            subtitleStyle={styles.text}
+            bottomDivider
+          />
+          <ListItem
+            title={this.props.intl.formatMessage({ id: translationConstants.VILLAGE })}
+            titleProps={{ style: [styles.text, styles.listItemTitle] }}
+            rightSubtitle={this.state.project.village || 'Egypt'}
             subtitleStyle={styles.text}
             bottomDivider
           />
@@ -77,53 +84,53 @@ class ProjectDetailsScreen extends PureComponent<Props, State> {
           <ListItem
             title={this.props.intl.formatMessage({ id: translationConstants.COST })}
             titleProps={{ style: [styles.text, styles.listItemTitle] }}
-            subtitle={this.props.intl.formatNumber(this.state.project.cost)}
+            rightSubtitle={this.props.intl.formatNumber(this.state.project.cost)}
             subtitleStyle={styles.text}
             bottomDivider
           />
-          <ListItem
+          {!this.state.project.isCostCollectedDone && <ListItem
             title={this.props.intl.formatMessage({ id: translationConstants.COLLECTED_DONATION })}
             titleProps={{ style: [styles.text, styles.listItemTitle] }}
-            subtitle={this.props.intl.formatNumber(this.state.project.collectedDonation)}
+            rightSubtitle={this.props.intl.formatNumber(this.state.project.collectedDonation)}
             subtitleStyle={styles.text}
             bottomDivider
-          />
-          <ListItem
+          />}
+          {this.state.project.isCostCollectedDone && < ListItem
             title={this.props.intl.formatMessage({ id: translationConstants.EXECUTION_DURATION })}
             titleProps={{ style: [styles.text, styles.listItemTitle] }}
-            subtitle={this.state.project.duration}
+            rightSubtitle={this.state.project.duration}
             subtitleStyle={styles.text}
             bottomDivider
-          />
-          <ListItem
+          />}
+          {this.state.project.isExecutionDone && <ListItem
             title={this.props.intl.formatMessage({ id: translationConstants.RESULT })}
             titleProps={{ style: [styles.text, styles.listItemTitle] }}
             subtitle={this.state.project.result}
             subtitleStyle={styles.text}
             bottomDivider
-          />
-          <ListItem
+          />}
+          {this.state.project.isCostCollectedDone && <ListItem
             title={this.props.intl.formatMessage({ id: translationConstants.START_AT })}
             titleProps={{ style: [styles.text, styles.listItemTitle] }}
-            subtitle={this.props.intl.formatDate(this.state.project.startDate ? this.state.project.startDate : new Date(), {
+            rightSubtitle={this.props.intl.formatDate(this.state.project.startDate ? this.state.project.startDate : new Date(), {
               year: 'numeric',
               month: 'numeric',
               day: 'numeric',
             })}
             subtitleStyle={styles.text}
             bottomDivider
-          />
-          <ListItem
+          />}
+          {this.state.project.isExecutionDone && <ListItem
             title={this.props.intl.formatMessage({ id: translationConstants.END_AT })}
             titleProps={{ style: [styles.text, styles.listItemTitle] }}
-            subtitle={this.props.intl.formatDate(this.state.project.endDate ? this.state.project.endDate : new Date(), {
+            rightSubtitle={this.props.intl.formatDate(this.state.project.endDate ? this.state.project.endDate : new Date(), {
               year: 'numeric',
               month: 'numeric',
               day: 'numeric',
             })}
             subtitleStyle={styles.text}
             bottomDivider
-          />
+          />}
           <View style={styles.actionsView}>
             <Button buttonStyle={styles.actionBtn}
                     titleStyle={styles.actionBtnText}

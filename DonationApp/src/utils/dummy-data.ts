@@ -16,6 +16,8 @@ export const projects: Project[] = [
     result: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Doloribus, nobis, possimus? Dolor ipsam repudiandae veritatis?',
     village: 'Solem',
     category: 'cat #1',
+    isCostCollectedDone: false,
+    isExecutionDone: false,
   },
   {
     id: 1,
@@ -32,12 +34,14 @@ export const projects: Project[] = [
     result: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Doloribus, nobis, possimus? Dolor ipsam repudiandae veritatis?',
     village: 'Solem',
     category: 'cat #1',
+    isCostCollectedDone: false,
+    isExecutionDone: false,
   },
   {
     id: 2,
     name: 'Make new hospital #3',
     description: 'Lorem ipsum dolor sit amet.', cost: 500,
-    collectedDonation: 30,
+    collectedDonation: 500,
     image: 'https://placekitten.com/640/360',
     country: 'Egypt',
     duration: '3 Months',
@@ -47,13 +51,15 @@ export const projects: Project[] = [
     result: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Doloribus, nobis, possimus? Dolor ipsam repudiandae veritatis?',
     village: 'Solem',
     category: 'cat #1',
+    isCostCollectedDone: true,
+    isExecutionDone: false,
   },
   {
     id: 3,
     name: 'Make new hospital #4',
     description: 'Lorem ipsum dolor sit amet.',
     cost: 500,
-    collectedDonation: 177,
+    collectedDonation: 500,
     image: 'https://placekitten.com/640/360',
     country: 'Egypt',
     duration: '3 Months',
@@ -63,6 +69,8 @@ export const projects: Project[] = [
     result: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Doloribus, nobis, possimus? Dolor ipsam repudiandae veritatis?',
     village: 'Solem',
     category: 'cat #1',
+    isCostCollectedDone: true,
+    isExecutionDone: true,
   },
   {
     id: 4,
@@ -79,6 +87,8 @@ export const projects: Project[] = [
     result: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Doloribus, nobis, possimus? Dolor ipsam repudiandae veritatis?',
     village: 'Solem',
     category: 'cat #1',
+    isCostCollectedDone: false,
+    isExecutionDone: false,
   },
   {
     id: 5,
@@ -95,6 +105,8 @@ export const projects: Project[] = [
     result: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Doloribus, nobis, possimus? Dolor ipsam repudiandae veritatis?',
     village: 'Solem',
     category: 'cat #1',
+    isCostCollectedDone: false,
+    isExecutionDone: false,
   },
   {
     id: 6,
@@ -111,6 +123,8 @@ export const projects: Project[] = [
     result: 'للمهتمين قمنا بوضع نص لوريم إبسوم القياسي والمُستخدم منذ القرن الخامس عشر في الأسفل. وتم أيضاً توفير الأقسام 1.10.32 و 1.10.33 من \"حول أقاصي الخير والشر\" (de Finibus Bonorum et Malorum) لمؤلفه شيشيرون (Cicero) بصيغها الأصلية، مرفقة بالنسخ الإنكليزية لها والتي قام بترجمتها هـ.راكهام (H. Rackham) في عام 1914',
     village: 'Solem',
     category: 'cat #1',
+    isCostCollectedDone: false,
+    isExecutionDone: false,
   },
   {
     id: 7,
@@ -127,6 +141,8 @@ export const projects: Project[] = [
     result: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Doloribus, nobis, possimus? Dolor ipsam repudiandae veritatis?',
     village: 'Solem',
     category: 'cat #1',
+    isCostCollectedDone: false,
+    isExecutionDone: false,
   },
   {
     id: 8,
@@ -143,6 +159,8 @@ export const projects: Project[] = [
     result: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Doloribus, nobis, possimus? Dolor ipsam repudiandae veritatis?',
     village: 'Solem',
     category: 'cat #1',
+    isCostCollectedDone: false,
+    isExecutionDone: false,
   },
   {
     id: 9,
@@ -159,5 +177,7 @@ export const projects: Project[] = [
     result: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Doloribus, nobis, possimus? Dolor ipsam repudiandae veritatis?',
     village: 'Solem',
     category: 'cat #1',
+    isCostCollectedDone: false,
+    isExecutionDone: false,
   },
 ];

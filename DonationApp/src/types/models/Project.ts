@@ -1,5 +1,7 @@
 export class Project {
   id?: number;
+  isCostCollectedDone?: boolean;
+  isExecutionDone?: boolean;
   description?: string;
   cost?: number;
   collectedDonation?: number;
