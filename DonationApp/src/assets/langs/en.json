@@ -10,5 +10,14 @@
   "DONOR_NAME_PLACEHOLDER": "Donor name",
   "DONOR_PHONE_PLACEHOLDER": "Whatsapp number",
   "DONOR_MONEY_AMOUNT": "Donation amount",
-  "SWITCH_DONOR_PERSONAL_DETAILS": "If you want to list your name to this project donation list switch this button"
+  "SWITCH_DONOR_PERSONAL_DETAILS": "If you want to list your name to this project donation list switch this button",
+  "COUNTRY": "Country",
+  "VILLAGE": "Village",
+  "REASON": "Reason",
+  "COST": "Cost",
+  "COLLECTED_DONATION": "Collected Donation",
+  "EXECUTION_DURATION": "Execution Duration",
+  "RESULT": "Result",
+  "START_AT": "Start at",
+  "END_AT": "End at"
 }

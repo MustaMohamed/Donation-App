@@ -10,6 +10,14 @@
   "DONOR_NAME_PLACEHOLDER": "اسم المتبرع",
   "DONOR_PHONE_PLACEHOLDER": "رقم الوتساب",
   "DONOR_MONEY_AMOUNT": "مبلغ التبرع",
-  "SWITCH_DONOR_PERSONAL_DETAILS": "إذا كنت تريد اضافة بياناتك الى قائمة المتبرعين لهذا المشروع، اضغط هنا"
-
+  "SWITCH_DONOR_PERSONAL_DETAILS": "إذا كنت تريد اضافة بياناتك الى قائمة المتبرعين لهذا المشروع، اضغط هنا",
+  "COUNTRY": "الدولة",
+  "VILLAGE": "القرية",
+  "REASON": "السبب",
+  "COST": "التكلفة",
+  "COLLECTED_DONATION": "التبرعات التي تم جمعها",
+  "EXECUTION_DURATION": "مدة التنفيذ",
+  "RESULT": "النتيجة",
+  "START_AT": "بدأ",
+  "END_AT": "انتهى"
 }

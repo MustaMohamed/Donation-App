@@ -6,7 +6,7 @@ import React, { PureComponent } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Card } from 'react-native-elements';
 import { injectIntl, IntlShape } from 'react-intl';
-import { translationConstants } from '../constants/translation';
+import { translationConstants } from '../constants';
 import { Progress } from './ProgressBar';
 import { Project } from '../types';
 
@@ -24,18 +24,18 @@ class ProjectCard extends PureComponent<Props> {
   render() {
     return (
       <TouchableOpacity activeOpacity={0.8} onPress={this._onCardPress}>
-        {this.props.project && <Card title={this.props.project.title || ''} image={{ uri: 'https://placekitten.com/640/360' }}>
+        {this.props.project && <Card title={this.props.project.name || ''} image={{ uri: this.props.project.image }}>
           <View>
             <Text style={styles.descriptionText}>{this.props.project.description}</Text>
           </View>
           <View style={styles.progress}>
             <Progress isRTL
                       lineWidth={12}
-                      percent={this.props.project.done / this.props.project.total * 100}
+                      percent={this.props.project.collectedDonation / this.props.project.cost * 100}
                       showInfo type={'line'}
                       renderInfo={() =>
                         <Text
-                          style={styles.progressText}>{`${this.props.intl.formatNumber(this.props.project.done)} ${this.props.intl.formatMessage({ id: translationConstants.FROM })} ${this.props.intl.formatNumber(this.props.project.total)}`}</Text>}/>
+                          style={styles.progressText}>{`${this.props.intl.formatNumber(this.props.project.collectedDonation)} ${this.props.intl.formatMessage({ id: translationConstants.FROM })} ${this.props.intl.formatNumber(this.props.project.cost)}`}</Text>}/>
           </View>
         </Card>}
       </TouchableOpacity>

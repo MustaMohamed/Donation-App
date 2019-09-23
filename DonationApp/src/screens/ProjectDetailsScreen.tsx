@@ -3,14 +3,13 @@
  */
 
 import React, { PureComponent } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { ScrollView, StyleSheet, View } from 'react-native';
 import { NavigationParams, NavigationState } from 'react-navigation';
 import { Project } from '../types';
 import { injectIntl, IntlShape } from 'react-intl';
-import { translationConstants } from '../constants/translation';
-import { Button } from 'react-native-elements';
+import { navigationConstants, translationConstants } from '../constants';
+import { Button, Image, ListItem } from 'react-native-elements';
 import { NavigationStackProp } from 'react-navigation-stack';
-import { navigationConstants } from '../constants';
 
 interface Props {
   navigation: NavigationStackProp<NavigationState, NavigationParams>;
@@ -28,7 +27,7 @@ class ProjectDetailsScreen extends PureComponent<Props, State> {
   static navigationOptions = ({ screenProps, navigation }) => {
     const project = navigation.getParam(navigationConstants.SCREEN_PARAM_PROJECT);
     return {
-      title: project.title,
+      title: project.name,
     };
   };
 
@@ -57,28 +56,93 @@ class ProjectDetailsScreen extends PureComponent<Props, State> {
 
   render() {
     return (
-      <View>
-        <Text style={styles.text}>{this.state.project.title}</Text>
-        <Text style={styles.text}>{this.state.project.description}</Text>
-        <Text style={styles.text}>{this.state.project.total}</Text>
-        <Text style={styles.text}>{this.state.project.done}</Text>
-        <View style={styles.actionsView}>
-          <Button buttonStyle={styles.actionBtn}
-                  titleStyle={styles.actionBtnText}
-                  title={this.props.intl.formatMessage({
-                    id: translationConstants.PROJECT_ACTION_TEXT_VILLAGE_PREV_PROJECTS,
-                  })} onPress={this._onPrevProjectsActionPress}/>
-          <Button buttonStyle={styles.actionBtn}
-                  titleStyle={styles.actionBtnText}
-                  title={this.props.intl.formatMessage({
-                    id: translationConstants.PROJECT_ACTION_TEXT_PREV_PROJECT_WORK,
-                  })} onPress={this._onRelatedProjectsActionPress}/>
-          <Button buttonStyle={styles.actionBtn}
-                  titleStyle={styles.actionBtnText}
-                  title={this.props.intl.formatMessage({
-                    id: translationConstants.DONATE,
-                  })} onPress={this._onDonateActionPress}/>
-        </View>
+      <View style={{ flex: 1, flexDirection: 'column', justifyContent: 'flex-start' }}>
+        <ScrollView>
+          <Image source={{ uri: this.state.project.image }} containerStyle={{ height: 200 }}/>
+
+          <ListItem
+            title={this.props.intl.formatMessage({ id: translationConstants.COUNTRY })}
+            titleProps={{ style: [styles.text, styles.listItemTitle] }}
+            subtitle={this.state.project.country || 'Egypt'}
+            subtitleStyle={styles.text}
+            bottomDivider
+          />
+          <ListItem
+            title={this.props.intl.formatMessage({ id: translationConstants.REASON })}
+            titleProps={{ style: [styles.text, styles.listItemTitle] }}
+            subtitle={this.state.project.description}
+            subtitleStyle={styles.text}
+            bottomDivider
+          />
+          <ListItem
+            title={this.props.intl.formatMessage({ id: translationConstants.COST })}
+            titleProps={{ style: [styles.text, styles.listItemTitle] }}
+            subtitle={this.props.intl.formatNumber(this.state.project.cost)}
+            subtitleStyle={styles.text}
+            bottomDivider
+          />
+          <ListItem
+            title={this.props.intl.formatMessage({ id: translationConstants.COLLECTED_DONATION })}
+            titleProps={{ style: [styles.text, styles.listItemTitle] }}
+            subtitle={this.props.intl.formatNumber(this.state.project.collectedDonation)}
+            subtitleStyle={styles.text}
+            bottomDivider
+          />
+          <ListItem
+            title={this.props.intl.formatMessage({ id: translationConstants.EXECUTION_DURATION })}
+            titleProps={{ style: [styles.text, styles.listItemTitle] }}
+            subtitle={this.state.project.duration}
+            subtitleStyle={styles.text}
+            bottomDivider
+          />
+          <ListItem
+            title={this.props.intl.formatMessage({ id: translationConstants.RESULT })}
+            titleProps={{ style: [styles.text, styles.listItemTitle] }}
+            subtitle={this.state.project.result}
+            subtitleStyle={styles.text}
+            bottomDivider
+          />
+          <ListItem
+            title={this.props.intl.formatMessage({ id: translationConstants.START_AT })}
+            titleProps={{ style: [styles.text, styles.listItemTitle] }}
+            subtitle={this.props.intl.formatDate(this.state.project.startDate ? this.state.project.startDate : new Date(), {
+              year: 'numeric',
+              month: 'numeric',
+              day: 'numeric',
+            })}
+            subtitleStyle={styles.text}
+            bottomDivider
+          />
+          <ListItem
+            title={this.props.intl.formatMessage({ id: translationConstants.END_AT })}
+            titleProps={{ style: [styles.text, styles.listItemTitle] }}
+            subtitle={this.props.intl.formatDate(this.state.project.endDate ? this.state.project.endDate : new Date(), {
+              year: 'numeric',
+              month: 'numeric',
+              day: 'numeric',
+            })}
+            subtitleStyle={styles.text}
+            bottomDivider
+          />
+          <View style={styles.actionsView}>
+            <Button buttonStyle={styles.actionBtn}
+                    titleStyle={styles.actionBtnText}
+                    title={this.props.intl.formatMessage({
+                      id: translationConstants.PROJECT_ACTION_TEXT_VILLAGE_PREV_PROJECTS,
+                    })} onPress={this._onPrevProjectsActionPress}/>
+            <Button buttonStyle={styles.actionBtn}
+                    titleStyle={styles.actionBtnText}
+                    title={this.props.intl.formatMessage({
+                      id: translationConstants.PROJECT_ACTION_TEXT_PREV_PROJECT_WORK,
+                    })} onPress={this._onRelatedProjectsActionPress}/>
+          </View>
+
+        </ScrollView>
+        <Button buttonStyle={styles.actionBtn}
+                titleStyle={styles.actionBtnText}
+                title={this.props.intl.formatMessage({
+                  id: translationConstants.DONATE,
+                })} onPress={this._onDonateActionPress}/>
       </View>
     );
   }
@@ -98,6 +162,9 @@ const styles = StyleSheet.create({
   },
   text: {
     textAlign: 'left',
+  },
+  listItemTitle: {
+    fontWeight: 'bold', fontSize: 16,
   },
 });
 
