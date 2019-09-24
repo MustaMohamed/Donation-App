@@ -10,7 +10,7 @@ import { AppState, Languages, Project } from '../types';
 import { connect } from 'react-redux';
 import { ApplicationState } from '../redux-store/store';
 import { changeCurrentLanguageAction } from '../redux-store/actions';
-import { ProjectsList } from '../components';
+import { DrawerToggle, ProjectsList } from '../components';
 import { projects } from '../utils';
 import { NavigationParams, NavigationState } from 'react-navigation';
 import { NavigationStackProp } from 'react-navigation-stack';
@@ -33,10 +33,12 @@ class HomeScreen extends Component<Props, State> {
     this.state = {};
   }
 
-  static navigationOptions = ({ screenProps }) => {
+  static navigationOptions = ({ screenProps, navigation }) => {
     const title = screenProps.intl.formatMessage({ id: translationConstants.APP_TITLE, defaultMessage: 'Home' });
     return {
       title: title,
+      headerRight: <DrawerToggle onTogglePress={navigation.toggleDrawer}/>,
+      headerRightContainerStyle: { marginHorizontal: 10 },
     };
   };
 
@@ -49,6 +51,10 @@ class HomeScreen extends Component<Props, State> {
     this.props.navigation.navigate(navigationConstants.SCREEN_PROJECT_DETAILS, {
       [navigationConstants.SCREEN_PARAM_PROJECT]: item,
     });
+  };
+
+  _toggleDrawer = () => {
+    this.props.navigation.toggleDrawer();
   };
 
   render() {
