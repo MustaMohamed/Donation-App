@@ -3,12 +3,14 @@
  */
 
 import React from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, TouchableOpacity } from 'react-native';
 import { Icon } from 'react-native-elements';
 
 const DrawerToggle = ({ onTogglePress }) => {
   return (
-    <Icon onPress={onTogglePress} name={'bars'} type={'font-awesome'}/>
+    <TouchableOpacity onPress={onTogglePress}>
+      <Icon name={'bars'} type={'font-awesome'}/>
+    </TouchableOpacity>
   );
 };
 

@@ -37,8 +37,8 @@ class HomeScreen extends Component<Props, State> {
     const title = screenProps.intl.formatMessage({ id: translationConstants.APP_TITLE, defaultMessage: 'Home' });
     return {
       title: title,
-      headerRight: <DrawerToggle onTogglePress={navigation.toggleDrawer}/>,
-      headerRightContainerStyle: { marginHorizontal: 10 },
+      headerLeft: <DrawerToggle onTogglePress={navigation.toggleDrawer}/>,
+      headerLeftContainerStyle: { padding: 10 },
     };
   };
 
