@@ -12,7 +12,8 @@ import { ApplicationState, persistor } from './redux-store/store';
 import { IntlProvider } from 'react-intl';
 import ReactNativeRestart from 'react-native-restart';
 import { LocalizedAppNavigator } from './navigations';
-import { Button, ThemeProvider } from 'react-native-elements';
+import { ThemeProvider } from 'react-native-elements';
+import Loader from 'react-native-modal-loader';
 
 const langs = {
   [Languages.En]: lang_en,
@@ -26,6 +27,7 @@ interface Props {
 interface State {
   localLang: string;
   isRTL: boolean;
+  isLoading: boolean;
 }
 
 class Startup extends Component<Props, State> {
@@ -34,6 +36,7 @@ class Startup extends Component<Props, State> {
     this.state = {
       localLang: this.props.app.language.currentLanguage,
       isRTL: this.props.app.language.isRTL,
+      isLoading: this.props.app.uiLoaderIsActive,
     };
   }
 
@@ -52,6 +55,8 @@ class Startup extends Component<Props, State> {
   componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<{}>, snapshot?: any): void {
     LayoutAnimation.spring();
     this.detectLocalLanguage();
+    if (this.state.isLoading !== this.props.app.uiLoaderIsActive)
+      this.setState({ isLoading: this.props.app.uiLoaderIsActive });
   }
 
   shouldComponentUpdate(nextProps: Readonly<Props>, nextState: Readonly<State>, nextContext: any): boolean {
@@ -85,7 +90,8 @@ class Startup extends Component<Props, State> {
   render() {
     return (
       <IntlProvider messages={langs[this.state.localLang]} locale={this.state.localLang} defaultLocale={'en'}>
-        <StatusBar backgroundColor={'#95a5a6'} barStyle='light-content' />
+        <StatusBar backgroundColor={'#95a5a6'} barStyle='light-content'/>
+        <Loader loading={this.state.isLoading} color="#ff66be"/>
         <ThemeProvider>
           <LocalizedAppNavigator/>
         </ThemeProvider>
