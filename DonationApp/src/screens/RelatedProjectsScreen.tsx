@@ -19,7 +19,7 @@ class RelatedProjectsScreen extends Component<Props> {
   static navigationOptions = ({ screenProps, navigation }) => {
     const project: Project = navigation.getParam(navigationConstants.SCREEN_PARAM_PROJECT);
     return {
-      title: project.title,
+      title: project.name,
     };
   };
 
