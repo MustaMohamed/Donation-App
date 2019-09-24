@@ -3,10 +3,10 @@
  */
 
 import React, { Component } from 'react';
-import { Button, StyleSheet, Text, View } from 'react-native';
-import { FormattedMessage, injectIntl, IntlShape } from 'react-intl';
+import { StyleSheet, View } from 'react-native';
+import { injectIntl, IntlShape } from 'react-intl';
 import { navigationConstants, translationConstants } from '../constants';
-import { AppState, Languages, Project } from '../types';
+import { AppState, Project } from '../types';
 import { connect } from 'react-redux';
 import { ApplicationState } from '../redux-store/store';
 import { changeCurrentLanguageAction } from '../redux-store/actions';
@@ -42,28 +42,15 @@ class HomeScreen extends Component<Props, State> {
     };
   };
 
-  toggleLanguage = () => {
-    const nextLanguage = this.props.app.language.currentLanguage === Languages.En ? Languages.Ar : Languages.En;
-    this.props.changeAppCurrentLanguage(nextLanguage);
-  };
-
   onProjectItemPress = (item: Project) => {
     this.props.navigation.navigate(navigationConstants.SCREEN_PROJECT_DETAILS, {
       [navigationConstants.SCREEN_PARAM_PROJECT]: item,
     });
   };
 
-  _toggleDrawer = () => {
-    this.props.navigation.toggleDrawer();
-  };
-
   render() {
     return (
       <View style={[styles.startupContainer]}>
-        <Text style={[styles.text]}>
-          <FormattedMessage id={translationConstants.HELLO}/>
-        </Text>
-        <Button title={'change language'} onPress={this.toggleLanguage}/>
         <ProjectsList onItemPress={this.onProjectItemPress} projects={projects}/>
       </View>
     );
@@ -96,5 +83,4 @@ const styles = StyleSheet.create({
   rtlView: {
     // flexDirection: 'row-reverse',
   },
-
 });

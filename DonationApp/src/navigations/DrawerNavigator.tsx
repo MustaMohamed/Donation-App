@@ -5,12 +5,11 @@ import { MainNavigator } from './MainNavigator';
 import { DrawerContent } from '../components';
 
 export const DrawerNavigator = createDrawerNavigator({
-  [navigationConstants.SCREEN_DRAWER_NAVIGATOR]: {
-    screen: MainNavigator,
-
+    [navigationConstants.SCREEN_DRAWER_NAVIGATOR]: MainNavigator,
   },
-}, {
-  initialRouteName: navigationConstants.SCREEN_DRAWER_NAVIGATOR,
-  drawerType: 'slide',
-  contentComponent: props => <DrawerContent/>,
-});
+  {
+    initialRouteName: navigationConstants.SCREEN_DRAWER_NAVIGATOR,
+    // drawerPosition: 'left',
+    drawerType: 'slide',
+    contentComponent: props => <DrawerContent/>,
+  });
