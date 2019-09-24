@@ -35,7 +35,7 @@ class ProjectsList extends PureComponent<Props> {
 
 const styles = StyleSheet.create({
   projectsCardsView: {
-    marginBottom: 20, flex: 1, flexDirection: 'column',
+    marginBottom: 0, flex: 1, flexDirection: 'column',
   },
 });
 

@@ -14,6 +14,7 @@ import { DrawerToggle, ProjectsList } from '../components';
 import { projects } from '../utils';
 import { NavigationParams, NavigationState } from 'react-navigation';
 import { NavigationStackProp } from 'react-navigation-stack';
+import { BottomTabsNavigator } from '../navigations';
 
 interface Props {
   navigation: NavigationStackProp<NavigationState, NavigationParams>;
@@ -33,25 +34,12 @@ class HomeScreen extends Component<Props, State> {
     this.state = {};
   }
 
-  static navigationOptions = ({ screenProps, navigation }) => {
-    const title = screenProps.intl.formatMessage({ id: translationConstants.APP_TITLE, defaultMessage: 'Home' });
-    return {
-      title: title,
-      headerLeft: <DrawerToggle onTogglePress={navigation.toggleDrawer}/>,
-      headerLeftContainerStyle: { padding: 10 },
-    };
-  };
-
-  onProjectItemPress = (item: Project) => {
-    this.props.navigation.navigate(navigationConstants.SCREEN_PROJECT_DETAILS, {
-      [navigationConstants.SCREEN_PARAM_PROJECT]: item,
-    });
-  };
 
   render() {
     return (
       <View style={[styles.startupContainer]}>
-        <ProjectsList onItemPress={this.onProjectItemPress} projects={projects}/>
+        <BottomTabsNavigator/>
+        {/*<ProjectsList onItemPress={this.onProjectItemPress} projects={projects}/>*/}
       </View>
     );
   }
@@ -80,7 +68,5 @@ const styles = StyleSheet.create({
     textAlign: 'right',
     writingDirection: 'rtl',
   },
-  rtlView: {
-    // flexDirection: 'row-reverse',
-  },
+
 });

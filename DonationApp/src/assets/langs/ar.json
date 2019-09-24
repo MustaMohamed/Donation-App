@@ -20,5 +20,8 @@
   "EXECUTION_DURATION": "مدة التنفيذ",
   "RESULT": "النتيجة",
   "START_AT": "بدأ",
-  "END_AT": "انتهى"
+  "END_AT": "انتهى",
+  "SCREEN_DONATION_PROJECTS_TAB_TITLE": "متاحة للتبرع",
+  "SCREEN_EXECUTION_PROJECTS_TAB_TITLE": "قيد التنفيذ",
+  "SCREEN_DONE_PROJECTS_TAB_TITLE": "اكتملت"
 }
