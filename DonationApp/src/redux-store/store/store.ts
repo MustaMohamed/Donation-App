@@ -4,10 +4,11 @@ import thunkMiddleware from 'redux-thunk';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import { persistReducer, persistStore } from 'redux-persist';
 import { AsyncStorage } from 'react-native';
-import { appReducer } from '../reducers';
+import { appReducer, projectsReducer } from '../reducers';
 
 const rootReducer = combineReducers({
   app: appReducer,
+  projects: projectsReducer,
 });
 
 // middle wares

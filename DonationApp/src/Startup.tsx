@@ -2,7 +2,7 @@
  * created by musta at 9/16/2019
  */
 
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { I18nManager, LayoutAnimation, StatusBar, UIManager } from 'react-native';
 import lang_en from './assets/langs/en.json';
 import lang_ar from './assets/langs/ar.json';
@@ -30,7 +30,7 @@ interface State {
   isLoading: boolean;
 }
 
-class Startup extends Component<Props, State> {
+class Startup extends PureComponent<Props, State> {
   constructor(props) {
     super(props);
     this.state = {
@@ -57,10 +57,6 @@ class Startup extends Component<Props, State> {
     this.detectLocalLanguage();
     if (this.state.isLoading !== this.props.app.uiLoaderIsActive)
       this.setState({ isLoading: this.props.app.uiLoaderIsActive });
-  }
-
-  shouldComponentUpdate(nextProps: Readonly<Props>, nextState: Readonly<State>, nextContext: any): boolean {
-    return this.props.app.language.currentLanguage !== nextProps.app.language.currentLanguage;
   }
 
   detectLocalLanguage = () => {

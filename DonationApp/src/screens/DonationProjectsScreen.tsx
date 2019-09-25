@@ -6,19 +6,22 @@ import React, { Component } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { navigationConstants, translationConstants } from '../constants';
 import { ProjectsList, TabItem } from '../components';
-import { Project } from '../types/models';
+import { AppState, Project } from '../types';
 import { NavigationStackProp } from 'react-navigation-stack';
 import { NavigationParams, NavigationState } from 'react-navigation';
-import { changeCurrentLanguageAction } from '../redux-store/actions';
-import { AppState } from '../types/redux-store';
+import { getDonationProjectsAction, hideUiLoaderAction, showUiLoaderAction } from '../redux-store/actions';
 import { IntlShape } from 'react-intl';
-import { projects } from '../utils';
+import { ApplicationState } from '../redux-store/store';
+import { connect } from 'react-redux';
 
 interface Props {
   navigation: NavigationStackProp<NavigationState, NavigationParams>;
-  changeAppCurrentLanguage: typeof changeCurrentLanguageAction;
+  getDonationProjects: typeof getDonationProjectsAction;
+  showUiLoader: typeof showUiLoaderAction;
+  hideUiLoader: typeof hideUiLoaderAction;
   app: AppState;
   intl: IntlShape;
+  donationProjects: Project[]
 }
 
 interface State {
@@ -34,6 +37,13 @@ class DonationProjectsScreen extends Component<Props, State> {
     };
   };
 
+  async componentDidMount() {
+    console.log('Donation mounted');
+    this.props.showUiLoader();
+    await this.props.getDonationProjects();
+    this.props.hideUiLoader();
+  }
+
   onProjectItemPress = (item: Project) => {
     this.props.navigation.navigate(navigationConstants.SCREEN_PROJECT_DETAILS, {
       [navigationConstants.SCREEN_PARAM_PROJECT]: item,
@@ -43,11 +53,25 @@ class DonationProjectsScreen extends Component<Props, State> {
   render() {
     return (
       <View style={styles.startupContainer}>
-        <ProjectsList onItemPress={this.onProjectItemPress} projects={projects.filter(item => !item.isCostCollectedDone)}/>
+        <ProjectsList onItemPress={this.onProjectItemPress}
+                      projects={this.props.donationProjects.filter(item => !item.isCostCollectedDone)}/>
       </View>
     );
   }
 }
+
+
+const mapStateToProps = (state: ApplicationState) => {
+  const { projects } = state;
+  const { donationProjects } = projects;
+  return { donationProjects };
+};
+
+export default connect(mapStateToProps, {
+  getDonationProjects: getDonationProjectsAction,
+  showUiLoader: showUiLoaderAction,
+  hideUiLoader: hideUiLoaderAction,
+})(DonationProjectsScreen);
 
 const styles = StyleSheet.create({
   startupContainer: {
@@ -55,5 +79,3 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
   },
 });
-
-export default DonationProjectsScreen;

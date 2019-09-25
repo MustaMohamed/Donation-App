@@ -1,0 +1,79 @@
+/*
+* action_name: ActionCreator<ActionsType> = (): [action_return_type: ActionsType] => {}
+*
+* // thunk action
+*
+* action_name: ActionCreator<ThunkAction<return_type, stateType, null, ActionsType>> = (): [action_return_type: ThunkAction<return_type, stateType, null, ActionsType>] => {}
+*
+* */
+
+
+import { ActionCreator, Dispatch } from 'redux';
+import { ProjectsActions, ProjectsState } from '../../types';
+import { ThunkAction } from 'redux-thunk';
+import { projects } from '../../utils';
+import { projectsActionsConstants } from '../../constants/redux-store/actions';
+import * as projectsService from '../../services';
+
+type ProjectsThunkAction = ThunkAction<Promise<any>, ProjectsState, null, ProjectsActions>;
+
+export const getDonationProjectsAction: ActionCreator<ProjectsThunkAction> = (): ProjectsThunkAction => {
+  return async (dispatch: Dispatch) => {
+    try {
+      const results = await projectsService.getDonationProjects();
+      console.log(results);
+      dispatch({
+        type: projectsActionsConstants.GET_DONATION_PROJECTS,
+        payload: projects,
+      });
+    } catch (e) {
+
+    }
+  };
+};
+
+export const getExecutionProjectsAction: ActionCreator<ProjectsThunkAction> = (): ProjectsThunkAction => {
+  return async (dispatch: Dispatch) => {
+    try {
+      const results = await projectsService.getExecutionProjects();
+      console.log(results);
+      dispatch({
+        type: projectsActionsConstants.GET_EXECUTION_PROJECTS,
+        payload: projects,
+      });
+    } catch (e) {
+
+    }
+  };
+};
+
+export const getDoneProjectsAction: ActionCreator<ProjectsThunkAction> = (): ProjectsThunkAction => {
+  return async (dispatch: Dispatch) => {
+    try {
+      const results = await projectsService.getDoneProjects();
+      console.log(results);
+      dispatch({
+        type: projectsActionsConstants.GET_DONE_PROJECTS,
+        payload: projects,
+      });
+    } catch (e) {
+
+    }
+  };
+};
+
+export const getAllProjectsAction: ActionCreator<ProjectsThunkAction> = (): ProjectsThunkAction => {
+  return async (dispatch: Dispatch) => {
+    try {
+      const results = await projectsService.getAllProjects();
+      console.log('from all => ', results);
+      dispatch({
+        type: projectsActionsConstants.GET_ALL_PROJECTS,
+        payload: projects,
+      });
+    } catch (e) {
+
+    }
+  };
+};
+

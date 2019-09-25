@@ -32,6 +32,7 @@ class DonationFormScreen extends PureComponent<Props> {
     };
   };
 
+
   _onDonorDetailsIsVisibleChange = (value) => {
     this.setState({
       donorDetailsIsVisible: value,
@@ -91,6 +92,8 @@ class DonationFormScreen extends PureComponent<Props> {
   }
 }
 
+export default injectIntl(DonationFormScreen);
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -117,4 +120,3 @@ const styles = StyleSheet.create({
   switch: {},
 });
 
-export default injectIntl(DonationFormScreen);

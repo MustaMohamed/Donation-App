@@ -9,16 +9,20 @@ import { navigationConstants, translationConstants } from '../constants';
 import { ProjectsList, TabItem } from '../components';
 import { NavigationStackProp } from 'react-navigation-stack';
 import { NavigationParams, NavigationState } from 'react-navigation';
-import { changeCurrentLanguageAction } from '../redux-store/actions';
+import { getExecutionProjectsAction, hideUiLoaderAction, showUiLoaderAction } from '../redux-store/actions';
 import { AppState } from '../types/redux-store';
 import { IntlShape } from 'react-intl';
-import { projects } from '../utils';
+import { ApplicationState } from '../redux-store/store';
+import { connect } from 'react-redux';
 
 interface Props {
   navigation: NavigationStackProp<NavigationState, NavigationParams>;
-  changeAppCurrentLanguage: typeof changeCurrentLanguageAction;
+  getExecutionProjects: typeof getExecutionProjectsAction;
+  showUiLoader: typeof showUiLoaderAction;
+  hideUiLoader: typeof hideUiLoaderAction;
   app: AppState;
   intl: IntlShape;
+  executionProjects: Project[];
 }
 
 interface State {
@@ -34,6 +38,14 @@ class ExecutionProjectsScreen extends Component<Props, State> {
       tabBarButtonComponent: (props) => <TabItem title={title} {...props} />,
     };
   };
+
+  async componentDidMount() {
+    console.log('Donation mounted');
+    this.props.showUiLoader();
+    await this.props.getExecutionProjects();
+    this.props.hideUiLoader();
+  }
+
   onProjectItemPress = (item: Project) => {
     this.props.navigation.navigate(navigationConstants.SCREEN_PROJECT_DETAILS, {
       [navigationConstants.SCREEN_PARAM_PROJECT]: item,
@@ -43,11 +55,24 @@ class ExecutionProjectsScreen extends Component<Props, State> {
   render() {
     return (
       <View style={styles.startupContainer}>
-        <ProjectsList onItemPress={this.onProjectItemPress} projects={projects.filter(item => item.isCostCollectedDone && !item.isExecutionDone)}/>
+        <ProjectsList onItemPress={this.onProjectItemPress}
+                      projects={this.props.executionProjects.filter(item => item.isCostCollectedDone && !item.isExecutionDone)}/>
       </View>
     );
   }
 }
+
+const mapStateToProps = (state: ApplicationState) => {
+  const { projects } = state;
+  const { executionProjects } = projects;
+  return { executionProjects };
+};
+
+export default connect(mapStateToProps, {
+  getExecutionProjects: getExecutionProjectsAction,
+  showUiLoader: showUiLoaderAction,
+  hideUiLoader: hideUiLoaderAction,
+})(ExecutionProjectsScreen);
 
 const styles = StyleSheet.create({
   startupContainer: {
@@ -55,5 +80,3 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
   },
 });
-
-export default ExecutionProjectsScreen;
