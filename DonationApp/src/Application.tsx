@@ -7,13 +7,8 @@ import { Provider } from 'react-redux';
 import Startup from './Startup';
 import { persistor, store } from './redux-store/store';
 import { PersistGate } from 'redux-persist/integration/react';
-import 'intl';
-import 'intl/locale-data/jsonp/en';
-import 'intl/locale-data/jsonp/ar';
 import { I18nManager } from 'react-native';
-// import '@formatjs/intl-relativetimeformat/polyfill';
-// import '@formatjs/intl-pluralrules/polyfill';
-// import '@formatjs/intl-pluralrules/polyfill-locales';
+
 
 interface Props {
 }

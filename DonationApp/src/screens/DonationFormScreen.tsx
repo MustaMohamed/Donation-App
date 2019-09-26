@@ -3,9 +3,9 @@
  */
 
 import React, { PureComponent } from 'react';
-import { StyleSheet, Switch, Text, View } from 'react-native';
+import { StyleSheet, Switch, View } from 'react-native';
 import { Button, Icon, Input, ListItem } from 'react-native-elements';
-import { FormattedMessage, injectIntl, IntlShape } from 'react-intl';
+import { injectIntl, IntlShape } from 'react-intl';
 import { NavigationStackProp } from 'react-navigation-stack';
 import { NavigationParams, NavigationState } from 'react-navigation';
 import { navigationConstants, translationConstants } from '../constants';
@@ -44,12 +44,12 @@ class DonationFormScreen extends PureComponent<Props> {
       <View style={styles.container}>
         <View style={styles.switchView}>
           <ListItem
-            rightElement={<Switch style={styles.switch} value={this.state.donorDetailsIsVisible} thumbColor={'#40A9FF'} trackColor={{ true: '#a0c1ff', false: 'gray' }}
+            title={this.props.intl.formatMessage({ id: translationConstants.SWITCH_DONOR_PERSONAL_DETAILS })}
+            rightElement={<Switch style={styles.switch}
+                                  value={this.state.donorDetailsIsVisible} thumbColor={'#40A9FF'}
+                                  trackColor={{ true: '#a0c1ff', false: 'gray' }}
                                   onValueChange={this._onDonorDetailsIsVisibleChange}/>}
-            title={<Text style={styles.text}><FormattedMessage id={translationConstants.SWITCH_DONOR_PERSONAL_DETAILS}/></Text>}
-
           />
-          {/* If you want to list your name to this project donation list switch this button*/}
 
         </View>
         <View style={styles.actionsView}>
@@ -115,7 +115,6 @@ const styles = StyleSheet.create({
   },
   switchView: {
     justifyContent: 'space-between',
-    flexWrap: 'wrap',
   },
   switch: {},
 });

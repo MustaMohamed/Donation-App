@@ -14,6 +14,12 @@ import ReactNativeRestart from 'react-native-restart';
 import { LocalizedAppNavigator } from './navigations';
 import { ThemeProvider } from 'react-native-elements';
 import Loader from 'react-native-modal-loader';
+import 'intl';
+import 'intl/locale-data/jsonp/en';
+import 'intl/locale-data/jsonp/ar';
+// import '@formatjs/intl-relativetimeformat/polyfill';
+// import '@formatjs/intl-pluralrules/polyfill';
+// import '@formatjs/intl-pluralrules/polyfill-locales';
 
 const langs = {
   [Languages.En]: lang_en,
