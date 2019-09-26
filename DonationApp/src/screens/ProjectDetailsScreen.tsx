@@ -22,7 +22,12 @@ interface State {
 
 class ProjectDetailsScreen extends PureComponent<Props, State> {
   state = {
-    project: new Project(),
+    project: {
+      village: {
+        id: 1,
+        name: 'dummy',
+      },
+    },
   };
   static navigationOptions = ({ screenProps, navigation }) => {
     const project = navigation.getParam(navigationConstants.SCREEN_PARAM_PROJECT);
@@ -56,9 +61,9 @@ class ProjectDetailsScreen extends PureComponent<Props, State> {
 
   render() {
     return (
-      <View style={{ flex: 1, flexDirection: 'column', justifyContent: 'flex-start' }}>
+      <View style={styles.detailsContainer}>
         <ScrollView>
-          <Image source={{ uri: this.state.project.image }} containerStyle={{ height: 200 }}/>
+          <Image source={{ uri: this.state.project.image }} containerStyle={styles.image}/>
 
           <ListItem
             title={this.props.intl.formatMessage({ id: translationConstants.COUNTRY })}
@@ -70,7 +75,7 @@ class ProjectDetailsScreen extends PureComponent<Props, State> {
           <ListItem
             title={this.props.intl.formatMessage({ id: translationConstants.VILLAGE })}
             titleProps={{ style: [styles.text, styles.listItemTitle] }}
-            rightSubtitle={this.state.project.village || 'Egypt'}
+            rightSubtitle={this.state.project.village.name || 'Egypt'}
             subtitleStyle={styles.text}
             bottomDivider
           />
@@ -98,11 +103,11 @@ class ProjectDetailsScreen extends PureComponent<Props, State> {
           {this.state.project.isCostCollectedDone && < ListItem
             title={this.props.intl.formatMessage({ id: translationConstants.EXECUTION_DURATION })}
             titleProps={{ style: [styles.text, styles.listItemTitle] }}
-            rightSubtitle={this.state.project.duration}
+            rightSubtitle={this.state.project.executionDuration}
             subtitleStyle={styles.text}
             bottomDivider
           />}
-          {this.state.project.isExecutionDone && <ListItem
+          {this.state.project.isExecutionDone && this.state.project.result && <ListItem
             title={this.props.intl.formatMessage({ id: translationConstants.RESULT })}
             titleProps={{ style: [styles.text, styles.listItemTitle] }}
             subtitle={this.state.project.result}
@@ -112,7 +117,18 @@ class ProjectDetailsScreen extends PureComponent<Props, State> {
           {this.state.project.isCostCollectedDone && <ListItem
             title={this.props.intl.formatMessage({ id: translationConstants.START_AT })}
             titleProps={{ style: [styles.text, styles.listItemTitle] }}
-            rightSubtitle={this.props.intl.formatDate(this.state.project.startDate ? this.state.project.startDate : new Date(), {
+            rightSubtitle={this.props.intl.formatDate(this.state.project.startAt ? this.state.project.startAt : new Date(), {
+              year: 'numeric',
+              month: 'numeric',
+              day: 'numeric',
+            })}
+            subtitleStyle={styles.text}
+            bottomDivider
+          />}
+          {this.state.project.isCostCollectedDone && <ListItem
+            title={this.props.intl.formatMessage({ id: translationConstants.EXPECTED_END_AT })}
+            titleProps={{ style: [styles.text, styles.listItemTitle] }}
+            rightSubtitle={this.props.intl.formatDate(this.state.project.expectedEndAt ? this.state.project.expectedEndAt : new Date(), {
               year: 'numeric',
               month: 'numeric',
               day: 'numeric',
@@ -123,7 +139,7 @@ class ProjectDetailsScreen extends PureComponent<Props, State> {
           {this.state.project.isExecutionDone && <ListItem
             title={this.props.intl.formatMessage({ id: translationConstants.END_AT })}
             titleProps={{ style: [styles.text, styles.listItemTitle] }}
-            rightSubtitle={this.props.intl.formatDate(this.state.project.endDate ? this.state.project.endDate : new Date(), {
+            rightSubtitle={this.props.intl.formatDate(this.state.project.endAt ? this.state.project.endAt : new Date(), {
               year: 'numeric',
               month: 'numeric',
               day: 'numeric',
@@ -156,6 +172,14 @@ class ProjectDetailsScreen extends PureComponent<Props, State> {
 }
 
 const styles = StyleSheet.create({
+  detailsContainer: {
+    flex: 1,
+    flexDirection: 'column',
+    justifyContent: 'flex-start',
+  },
+  image: {
+    height: 200,
+  },
   actionsView: {
     flexDirection: 'row',
     justifyContent: 'space-around',

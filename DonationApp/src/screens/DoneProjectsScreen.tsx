@@ -2,7 +2,7 @@
  * created by musta at 9/24/2019
  */
 
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { NavigationStackProp } from 'react-navigation-stack';
 import { NavigationParams, NavigationState } from 'react-navigation';
@@ -29,7 +29,7 @@ interface State {
 
 }
 
-class DoneProjectsScreen extends Component<Props, State> {
+class DoneProjectsScreen extends PureComponent<Props, State> {
   static navigationOptions = ({ screenProps, navigation }) => {
     const title = screenProps.intl.formatMessage({ id: translationConstants.SCREEN_DONE_PROJECTS_TAB_TITLE });
     return {
@@ -39,7 +39,6 @@ class DoneProjectsScreen extends Component<Props, State> {
   };
 
   async componentDidMount() {
-    console.log('Donation mounted');
     this.props.showUiLoader();
     await this.props.getDoneProjects();
     this.props.hideUiLoader();
@@ -55,7 +54,7 @@ class DoneProjectsScreen extends Component<Props, State> {
     return (
       <View style={styles.startupContainer}>
         <ProjectsList onItemPress={this.onProjectItemPress}
-                      projects={this.props.doneProjects.filter(item => item.isExecutionDone)}/>
+                      projects={this.props.doneProjects}/>
       </View>
     );
   }

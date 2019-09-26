@@ -19,8 +19,9 @@
   "COLLECTED_DONATION": "التبرعات التي تم جمعها",
   "EXECUTION_DURATION": "مدة التنفيذ",
   "RESULT": "النتيجة",
-  "START_AT": "بدأ",
-  "END_AT": "انتهى",
+  "START_AT": "تاريخ البدأ",
+  "END_AT": "تاريخ الانتهاء الفعلي",
+  "EXPECTED_END_AT": "تاريخ الانتهاء المتوقع",
   "SCREEN_DONATION_PROJECTS_TAB_TITLE": "متاحة للتبرع",
   "SCREEN_EXECUTION_PROJECTS_TAB_TITLE": "قيد التنفيذ",
   "SCREEN_DONE_PROJECTS_TAB_TITLE": "اكتملت"

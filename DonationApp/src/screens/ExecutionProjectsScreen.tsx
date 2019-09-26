@@ -2,7 +2,7 @@
  * created by musta at 9/24/2019
  */
 
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Project } from '../types/models';
 import { navigationConstants, translationConstants } from '../constants';
@@ -29,7 +29,7 @@ interface State {
 
 }
 
-class ExecutionProjectsScreen extends Component<Props, State> {
+class ExecutionProjectsScreen extends PureComponent<Props, State> {
   static navigationOptions = ({ screenProps, navigation }) => {
     const title = screenProps.intl.formatMessage({ id: translationConstants.SCREEN_EXECUTION_PROJECTS_TAB_TITLE });
     return {
@@ -40,7 +40,6 @@ class ExecutionProjectsScreen extends Component<Props, State> {
   };
 
   async componentDidMount() {
-    console.log('Donation mounted');
     this.props.showUiLoader();
     await this.props.getExecutionProjects();
     this.props.hideUiLoader();
@@ -56,7 +55,7 @@ class ExecutionProjectsScreen extends Component<Props, State> {
     return (
       <View style={styles.startupContainer}>
         <ProjectsList onItemPress={this.onProjectItemPress}
-                      projects={this.props.executionProjects.filter(item => item.isCostCollectedDone && !item.isExecutionDone)}/>
+                      projects={this.props.executionProjects}/>
       </View>
     );
   }

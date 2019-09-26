@@ -1,18 +1,25 @@
 export class Project {
   id?: number;
-  isCostCollectedDone?: boolean;
-  isExecutionDone?: boolean;
+  name?: string;
   description?: string;
   cost?: number;
   collectedDonation?: number;
-  name?: string;
-  category?: string;
+  executionDuration?: string;
   country?: string;
-  village?: string;
+  village?: {
+    name: string;
+    id: number;
+  };
+  cause?: string;
+  projectCategory?: {
+    category: string;
+    id: number;
+  };
   image?: string;
-  reason?: string;
-  duration?: string;
   result?: string;
-  startDate?: Date;
-  endDate?: Date;
+  startAt?: Date;
+  expectedEndAt?: Date;
+  endAt?: Date;
+  isCostCollectedDone?: boolean;
+  isExecutionDone?: boolean;
 }

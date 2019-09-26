@@ -7,9 +7,8 @@
 *
 * */
 
-
 import { ActionCreator, Dispatch } from 'redux';
-import { ProjectsActions, ProjectsState } from '../../types';
+import { ProjectResponse, ProjectsActions, ProjectsState } from '../../types';
 import { ThunkAction } from 'redux-thunk';
 import { projects } from '../../utils';
 import { projectsActionsConstants } from '../../constants/redux-store/actions';
@@ -20,14 +19,12 @@ type ProjectsThunkAction = ThunkAction<Promise<any>, ProjectsState, null, Projec
 export const getDonationProjectsAction: ActionCreator<ProjectsThunkAction> = (): ProjectsThunkAction => {
   return async (dispatch: Dispatch) => {
     try {
-      const results = await projectsService.getDonationProjects();
-      console.log(results);
+      const results: ProjectResponse = await projectsService.getDonationProjects();
       dispatch({
         type: projectsActionsConstants.GET_DONATION_PROJECTS,
-        payload: projects,
+        payload: results.projects,
       });
     } catch (e) {
-
     }
   };
 };
@@ -35,11 +32,10 @@ export const getDonationProjectsAction: ActionCreator<ProjectsThunkAction> = ():
 export const getExecutionProjectsAction: ActionCreator<ProjectsThunkAction> = (): ProjectsThunkAction => {
   return async (dispatch: Dispatch) => {
     try {
-      const results = await projectsService.getExecutionProjects();
-      console.log(results);
+      const results: ProjectResponse = await projectsService.getExecutionProjects();
       dispatch({
         type: projectsActionsConstants.GET_EXECUTION_PROJECTS,
-        payload: projects,
+        payload: results.projects,
       });
     } catch (e) {
 
@@ -50,11 +46,10 @@ export const getExecutionProjectsAction: ActionCreator<ProjectsThunkAction> = ()
 export const getDoneProjectsAction: ActionCreator<ProjectsThunkAction> = (): ProjectsThunkAction => {
   return async (dispatch: Dispatch) => {
     try {
-      const results = await projectsService.getDoneProjects();
-      console.log(results);
+      const results: ProjectResponse = await projectsService.getDoneProjects();
       dispatch({
         type: projectsActionsConstants.GET_DONE_PROJECTS,
-        payload: projects,
+        payload: results.projects,
       });
     } catch (e) {
 

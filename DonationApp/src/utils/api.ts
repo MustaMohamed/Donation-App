@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 export default axios.create({
-  baseURL: 'https://api.rsh.im/api/',
+  baseURL: 'http://donation.majalspace.com/api/',
   responseType: 'json',
   headers: {
     'Content-Type': 'application/json',
