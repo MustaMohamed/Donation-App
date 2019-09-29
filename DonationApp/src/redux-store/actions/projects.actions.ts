@@ -12,7 +12,7 @@ import { ProjectResponse, ProjectsActions, ProjectsState } from '../../types';
 import { ThunkAction } from 'redux-thunk';
 import { projects } from '../../utils';
 import { projectsActionsConstants } from '../../constants/redux-store/actions';
-import * as projectsService from '../../services';
+import { projectsService } from '../../services';
 
 type ProjectsThunkAction = ThunkAction<Promise<any>, ProjectsState, null, ProjectsActions>;
 

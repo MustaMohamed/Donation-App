@@ -11,7 +11,7 @@ import { Project, RelatedProjectsType } from '../types';
 import { apiConstants, navigationConstants } from '../constants';
 import { connect } from 'react-redux';
 import { hideUiLoaderAction, showUiLoaderAction } from '../redux-store/actions';
-import * as projectsService from '../services';
+import { projectsService } from '../services';
 
 interface Props {
   navigation: NavigationStackProp<NavigationState, NavigationParams>;

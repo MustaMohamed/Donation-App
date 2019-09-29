@@ -36,6 +36,11 @@ export const getRelatedProjects = async (relatedToType: string, relatedToId: num
   return { projects, pagination };
 };
 
+export const donateForProject = async (donationData): Promise<any> => {
+  const res = await requestFactory.post(apiConstants.DONATE, donationData);
+  const { message } = res.data;
+  return message;
+};
 
 const mapResponseToProjectList = (data): Project[] => {
   return data.map((item): Project => ({
@@ -71,4 +76,13 @@ const mapResponseToPagination = (meta): Pagination => {
     totalCount: meta.pagination.total,
     totalPages: meta.pagination.total_pages,
   };
+};
+
+export default {
+  getDonationProjects,
+  getExecutionProjects,
+  getDoneProjects,
+  getRelatedProjects,
+  getAllProjects,
+  donateForProject,
 };
