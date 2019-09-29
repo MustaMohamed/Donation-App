@@ -5,7 +5,7 @@
 import React, { PureComponent } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 import { NavigationParams, NavigationState } from 'react-navigation';
-import { Project } from '../types';
+import { Project, RelatedProjectsType } from '../types';
 import { injectIntl, IntlShape } from 'react-intl';
 import { navigationConstants, translationConstants } from '../constants';
 import { Button, Image, ListItem } from 'react-native-elements';
@@ -44,12 +44,14 @@ class ProjectDetailsScreen extends PureComponent<Props, State> {
   _onRelatedProjectsActionPress = () => {
     this.props.navigation.push(navigationConstants.SCREEN_RELATED_PROJECTS, {
       [navigationConstants.SCREEN_PARAM_PROJECT]: this.state.project,
+      [navigationConstants.SCREEN_PARAM_RELATED_PROJECT_TYPE]: RelatedProjectsType.Category,
     });
   };
 
   _onPrevProjectsActionPress = () => {
     this.props.navigation.push(navigationConstants.SCREEN_RELATED_PROJECTS, {
       [navigationConstants.SCREEN_PARAM_PROJECT]: this.state.project,
+      [navigationConstants.SCREEN_PARAM_RELATED_PROJECT_TYPE]: RelatedProjectsType.Village,
     });
   };
 

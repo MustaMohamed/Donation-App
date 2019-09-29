@@ -1,22 +1,23 @@
 import { requestFactory } from '../utils';
 import { Pagination, Project, ProjectResponse } from '../types';
+import { apiConstants } from '../constants';
 
 export const getDonationProjects = async (): Promise<ProjectResponse> => {
-  const { data } = await requestFactory.get('projects-by-status', { status: 'donation' });
+  const { data } = await requestFactory.get(apiConstants.PROJECTS_BY_STATUS, { status: apiConstants.PROJECTS_STATUS_DONATION });
   const projects = mapResponseToProjectList(data.data);
   const pagination = mapResponseToPagination(data.meta);
   return { projects, pagination };
 };
 
 export const getExecutionProjects = async (): Promise<ProjectResponse> => {
-  const { data } = await requestFactory.get('projects-by-status', { status: 'execution' });
+  const { data } = await requestFactory.get(apiConstants.PROJECTS_BY_STATUS, { status: apiConstants.PROJECT_STATUS_EXECUTION });
   const projects = mapResponseToProjectList(data.data);
   const pagination = mapResponseToPagination(data.meta);
   return { projects, pagination };
 };
 
 export const getDoneProjects = async (): Promise<ProjectResponse> => {
-  const { data } = await requestFactory.get('projects-by-status', { status: 'finished' });
+  const { data } = await requestFactory.get(apiConstants.PROJECTS_BY_STATUS, { status: apiConstants.PROJECT_STATUS_FINISHED });
   const projects = mapResponseToProjectList(data.data);
   const pagination = mapResponseToPagination(data.meta);
   return { projects, pagination };
@@ -25,6 +26,16 @@ export const getDoneProjects = async (): Promise<ProjectResponse> => {
 export const getAllProjects = async (): Promise<any> => {
   return requestFactory.all([getDonationProjects(), getExecutionProjects(), getDoneProjects()]);
 };
+
+export const getRelatedProjects = async (relatedToType: string, relatedToId: number): Promise<any> => {
+  const { data } = await requestFactory.get(apiConstants.RELATED_PROJECTS, {
+    [relatedToType]: relatedToId,
+  });
+  const projects = mapResponseToProjectList(data.data);
+  const pagination = mapResponseToPagination(data.meta);
+  return { projects, pagination };
+};
+
 
 const mapResponseToProjectList = (data): Project[] => {
   return data.map((item): Project => ({
