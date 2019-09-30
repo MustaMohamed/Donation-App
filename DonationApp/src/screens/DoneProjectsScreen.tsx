@@ -11,9 +11,10 @@ import { AppState } from '../types/redux-store';
 import { IntlShape } from 'react-intl';
 import { navigationConstants, translationConstants } from '../constants';
 import { ProjectsList, TabItem } from '../components';
-import { Project } from '../types/models';
+import { Project, ProjectsWithPagination } from '../types/models';
 import { connect } from 'react-redux';
 import { ApplicationState } from '../redux-store/store';
+import { Languages } from '../types';
 
 interface Props {
   navigation: NavigationStackProp<NavigationState, NavigationParams>;
@@ -22,7 +23,7 @@ interface Props {
   hideUiLoader: typeof hideUiLoaderAction;
   app: AppState;
   intl: IntlShape;
-  doneProjects: Project[];
+  doneProjects: ProjectsWithPagination;
 }
 
 interface State {
@@ -54,13 +55,18 @@ class DoneProjectsScreen extends PureComponent<Props, State> {
     await this._refreshProjectsList();
   };
 
-  onEndReached = () => {
-    console.log('the end list');
+  onEndReached = async () => {
+    const currentPageNumber = this.props.doneProjects.pagination.page;
+    const totalPages = this.props.doneProjects.pagination.totalPages;
+    if (currentPageNumber < totalPages) {
+      this.props.showUiLoader();
+      await this._refreshProjectsList(this.props.doneProjects.pagination.page + 1);
+      this.props.hideUiLoader();
+    }
   };
 
-  _refreshProjectsList = async () => {
-    console.log('list refresh');
-    await this.props.getDoneProjects();
+  _refreshProjectsList = async (page?: number) => {
+    await this.props.getDoneProjects(this.props.app && this.props.app.language.currentLanguage || Languages.En, page);
   };
 
   render() {
@@ -69,7 +75,7 @@ class DoneProjectsScreen extends PureComponent<Props, State> {
         <ProjectsList onItemPress={this.onProjectItemPress}
                       onListRefresh={this.onProjectsListRefresh}
                       onEndReached={this.onEndReached}
-                      projects={this.props.doneProjects}/>
+                      projects={this.props.doneProjects.projects}/>
       </View>
     );
   }

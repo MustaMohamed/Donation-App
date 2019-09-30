@@ -6,7 +6,7 @@ import React, { PureComponent } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { navigationConstants, translationConstants } from '../constants';
 import { ProjectsList, TabItem } from '../components';
-import { AppState, Project } from '../types';
+import { AppState, Languages, Project, ProjectsWithPagination } from '../types';
 import { NavigationStackProp } from 'react-navigation-stack';
 import { NavigationParams, NavigationState } from 'react-navigation';
 import { getDonationProjectsAction, hideUiLoaderAction, showUiLoaderAction } from '../redux-store/actions';
@@ -21,7 +21,7 @@ interface Props {
   hideUiLoader: typeof hideUiLoaderAction;
   app: AppState;
   intl: IntlShape;
-  donationProjects: Project[]
+  donationProjects: ProjectsWithPagination;
 }
 
 interface State {
@@ -53,13 +53,18 @@ class DonationProjectsScreen extends PureComponent<Props, State> {
     await this._refreshProjectsList();
   };
 
-  onEndReached = () => {
-    console.log('the end list');
+  onEndReached = async () => {
+    const currentPageNumber = this.props.donationProjects.pagination.page;
+    const totalPages = this.props.donationProjects.pagination.totalPages;
+    if (currentPageNumber < totalPages) {
+      this.props.showUiLoader();
+      await this._refreshProjectsList(this.props.donationProjects.pagination.page + 1);
+      this.props.hideUiLoader();
+    }
   };
 
-  _refreshProjectsList = async () => {
-    console.log('list refresh');
-    await this.props.getDonationProjects();
+  _refreshProjectsList = async (page?: number) => {
+    await this.props.getDonationProjects(this.props.app && this.props.app.language.currentLanguage || Languages.En, page);
   };
 
   render() {
@@ -68,7 +73,7 @@ class DonationProjectsScreen extends PureComponent<Props, State> {
         <ProjectsList onItemPress={this.onProjectItemPress}
                       onListRefresh={this.onProjectsListRefresh}
                       onEndReached={this.onEndReached}
-                      projects={this.props.donationProjects}/>
+                      projects={this.props.donationProjects.projects}/>
       </View>
     );
   }

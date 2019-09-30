@@ -4,7 +4,7 @@
 
 import React, { PureComponent } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { Project } from '../types/models';
+import { Project, ProjectsWithPagination } from '../types/models';
 import { navigationConstants, translationConstants } from '../constants';
 import { ProjectsList, TabItem } from '../components';
 import { NavigationStackProp } from 'react-navigation-stack';
@@ -14,6 +14,7 @@ import { AppState } from '../types/redux-store';
 import { IntlShape } from 'react-intl';
 import { ApplicationState } from '../redux-store/store';
 import { connect } from 'react-redux';
+import { Languages } from '../types';
 
 interface Props {
   navigation: NavigationStackProp<NavigationState, NavigationParams>;
@@ -22,7 +23,7 @@ interface Props {
   hideUiLoader: typeof hideUiLoaderAction;
   app: AppState;
   intl: IntlShape;
-  executionProjects: Project[];
+  executionProjects: ProjectsWithPagination;
 }
 
 interface State {
@@ -55,13 +56,18 @@ class ExecutionProjectsScreen extends PureComponent<Props, State> {
     await this._refreshProjectsList();
   };
 
-  onEndReached = () => {
-    console.log('the end list');
+  onEndReached = async () => {
+    const currentPageNumber = this.props.executionProjects.pagination.page;
+    const totalPages = this.props.executionProjects.pagination.totalPages;
+    if (currentPageNumber < totalPages) {
+      this.props.showUiLoader();
+      await this._refreshProjectsList(this.props.executionProjects.pagination.page + 1);
+      this.props.hideUiLoader();
+    }
   };
-  
-  _refreshProjectsList = async () => {
-    console.log('list refresh');
-    await this.props.getExecutionProjects();
+
+  _refreshProjectsList = async (page?: number) => {
+    await this.props.getExecutionProjects(this.props.app && this.props.app.language.currentLanguage || Languages.En, page);
   };
 
   render() {
@@ -70,7 +76,7 @@ class ExecutionProjectsScreen extends PureComponent<Props, State> {
         <ProjectsList onItemPress={this.onProjectItemPress}
                       onListRefresh={this.onProjectsListRefresh}
                       onEndReached={this.onEndReached}
-                      projects={this.props.executionProjects}/>
+                      projects={this.props.executionProjects.projects}/>
       </View>
     );
   }

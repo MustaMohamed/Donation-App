@@ -1,5 +1,5 @@
 import { Languages } from '../common';
-import { Project } from '../models';
+import { ProjectsWithPagination } from '../models';
 
 export interface AppState {
   uiLoaderIsActive?: boolean;
@@ -11,7 +11,7 @@ export interface AppState {
 }
 
 export interface ProjectsState {
-  donationProjects: Project[];
-  executionProjects: Project[];
-  doneProjects: Project[];
+  donationProjects: ProjectsWithPagination;
+  executionProjects: ProjectsWithPagination;
+  doneProjects: ProjectsWithPagination;
 }

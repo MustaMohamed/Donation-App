@@ -1,23 +1,36 @@
 import { requestFactory } from '../utils';
-import { Pagination, Project, ProjectResponse } from '../types';
+import { Pagination, Project, ProjectsWithPagination } from '../types';
 import { apiConstants } from '../constants';
 
-export const getDonationProjects = async (): Promise<ProjectResponse> => {
-  const { data } = await requestFactory.get(apiConstants.PROJECTS_BY_STATUS, { status: apiConstants.PROJECTS_STATUS_DONATION });
+export const getDonationProjects = async (localLang: string, pageNumber?: number): Promise<ProjectsWithPagination> => {
+  console.log(localLang, pageNumber);
+  const { data } = await requestFactory.get(apiConstants.PROJECTS_BY_STATUS, {
+    status: apiConstants.PROJECTS_STATUS_DONATION,
+    locale: localLang,
+    page: pageNumber,
+  });
   const projects = mapResponseToProjectList(data.data);
   const pagination = mapResponseToPagination(data.meta);
   return { projects, pagination };
 };
 
-export const getExecutionProjects = async (): Promise<ProjectResponse> => {
-  const { data } = await requestFactory.get(apiConstants.PROJECTS_BY_STATUS, { status: apiConstants.PROJECT_STATUS_EXECUTION });
+export const getExecutionProjects = async (localLang: string, pageNumber?: number): Promise<ProjectsWithPagination> => {
+  const { data } = await requestFactory.get(apiConstants.PROJECTS_BY_STATUS, {
+    status: apiConstants.PROJECT_STATUS_EXECUTION,
+    locale: localLang,
+    page: pageNumber,
+  });
   const projects = mapResponseToProjectList(data.data);
   const pagination = mapResponseToPagination(data.meta);
   return { projects, pagination };
 };
 
-export const getDoneProjects = async (): Promise<ProjectResponse> => {
-  const { data } = await requestFactory.get(apiConstants.PROJECTS_BY_STATUS, { status: apiConstants.PROJECT_STATUS_FINISHED });
+export const getDoneProjects = async (localLang: string, pageNumber?: number): Promise<ProjectsWithPagination> => {
+  const { data } = await requestFactory.get(apiConstants.PROJECTS_BY_STATUS, {
+    status: apiConstants.PROJECT_STATUS_FINISHED,
+    locale: localLang,
+    page: pageNumber,
+  });
   const projects = mapResponseToProjectList(data.data);
   const pagination = mapResponseToPagination(data.meta);
   return { projects, pagination };
@@ -27,9 +40,11 @@ export const getAllProjects = async (): Promise<any> => {
   return requestFactory.all([getDonationProjects(), getExecutionProjects(), getDoneProjects()]);
 };
 
-export const getRelatedProjects = async (relatedToType: string, relatedToId: number): Promise<any> => {
+export const getRelatedProjects = async (relatedToType: string, relatedToId: number, localLang: string, pageNumber?: number): Promise<any> => {
   const { data } = await requestFactory.get(apiConstants.RELATED_PROJECTS, {
     [relatedToType]: relatedToId,
+    locale: localLang,
+    page: pageNumber,
   });
   const projects = mapResponseToProjectList(data.data);
   const pagination = mapResponseToPagination(data.meta);

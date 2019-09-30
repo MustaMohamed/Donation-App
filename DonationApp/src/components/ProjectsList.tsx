@@ -6,7 +6,6 @@ import React, { PureComponent } from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
 import ProjectCard from './ProjectCard';
 import { Project } from '../types';
-import { projects } from '../utils';
 
 
 interface Props {
@@ -57,7 +56,7 @@ class ProjectsList extends PureComponent<Props, State> {
     return (
       <View style={styles.projectsCardsView}>
         <FlatList
-          data={/*this.props.projects ||*/ projects}
+          data={this.props.projects}
           renderItem={({ item }) => {
             return <ProjectCard onCardPress={this._onItemPress} project={item}/>;
           }}
@@ -65,7 +64,7 @@ class ProjectsList extends PureComponent<Props, State> {
           onRefresh={this._onListRefresh}
           refreshing={this.state.refresh}
           onEndReached={this._onEndReached}
-          onEndReachedThreshold={1}
+          onEndReachedThreshold={0.5}
         />
       </View>
     );
