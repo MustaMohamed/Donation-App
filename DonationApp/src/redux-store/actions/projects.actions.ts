@@ -25,6 +25,7 @@ export const getDonationProjectsAction: ActionCreator<ProjectsThunkAction> = ():
         payload: results.projects,
       });
     } catch (e) {
+      console.log(e);
     }
   };
 };
@@ -38,7 +39,7 @@ export const getExecutionProjectsAction: ActionCreator<ProjectsThunkAction> = ()
         payload: results.projects,
       });
     } catch (e) {
-
+      console.log(e);
     }
   };
 };
@@ -52,7 +53,7 @@ export const getDoneProjectsAction: ActionCreator<ProjectsThunkAction> = (): Pro
         payload: results.projects,
       });
     } catch (e) {
-
+      console.log(e);
     }
   };
 };
@@ -67,7 +68,7 @@ export const getAllProjectsAction: ActionCreator<ProjectsThunkAction> = (): Proj
         payload: projects,
       });
     } catch (e) {
-
+      console.log(e);
     }
   };
 };

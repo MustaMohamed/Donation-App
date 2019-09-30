@@ -39,7 +39,7 @@ class DonationProjectsScreen extends PureComponent<Props, State> {
 
   async componentDidMount() {
     this.props.showUiLoader();
-    await this.props.getDonationProjects();
+    await this._refreshProjectsList();
     this.props.hideUiLoader();
   }
 
@@ -49,10 +49,25 @@ class DonationProjectsScreen extends PureComponent<Props, State> {
     });
   };
 
+  onProjectsListRefresh = async () => {
+    await this._refreshProjectsList();
+  };
+
+  onEndReached = () => {
+    console.log('the end list');
+  };
+
+  _refreshProjectsList = async () => {
+    console.log('list refresh');
+    await this.props.getDonationProjects();
+  };
+
   render() {
     return (
       <View style={styles.startupContainer}>
         <ProjectsList onItemPress={this.onProjectItemPress}
+                      onListRefresh={this.onProjectsListRefresh}
+                      onEndReached={this.onEndReached}
                       projects={this.props.donationProjects}/>
       </View>
     );

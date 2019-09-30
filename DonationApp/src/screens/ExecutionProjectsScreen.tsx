@@ -41,7 +41,7 @@ class ExecutionProjectsScreen extends PureComponent<Props, State> {
 
   async componentDidMount() {
     this.props.showUiLoader();
-    await this.props.getExecutionProjects();
+    await this._refreshProjectsList();
     this.props.hideUiLoader();
   }
 
@@ -51,10 +51,25 @@ class ExecutionProjectsScreen extends PureComponent<Props, State> {
     });
   };
 
+  onProjectsListRefresh = async () => {
+    await this._refreshProjectsList();
+  };
+
+  onEndReached = () => {
+    console.log('the end list');
+  };
+  
+  _refreshProjectsList = async () => {
+    console.log('list refresh');
+    await this.props.getExecutionProjects();
+  };
+
   render() {
     return (
       <View style={styles.startupContainer}>
         <ProjectsList onItemPress={this.onProjectItemPress}
+                      onListRefresh={this.onProjectsListRefresh}
+                      onEndReached={this.onEndReached}
                       projects={this.props.executionProjects}/>
       </View>
     );
