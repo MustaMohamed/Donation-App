@@ -9,7 +9,7 @@ import { Icon } from 'react-native-elements';
 const DrawerToggle = ({ onTogglePress }) => {
   return (
     <TouchableOpacity onPress={onTogglePress}>
-      <Icon name={'bars'} type={'font-awesome'}/>
+      <Icon color={'#E9EFF0'} name={'bars'} type={'font-awesome'}/>
     </TouchableOpacity>
   );
 };

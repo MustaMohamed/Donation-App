@@ -24,7 +24,11 @@ class ProjectCard extends PureComponent<Props> {
   render() {
     return (
       <TouchableOpacity activeOpacity={0.8} onPress={this._onCardPress}>
-        {this.props.project && <Card title={this.props.project.name || ''} image={{ uri: this.props.project.image }}>
+        {this.props.project && <Card title={this.props.project.name || ''}
+                                     containerStyle={{ borderRadius: 10, borderColor: '#E9EFF0' }}
+                                     titleStyle={{ fontSize: 22, textAlign: 'left', marginLeft: 20 }}
+                                     wrapperStyle={{ borderRadius: 10 }}
+                                     image={{ uri: this.props.project.image }}>
           <View>
             <Text style={styles.descriptionText}>{this.props.project.description}</Text>
           </View>

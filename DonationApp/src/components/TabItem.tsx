@@ -18,10 +18,10 @@ const TabItem = (props) => {
 
 const styles = StyleSheet.create({
   touch: {
-    backgroundColor: 'rgba(34, 166, 179,1.0)',
+    backgroundColor: '#058256',
   },
   touchActive: {
-    backgroundColor: 'rgba(34, 166, 179,0.8)',
+    backgroundColor: '#2FAE90',
   },
   tab: {
     flexDirection: 'column',
@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
     alignItems: 'stretch',
   },
   label: {
-    color: 'rgba(126, 214, 223,1.0)',
+    color: '#2FAE90',
     textAlign: 'center',
     fontSize: 16,
   },

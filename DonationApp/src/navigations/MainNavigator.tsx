@@ -24,9 +24,9 @@ export const MainNavigator = createStackNavigator({
   {
     initialRouteName: navigationConstants.SCREEN_HOME,
     defaultNavigationOptions: {
-      headerTintColor: '#000000',
+      headerTintColor: '#E9EFF0',
       headerStyle: {
-        backgroundColor: '#ecf0f1',
+        backgroundColor: '#058256',
       },
     },
   });

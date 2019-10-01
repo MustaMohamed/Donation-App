@@ -34,7 +34,7 @@ class RelatedProjectsScreen extends Component<Props, State> {
   constructor(props) {
     super(props);
     this.state = {
-      relatedProjects: [],
+      relatedProjects: {},
       selectedProjects: [],
       selectedIndex: 0,
     };
@@ -125,6 +125,10 @@ class RelatedProjectsScreen extends Component<Props, State> {
           selectedIndex={this.state.selectedIndex}
           onTabPress={this.handleIndexChange}
           tabsContainerStyle={{ marginHorizontal: 10, marginVertical: 10 }}
+          borderRadius={15}
+          tabStyle={{ backgroundColor: '#2FAE90', borderColor: '#058256' }}
+          tabTextStyle={{ color: '#E9EFF0' }}
+          activeTabStyle={{ backgroundColor: '#058256' }}
         />
         <ProjectsList
           onItemPress={this.onProjectItemPress}
@@ -139,6 +143,7 @@ class RelatedProjectsScreen extends Component<Props, State> {
 const styles = StyleSheet.create({
   relatedProjectsView: {
     flex: 1,
+    backgroundColor: 'rgba(47, 174, 144, 0.2)',
   },
 });
 

@@ -151,8 +151,8 @@ class DonationFormScreen extends PureComponent<Props, State> {
       const message = await projectsService.donateForProject({
         project_id: project.id,
         amount: this.state.donationAmount.value,
-        name: this.state.donorName.value,
-        mobile: this.phone.getCountryCode() + this.state.donorNumber.value,
+        name: this.state.donorDetailsIsVisible ? this.state.donorName.value : 'a',
+        mobile: this.state.donorDetailsIsVisible ? this.phone.getCountryCode() + this.state.donorNumber.value : 'a',
       });
       this.props.hideUiLoader();
       ToastAndroid.show(message, ToastAndroid.SHORT);
@@ -166,10 +166,11 @@ class DonationFormScreen extends PureComponent<Props, State> {
         <View style={styles.switchView}>
           <ListItem
             title={this.props.intl.formatMessage({ id: translationConstants.SWITCH_DONOR_PERSONAL_DETAILS })}
+            containerStyle={{ backgroundColor: 'rgba(47, 174, 144, 0.2)' }}
             rightElement={<Switch style={styles.switch}
                                   value={this.state.donorDetailsIsVisible}
-                                  thumbColor={'#40A9FF'}
-                                  trackColor={{ true: '#a0c1ff', false: 'gray' }}
+                                  thumbColor={'#058256'}
+                                  trackColor={{ true: '#2FAE90', false: 'gray' }}
                                   onValueChange={this._onDonorDetailsIsVisibleChange}/>}
           />
 
@@ -182,7 +183,7 @@ class DonationFormScreen extends PureComponent<Props, State> {
               errorMessage={this.state.formError && this.state.donorName.hasError && this.props.intl.formatMessage({ id: translationConstants.DONOR_NAME_INPUT_ERROR_MESSAGE })}
               placeholder={this.props.intl.formatMessage({ id: translationConstants.DONOR_NAME_PLACEHOLDER })}
               rightIcon={
-                <Icon color={'gray'}
+                <Icon color={'#2FAE90'}
                       name={'account-card-details'}
                       type={'material-community'}
                       size={22}/>
@@ -211,7 +212,7 @@ class DonationFormScreen extends PureComponent<Props, State> {
             this.props.intl.formatMessage({ id: translationConstants.DONOR_MONEY_AMOUNT_INPUT_ERROR_MESSAGE })}
             placeholder={this.props.intl.formatMessage({ id: translationConstants.DONOR_MONEY_AMOUNT })}
             rightIcon={
-              <Icon color={'gray'}
+              <Icon color={'#2FAE90'}
                     name={'money'}
                     type={'font-awesome'}
                     size={22}/>
@@ -239,10 +240,13 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 5,
+    backgroundColor: 'rgba(47, 174, 144, 0.2)',
   },
   donateBtn: {
     marginVertical: 10,
     marginHorizontal: 10,
+    backgroundColor: '#058256',
+    borderRadius: 20,
   },
   text: {
     textAlign: 'left',

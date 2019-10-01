@@ -92,6 +92,7 @@ class ProjectDetailsScreen extends PureComponent<Props, State> {
           <ListItem
             title={this.props.intl.formatMessage({ id: translationConstants.COUNTRY })}
             titleProps={{ style: [styles.text, styles.listItemTitle] }}
+            containerStyle={styles.listItemStyle}
             rightSubtitle={this.state.project.country || 'Egypt'}
             subtitleStyle={styles.text}
             bottomDivider
@@ -99,82 +100,82 @@ class ProjectDetailsScreen extends PureComponent<Props, State> {
           <ListItem
             title={this.props.intl.formatMessage({ id: translationConstants.VILLAGE })}
             titleProps={{ style: [styles.text, styles.listItemTitle] }}
-            rightSubtitle={this.state.project.village.name || 'Egypt'}
+            containerStyle={styles.listItemStyle} rightSubtitle={this.state.project.village.name || 'Egypt'}
             subtitleStyle={styles.text}
             bottomDivider
           />
           <ListItem
             title={this.props.intl.formatMessage({ id: translationConstants.DESCRIPTION })}
             titleProps={{ style: [styles.text, styles.listItemTitle] }}
-            subtitle={this.state.project.description}
+            containerStyle={styles.listItemStyle} subtitle={this.state.project.description}
             subtitleStyle={styles.text}
             bottomDivider
           />
           <ListItem
             title={this.props.intl.formatMessage({ id: translationConstants.REASON })}
             titleProps={{ style: [styles.text, styles.listItemTitle] }}
-            subtitle={this.state.project.cause}
+            containerStyle={styles.listItemStyle} subtitle={this.state.project.cause}
             subtitleStyle={styles.text}
             bottomDivider
           />
           <ListItem
             title={this.props.intl.formatMessage({ id: translationConstants.COST })}
             titleProps={{ style: [styles.text, styles.listItemTitle] }}
-            rightSubtitle={this.props.intl.formatNumber(this.state.project.cost)}
+            containerStyle={styles.listItemStyle} rightSubtitle={this.props.intl.formatNumber(this.state.project.cost)}
             subtitleStyle={styles.text}
             bottomDivider
           />
           {!this.state.project.isCostCollectedDone && <ListItem
             title={this.props.intl.formatMessage({ id: translationConstants.COLLECTED_DONATION })}
             titleProps={{ style: [styles.text, styles.listItemTitle] }}
-            rightSubtitle={this.props.intl.formatNumber(this.state.project.collectedDonation)}
+            containerStyle={styles.listItemStyle} rightSubtitle={this.props.intl.formatNumber(this.state.project.collectedDonation)}
             subtitleStyle={styles.text}
             bottomDivider
           />}
           {this.state.project.isCostCollectedDone && < ListItem
             title={this.props.intl.formatMessage({ id: translationConstants.EXECUTION_DURATION })}
             titleProps={{ style: [styles.text, styles.listItemTitle] }}
-            rightSubtitle={this.state.project.executionDuration}
+            containerStyle={styles.listItemStyle} rightSubtitle={this.state.project.executionDuration}
             subtitleStyle={styles.text}
             bottomDivider
           />}
           {this.state.project.isExecutionDone && this.state.project.result && <ListItem
             title={this.props.intl.formatMessage({ id: translationConstants.RESULT })}
             titleProps={{ style: [styles.text, styles.listItemTitle] }}
-            subtitle={this.state.project.result}
+            containerStyle={styles.listItemStyle} subtitle={this.state.project.result}
             subtitleStyle={styles.text}
             bottomDivider
           />}
           {this.state.project.isCostCollectedDone && <ListItem
             title={this.props.intl.formatMessage({ id: translationConstants.START_AT })}
             titleProps={{ style: [styles.text, styles.listItemTitle] }}
-            rightSubtitle={this.props.intl.formatDate(this.state.project.startAt ? this.state.project.startAt : new Date(), {
-              year: 'numeric',
-              month: 'numeric',
-              day: 'numeric',
-            })}
+            containerStyle={styles.listItemStyle} rightSubtitle={this.props.intl.formatDate(this.state.project.startAt ? this.state.project.startAt : new Date(), {
+            year: 'numeric',
+            month: 'numeric',
+            day: 'numeric',
+          })}
             subtitleStyle={styles.text}
             bottomDivider
           />}
           {this.state.project.isCostCollectedDone && <ListItem
             title={this.props.intl.formatMessage({ id: translationConstants.EXPECTED_END_AT })}
             titleProps={{ style: [styles.text, styles.listItemTitle] }}
-            rightSubtitle={this.props.intl.formatDate(this.state.project.expectedEndAt ? this.state.project.expectedEndAt : new Date(), {
-              year: 'numeric',
-              month: 'numeric',
-              day: 'numeric',
-            })}
+            containerStyle={styles.listItemStyle} rightSubtitle={this.props.intl.formatDate(this.state.project.expectedEndAt ? this.state.project.expectedEndAt : new Date(), {
+            year: 'numeric',
+            month: 'numeric',
+            day: 'numeric',
+          })}
             subtitleStyle={styles.text}
             bottomDivider
           />}
           {this.state.project.isExecutionDone && <ListItem
             title={this.props.intl.formatMessage({ id: translationConstants.END_AT })}
             titleProps={{ style: [styles.text, styles.listItemTitle] }}
-            rightSubtitle={this.props.intl.formatDate(this.state.project.endAt ? this.state.project.endAt : new Date(), {
-              year: 'numeric',
-              month: 'numeric',
-              day: 'numeric',
-            })}
+            containerStyle={styles.listItemStyle} rightSubtitle={this.props.intl.formatDate(this.state.project.endAt ? this.state.project.endAt : new Date(), {
+            year: 'numeric',
+            month: 'numeric',
+            day: 'numeric',
+          })}
             subtitleStyle={styles.text}
             bottomDivider
           />}
@@ -190,13 +191,15 @@ class ProjectDetailsScreen extends PureComponent<Props, State> {
                       id: translationConstants.PROJECT_ACTION_TEXT_PREV_PROJECT_WORK,
                     })} onPress={this._onRelatedProjectsActionPress}/>
           </View>
-
+          <View style={styles.donateView}>
+            <Button buttonStyle={styles.donateBtn}
+                    titleStyle={styles.actionBtnText}
+                    title={this.props.intl.formatMessage({
+                      id: translationConstants.DONATE,
+                    })} onPress={this._onDonateActionPress}/>
+          </View>
         </ScrollView>
-        <Button buttonStyle={styles.actionBtn}
-                titleStyle={styles.actionBtnText}
-                title={this.props.intl.formatMessage({
-                  id: translationConstants.DONATE,
-                })} onPress={this._onDonateActionPress}/>
+
       </View>
     );
   }
@@ -207,18 +210,35 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
     justifyContent: 'flex-start',
+    backgroundColor: 'rgba(47, 174, 144, 0.1)',
+  },
+  listItemStyle: {
+    backgroundColor: 'rgba(47, 174, 144, 0.1)',
   },
   image: {
-    height: Dimensions.get('window').height / 2,
-    width: '100%',
+    height: Dimensions.get('window').height / 3,
+    borderRadius: 10,
   },
   actionsView: {
     flexDirection: 'row',
-    justifyContent: 'space-around',
+    justifyContent: 'space-between',
+    padding: 10,
+    backgroundColor: 'rgba(47, 174, 144, 0.1)',
   },
   actionBtn: {
     paddingHorizontal: 15,
-    marginVertical: 10,
+    paddingVertical: 10,
+    backgroundColor: '#058256',
+    borderRadius: 20,
+  },
+  donateBtn: {
+    backgroundColor: '#058256',
+    borderRadius: 20,
+  },
+  donateView: {
+    paddingVertical: 10,
+    padding: 10,
+    backgroundColor: 'rgba(47, 174, 144, 0.1)',
   },
   actionBtnText: {
     fontSize: 14,
@@ -227,7 +247,9 @@ const styles = StyleSheet.create({
     textAlign: 'left',
   },
   listItemTitle: {
-    fontWeight: 'bold', fontSize: 16,
+    fontWeight: 'bold',
+    fontSize: 16,
+    color: '#058256',
   },
 });
 
