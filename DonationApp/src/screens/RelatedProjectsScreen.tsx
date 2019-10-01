@@ -7,27 +7,36 @@ import { StyleSheet, View } from 'react-native';
 import { ProjectsList } from '../components';
 import { NavigationParams, NavigationState } from 'react-navigation';
 import { NavigationStackProp } from 'react-navigation-stack';
-import { Project, RelatedProjectsType } from '../types';
-import { apiConstants, navigationConstants } from '../constants';
+import { Language, Project, ProjectFilterType, ProjectsWithPagination, RelatedProjectsType } from '../types';
+import { apiConstants, navigationConstants, translationConstants } from '../constants';
 import { connect } from 'react-redux';
 import { hideUiLoaderAction, showUiLoaderAction } from '../redux-store/actions';
 import { projectsService } from '../services';
+import SegmentedControlTab from 'react-native-segmented-control-tab';
+import { injectIntl, IntlShape } from 'react-intl';
+import { ApplicationState } from '../redux-store/store';
 
 interface Props {
   navigation: NavigationStackProp<NavigationState, NavigationParams>;
   showUiLoader: typeof showUiLoaderAction;
   hideUiLoader: typeof hideUiLoaderAction;
+  language: Language;
+  intl: IntlShape;
 }
 
 interface State {
-  projects: Project[]
+  relatedProjects: ProjectsWithPagination;
+  selectedProjects: Project[];
+  selectedIndex: number;
 }
 
 class RelatedProjectsScreen extends Component<Props, State> {
   constructor(props) {
     super(props);
     this.state = {
-      projects: [],
+      relatedProjects: [],
+      selectedProjects: [],
+      selectedIndex: 0,
     };
   }
 
@@ -40,13 +49,7 @@ class RelatedProjectsScreen extends Component<Props, State> {
 
   async componentDidMount() {
     this.props.showUiLoader();
-    const relatedProjectsType: RelatedProjectsType = this.props.navigation.getParam(navigationConstants.SCREEN_PARAM_RELATED_PROJECT_TYPE);
-    const project: Project = this.props.navigation.getParam(navigationConstants.SCREEN_PARAM_PROJECT);
-    const relatedType = relatedProjectsType ===
-    RelatedProjectsType.Village ? apiConstants.RELATED_PROJECTS_VILLAGE : apiConstants.RELATED_PROJECTS_CATEGORY;
-    const relatedId = relatedProjectsType === RelatedProjectsType.Village ? project.village.id : project.projectCategory.id;
-    const data = await projectsService.getRelatedProjects(relatedType, relatedId);
-    this.setState({ projects: data.projects });
+    await this._refreshProjectsList();
     this.props.hideUiLoader();
   }
 
@@ -57,10 +60,77 @@ class RelatedProjectsScreen extends Component<Props, State> {
     });
   };
 
+  onProjectsListRefresh = async () => {
+    await this._refreshProjectsList();
+  };
+
+  onEndReached = async () => {
+    const currentPageNumber = this.state.relatedProjects.pagination.page;
+    const totalPages = this.state.relatedProjects.pagination.totalPages;
+    if (currentPageNumber < totalPages) {
+      this.props.showUiLoader();
+      await this._refreshProjectsList(currentPageNumber + 1);
+      this.props.hideUiLoader();
+    }
+  };
+
+  _refreshProjectsList = async (pageNumber?: number) => {
+    const relatedProjectsType: RelatedProjectsType = this.props.navigation.getParam(navigationConstants.SCREEN_PARAM_RELATED_PROJECT_TYPE);
+    const project: Project = this.props.navigation.getParam(navigationConstants.SCREEN_PARAM_PROJECT);
+
+    const relatedType = relatedProjectsType ===
+    RelatedProjectsType.Village ? apiConstants.RELATED_PROJECTS_VILLAGE : apiConstants.RELATED_PROJECTS_CATEGORY;
+
+    const relatedId = relatedProjectsType === RelatedProjectsType.Village ? project.village.id : project.projectCategory.id;
+    try {
+      const relatedProjects: ProjectsWithPagination = await projectsService.getRelatedProjects(relatedType, relatedId, this.props.language.currentLanguage, pageNumber);
+      this.setState({ relatedProjects: relatedProjects }, () => this.handleIndexChange(this.state.selectedIndex));
+
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  handleIndexChange = index => {
+    this.setState({
+      ...this.state,
+      selectedIndex: index,
+      selectedProjects: this.state.relatedProjects.projects.filter(item => {
+        return this._evaluateProjectFiltering(item, index);
+      }),
+    });
+  };
+
+  _evaluateProjectFiltering = (item: Project, filterType: number) => {
+    if (filterType === ProjectFilterType.Donation) {
+      return !item.isCostCollectedDone;
+    }
+    if (filterType === ProjectFilterType.Execution) {
+      return item.isCostCollectedDone;
+    }
+    if (filterType === ProjectFilterType.Finished) {
+      return item.isCostCollectedDone && item.isExecutionDone;
+    }
+  };
+
   render() {
     return (
       <View style={styles.relatedProjectsView}>
-        <ProjectsList onItemPress={this.onProjectItemPress} projects={this.state.projects}/>
+        <SegmentedControlTab
+          values={[
+            this.props.intl.formatMessage({ id: translationConstants.SCREEN_DONATION_PROJECTS_TAB_TITLE }),
+            this.props.intl.formatMessage({ id: translationConstants.SCREEN_EXECUTION_PROJECTS_TAB_TITLE }),
+            this.props.intl.formatMessage({ id: translationConstants.SCREEN_DONE_PROJECTS_TAB_TITLE }),
+          ]}
+          selectedIndex={this.state.selectedIndex}
+          onTabPress={this.handleIndexChange}
+          tabsContainerStyle={{ marginHorizontal: 10, marginVertical: 10 }}
+        />
+        <ProjectsList
+          onItemPress={this.onProjectItemPress}
+          onListRefresh={this.onProjectsListRefresh}
+          onEndReached={this.onEndReached}
+          projects={this.state.selectedProjects}/>
       </View>
     );
   }
@@ -72,8 +142,13 @@ const styles = StyleSheet.create({
   },
 });
 
+const mpStateToProps = (state: ApplicationState) => {
+  const { app } = state;
+  const { language } = app;
+  return { language };
+};
 
-export default connect(null, {
+export default connect(mpStateToProps, {
   showUiLoader: showUiLoaderAction,
   hideUiLoader: hideUiLoaderAction,
-})(RelatedProjectsScreen);
+})(injectIntl(RelatedProjectsScreen));

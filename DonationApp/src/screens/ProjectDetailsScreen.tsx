@@ -3,13 +3,14 @@
  */
 
 import React, { PureComponent } from 'react';
-import { ScrollView, StyleSheet, View } from 'react-native';
+import { Dimensions, ScrollView, StyleSheet, View } from 'react-native';
 import { NavigationParams, NavigationState } from 'react-navigation';
 import { Project, RelatedProjectsType } from '../types';
 import { injectIntl, IntlShape } from 'react-intl';
 import { navigationConstants, translationConstants } from '../constants';
 import { Button, Image, ListItem } from 'react-native-elements';
 import { NavigationStackProp } from 'react-navigation-stack';
+import Carousel from 'react-native-snap-carousel';
 
 interface Props {
   navigation: NavigationStackProp<NavigationState, NavigationParams>;
@@ -27,7 +28,7 @@ class ProjectDetailsScreen extends PureComponent<Props, State> {
         id: 1,
         name: 'dummy',
       },
-    },
+    } as Project,
   };
   static navigationOptions = ({ screenProps, navigation }) => {
     const project = navigation.getParam(navigationConstants.SCREEN_PARAM_PROJECT);
@@ -61,11 +62,32 @@ class ProjectDetailsScreen extends PureComponent<Props, State> {
     });
   };
 
+  _renderGalleryItem({ item, index }) {
+    return (
+      <Image
+        containerStyle={styles.image}
+        source={{ uri: item }}
+      />
+    );
+  }
+
   render() {
     return (
       <View style={styles.detailsContainer}>
         <ScrollView>
-          <Image source={{ uri: this.state.project.image }} containerStyle={styles.image}/>
+          {/*<Image source={{ uri: this.state.project.image }} containerStyle={styles.image}/>*/}
+
+          <Carousel
+            ref={(c) => {
+              this._carousel = c;
+            }}
+            data={this.state.project.gallery}
+            renderItem={this._renderGalleryItem}
+            sliderWidth={Dimensions.get('window').width}
+            itemWidth={Dimensions.get('window').width / 1.2}
+            loop
+          />
+
 
           <ListItem
             title={this.props.intl.formatMessage({ id: translationConstants.COUNTRY })}
@@ -82,9 +104,16 @@ class ProjectDetailsScreen extends PureComponent<Props, State> {
             bottomDivider
           />
           <ListItem
-            title={this.props.intl.formatMessage({ id: translationConstants.REASON })}
+            title={this.props.intl.formatMessage({ id: translationConstants.DESCRIPTION })}
             titleProps={{ style: [styles.text, styles.listItemTitle] }}
             subtitle={this.state.project.description}
+            subtitleStyle={styles.text}
+            bottomDivider
+          />
+          <ListItem
+            title={this.props.intl.formatMessage({ id: translationConstants.REASON })}
+            titleProps={{ style: [styles.text, styles.listItemTitle] }}
+            subtitle={this.state.project.cause}
             subtitleStyle={styles.text}
             bottomDivider
           />
@@ -180,7 +209,8 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
   },
   image: {
-    height: 200,
+    height: Dimensions.get('window').height / 2,
+    width: '100%',
   },
   actionsView: {
     flexDirection: 'row',

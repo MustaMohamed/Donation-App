@@ -52,7 +52,6 @@ class ProjectsList extends PureComponent<Props, State> {
   };
 
   render() {
-    console.log(this.state.refresh);
     return (
       <View style={styles.projectsCardsView}>
         <FlatList

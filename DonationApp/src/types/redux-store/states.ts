@@ -1,13 +1,9 @@
-import { Languages } from '../common';
+import { Language } from '../common';
 import { ProjectsWithPagination } from '../models';
 
 export interface AppState {
   uiLoaderIsActive?: boolean;
-  language: {
-    currentLanguage: Languages;
-    prevLanguage: Languages;
-    isRTL: boolean;
-  }
+  language: Language
 }
 
 export interface ProjectsState {

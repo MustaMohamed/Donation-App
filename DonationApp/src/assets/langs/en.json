@@ -18,6 +18,7 @@
   "COUNTRY": "Country",
   "VILLAGE": "Village",
   "REASON": "Reason",
+  "DESCRIPTION": "Description",
   "COST": "Cost",
   "COLLECTED_DONATION": "Collected Donation",
   "EXECUTION_DURATION": "Execution Duration",

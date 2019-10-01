@@ -3,7 +3,6 @@ import { Pagination, Project, ProjectsWithPagination } from '../types';
 import { apiConstants } from '../constants';
 
 export const getDonationProjects = async (localLang: string, pageNumber?: number): Promise<ProjectsWithPagination> => {
-  console.log(localLang, pageNumber);
   const { data } = await requestFactory.get(apiConstants.PROJECTS_BY_STATUS, {
     status: apiConstants.PROJECTS_STATUS_DONATION,
     locale: localLang,
@@ -79,7 +78,8 @@ const mapResponseToProjectList = (data): Project[] => {
     endAt: item.end_at,
     expectedEndAt: item.expected_date,
     executionDuration: item.execution_period,
-    image: 'https://placekitten.com/640/360',
+    image: item.cover_photo || 'https://placekitten.com/640/360',
+    gallery:  ['https://placekitten.com/640/360', 'https://placekitten.com/640/360', 'https://placekitten.com/640/360'],
   }));
 };
 

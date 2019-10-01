@@ -10,18 +10,17 @@ import { ProjectsList, TabItem } from '../components';
 import { NavigationStackProp } from 'react-navigation-stack';
 import { NavigationParams, NavigationState } from 'react-navigation';
 import { getExecutionProjectsAction, hideUiLoaderAction, showUiLoaderAction } from '../redux-store/actions';
-import { AppState } from '../types/redux-store';
 import { IntlShape } from 'react-intl';
 import { ApplicationState } from '../redux-store/store';
 import { connect } from 'react-redux';
-import { Languages } from '../types';
+import { Language, Languages } from '../types';
 
 interface Props {
   navigation: NavigationStackProp<NavigationState, NavigationParams>;
   getExecutionProjects: typeof getExecutionProjectsAction;
   showUiLoader: typeof showUiLoaderAction;
   hideUiLoader: typeof hideUiLoaderAction;
-  app: AppState;
+  language: Language;
   intl: IntlShape;
   executionProjects: ProjectsWithPagination;
 }
@@ -61,13 +60,13 @@ class ExecutionProjectsScreen extends PureComponent<Props, State> {
     const totalPages = this.props.executionProjects.pagination.totalPages;
     if (currentPageNumber < totalPages) {
       this.props.showUiLoader();
-      await this._refreshProjectsList(this.props.executionProjects.pagination.page + 1);
+      await this._refreshProjectsList(currentPageNumber + 1);
       this.props.hideUiLoader();
     }
   };
 
   _refreshProjectsList = async (page?: number) => {
-    await this.props.getExecutionProjects(this.props.app && this.props.app.language.currentLanguage || Languages.En, page);
+    await this.props.getExecutionProjects(this.props.language.currentLanguage || Languages.En, page);
   };
 
   render() {
@@ -83,9 +82,10 @@ class ExecutionProjectsScreen extends PureComponent<Props, State> {
 }
 
 const mapStateToProps = (state: ApplicationState) => {
-  const { projects } = state;
+  const { projects, app } = state;
   const { executionProjects } = projects;
-  return { executionProjects };
+  const { language } = app;
+  return { executionProjects, language };
 };
 
 export default connect(mapStateToProps, {

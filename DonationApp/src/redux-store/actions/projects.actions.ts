@@ -71,7 +71,6 @@ export const getAllProjectsAction: ActionCreator<ProjectsThunkAction> = (): Proj
   return async (dispatch: Dispatch) => {
     try {
       const results = await projectsService.getAllProjects();
-      console.log('from all => ', results);
       dispatch({
         type: projectsActionsConstants.GET_ALL_PROJECTS,
         payload: projects,

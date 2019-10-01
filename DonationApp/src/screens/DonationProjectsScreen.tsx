@@ -6,7 +6,7 @@ import React, { PureComponent } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { navigationConstants, translationConstants } from '../constants';
 import { ProjectsList, TabItem } from '../components';
-import { AppState, Languages, Project, ProjectsWithPagination } from '../types';
+import { Language, Languages, Project, ProjectsWithPagination } from '../types';
 import { NavigationStackProp } from 'react-navigation-stack';
 import { NavigationParams, NavigationState } from 'react-navigation';
 import { getDonationProjectsAction, hideUiLoaderAction, showUiLoaderAction } from '../redux-store/actions';
@@ -19,7 +19,7 @@ interface Props {
   getDonationProjects: typeof getDonationProjectsAction;
   showUiLoader: typeof showUiLoaderAction;
   hideUiLoader: typeof hideUiLoaderAction;
-  app: AppState;
+  language: Language;
   intl: IntlShape;
   donationProjects: ProjectsWithPagination;
 }
@@ -58,13 +58,13 @@ class DonationProjectsScreen extends PureComponent<Props, State> {
     const totalPages = this.props.donationProjects.pagination.totalPages;
     if (currentPageNumber < totalPages) {
       this.props.showUiLoader();
-      await this._refreshProjectsList(this.props.donationProjects.pagination.page + 1);
+      await this._refreshProjectsList(currentPageNumber + 1);
       this.props.hideUiLoader();
     }
   };
 
   _refreshProjectsList = async (page?: number) => {
-    await this.props.getDonationProjects(this.props.app && this.props.app.language.currentLanguage || Languages.En, page);
+    await this.props.getDonationProjects(this.props.language.currentLanguage || Languages.En, page);
   };
 
   render() {
@@ -81,9 +81,10 @@ class DonationProjectsScreen extends PureComponent<Props, State> {
 
 
 const mapStateToProps = (state: ApplicationState) => {
-  const { projects } = state;
+  const { projects, app } = state;
   const { donationProjects } = projects;
-  return { donationProjects };
+  const { language } = app;
+  return { donationProjects, language };
 };
 
 export default connect(mapStateToProps, {

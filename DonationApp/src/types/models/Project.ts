@@ -16,6 +16,7 @@ export class Project {
     id: number;
   };
   image?: string;
+  gallery?: string[];
   result?: string;
   startAt?: Date;
   expectedEndAt?: Date;

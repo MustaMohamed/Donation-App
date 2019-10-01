@@ -7,21 +7,20 @@ import { StyleSheet, View } from 'react-native';
 import { NavigationStackProp } from 'react-navigation-stack';
 import { NavigationParams, NavigationState } from 'react-navigation';
 import { getDoneProjectsAction, hideUiLoaderAction, showUiLoaderAction } from '../redux-store/actions';
-import { AppState } from '../types/redux-store';
 import { IntlShape } from 'react-intl';
 import { navigationConstants, translationConstants } from '../constants';
 import { ProjectsList, TabItem } from '../components';
 import { Project, ProjectsWithPagination } from '../types/models';
 import { connect } from 'react-redux';
 import { ApplicationState } from '../redux-store/store';
-import { Languages } from '../types';
+import { Language, Languages } from '../types';
 
 interface Props {
   navigation: NavigationStackProp<NavigationState, NavigationParams>;
   getDoneProjects: typeof getDoneProjectsAction;
   showUiLoader: typeof showUiLoaderAction;
   hideUiLoader: typeof hideUiLoaderAction;
-  app: AppState;
+  language: Language;
   intl: IntlShape;
   doneProjects: ProjectsWithPagination;
 }
@@ -60,13 +59,13 @@ class DoneProjectsScreen extends PureComponent<Props, State> {
     const totalPages = this.props.doneProjects.pagination.totalPages;
     if (currentPageNumber < totalPages) {
       this.props.showUiLoader();
-      await this._refreshProjectsList(this.props.doneProjects.pagination.page + 1);
+      await this._refreshProjectsList(currentPageNumber + 1);
       this.props.hideUiLoader();
     }
   };
 
   _refreshProjectsList = async (page?: number) => {
-    await this.props.getDoneProjects(this.props.app && this.props.app.language.currentLanguage || Languages.En, page);
+    await this.props.getDoneProjects(this.props.language.currentLanguage || Languages.En, page);
   };
 
   render() {
@@ -82,9 +81,10 @@ class DoneProjectsScreen extends PureComponent<Props, State> {
 }
 
 const mapStateToProps = (state: ApplicationState) => {
-  const { projects } = state;
+  const { projects, app } = state;
   const { doneProjects } = projects;
-  return { doneProjects };
+  const { language } = app;
+  return { doneProjects, language };
 };
 export default connect(mapStateToProps, {
   getDoneProjects: getDoneProjectsAction,
