@@ -1,5 +1,5 @@
 import { createBottomTabNavigator } from 'react-navigation-tabs';
-import { navigationConstants } from '../constants';
+import { colorConstants, navigationConstants } from '../constants';
 import { DonationProjectsScreen, DoneProjectsScreen, ExecutionProjectsScreen } from '../screens';
 
 export const BottomTabsNavigator = createBottomTabNavigator({
@@ -11,7 +11,7 @@ export const BottomTabsNavigator = createBottomTabNavigator({
   order: [navigationConstants.SCREEN_DONATION_PROJECTS, navigationConstants.SCREEN_EXECUTION_PROJECTS, navigationConstants.SCREEN_DONE_PROJECTS],
   tabBarOptions: {
     style: {
-      backgroundColor: '#fff',
+      backgroundColor: colorConstants.PRIMARY_WHITE,
       justifyContent: 'space-around',
     },
   },

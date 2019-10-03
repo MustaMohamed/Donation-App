@@ -4,6 +4,7 @@
 
 import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { colorConstants } from '../constants';
 
 const TabItem = (props) => {
   return (
@@ -18,10 +19,10 @@ const TabItem = (props) => {
 
 const styles = StyleSheet.create({
   touch: {
-    backgroundColor: '#058256',
+    backgroundColor: colorConstants.PRIMARY_WHITE,
   },
   touchActive: {
-    backgroundColor: '#2FAE90',
+    backgroundColor: '#ecf0f1',
   },
   tab: {
     flexDirection: 'column',
@@ -29,12 +30,12 @@ const styles = StyleSheet.create({
     alignItems: 'stretch',
   },
   label: {
-    color: '#2FAE90',
+    color: colorConstants.PRIMARY_GRAY,
     textAlign: 'center',
     fontSize: 16,
   },
   activeLabel: {
-    color: 'rgba(236, 240, 241,1.0)',
+    color: colorConstants.PRIMARY_BLACK,
     fontWeight: 'bold',
   },
   icon: {},
