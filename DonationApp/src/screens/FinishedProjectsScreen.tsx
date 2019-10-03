@@ -96,7 +96,7 @@ const styles = StyleSheet.create({
   startupContainer: {
     flex: 1,
     justifyContent: 'flex-start',
-    backgroundColor: colorConstants.PRIMARY_WHITE,
+    backgroundColor: colorConstants.SECONDARY_WHITE,
   },
 });
 

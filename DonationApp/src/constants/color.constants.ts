@@ -1,5 +1,6 @@
 export const colorConstants = {
   PRIMARY_WHITE: '#F5FAFE',
+  SECONDARY_WHITE: '#E6E1D9',
   PRIMARY_BLUE: '#63D0E6',
   PRIMARY_BLACK: '#423E4C',
   PRIMARY_BROWN: '#897D8B',
