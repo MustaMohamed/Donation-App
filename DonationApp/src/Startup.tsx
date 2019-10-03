@@ -17,6 +17,7 @@ import Loader from 'react-native-modal-loader';
 import 'intl';
 import 'intl/locale-data/jsonp/en';
 import 'intl/locale-data/jsonp/ar';
+import { colorConstants } from './constants';
 // import '@formatjs/intl-relativetimeformat/polyfill';
 // import '@formatjs/intl-pluralrules/polyfill';
 // import '@formatjs/intl-pluralrules/polyfill-locales';
@@ -92,8 +93,8 @@ class Startup extends PureComponent<Props, State> {
   render() {
     return (
       <IntlProvider messages={langs[this.state.localLang]} locale={this.state.localLang} defaultLocale={'en'}>
-        <StatusBar backgroundColor={'#0A5F44'} barStyle='light-content'/>
-        <Loader loading={this.state.isLoading} color="#ff66be"/>
+        <StatusBar backgroundColor={colorConstants.PRIMARY_WHITE} barStyle='light-content'/>
+        <Loader loading={this.state.isLoading} size={'large'} color={colorConstants.PRIMARY_RED}/>
         <ThemeProvider>
           <LocalizedAppNavigator/>
         </ThemeProvider>
