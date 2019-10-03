@@ -8,7 +8,7 @@ import { NavigationStackProp } from 'react-navigation-stack';
 import { NavigationParams, NavigationState } from 'react-navigation';
 import { getDoneProjectsAction, hideUiLoaderAction, showUiLoaderAction } from '../redux-store/actions';
 import { IntlShape } from 'react-intl';
-import { navigationConstants, translationConstants } from '../constants';
+import { colorConstants, navigationConstants, translationConstants } from '../constants';
 import { ProjectsList, TabItem } from '../components';
 import { Project, ProjectsWithPagination } from '../types/models';
 import { connect } from 'react-redux';
@@ -29,7 +29,7 @@ interface State {
 
 }
 
-class DoneProjectsScreen extends PureComponent<Props, State> {
+class FinishedProjectsScreen extends PureComponent<Props, State> {
   static navigationOptions = ({ screenProps, navigation }) => {
     const title = screenProps.intl.formatMessage({ id: translationConstants.SCREEN_DONE_PROJECTS_TAB_TITLE });
     return {
@@ -90,13 +90,13 @@ export default connect(mapStateToProps, {
   getDoneProjects: getDoneProjectsAction,
   showUiLoader: showUiLoaderAction,
   hideUiLoader: hideUiLoaderAction,
-})(DoneProjectsScreen);
+})(FinishedProjectsScreen);
 
 const styles = StyleSheet.create({
   startupContainer: {
     flex: 1,
     justifyContent: 'flex-start',
-    backgroundColor: 'rgba(47, 174, 144, 0.2)',
+    backgroundColor: colorConstants.PRIMARY_WHITE,
   },
 });
 

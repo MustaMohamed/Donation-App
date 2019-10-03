@@ -4,7 +4,7 @@
 
 import React, { PureComponent } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { navigationConstants, translationConstants } from '../constants';
+import { colorConstants, navigationConstants, translationConstants } from '../constants';
 import { ProjectsList, TabItem } from '../components';
 import { Language, Languages, Project, ProjectsWithPagination } from '../types';
 import { NavigationStackProp } from 'react-navigation-stack';
@@ -97,6 +97,6 @@ const styles = StyleSheet.create({
   startupContainer: {
     flex: 1,
     justifyContent: 'flex-start',
-    backgroundColor: 'rgba(47, 174, 144, 0.2)',
+    backgroundColor: colorConstants.PRIMARY_WHITE,
   },
 });
