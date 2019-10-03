@@ -165,7 +165,7 @@ const styles = StyleSheet.create({
   progress: {
     marginVertical: 10,
   },
-  projectTitle: {
+  fundText: {
     fontWeight: 'bold',
     fontSize: 18,
     color: colorConstants.PRIMARY_BLACK,

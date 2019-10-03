@@ -64,7 +64,7 @@ const mapResponseToProjectList = (data): Project[] => {
     cause: item.cause,
     cost: item.cost,
     collectedDonation: item.collected,
-    isCostCollectedDone: item.cost === item.collected,
+    isCostCollectedDone: item.cost <= item.collected,
     isExecutionDone: !!item.end_at,
     village: {
       id: item.village_id,
@@ -79,7 +79,7 @@ const mapResponseToProjectList = (data): Project[] => {
     expectedEndAt: item.expected_date,
     executionDuration: item.execution_period,
     image: item.cover_photo || 'https://placekitten.com/640/360',
-    gallery:  ['https://placekitten.com/640/360', 'https://placekitten.com/640/360', 'https://placekitten.com/640/360'],
+    gallery: ['https://placekitten.com/640/360', 'https://placekitten.com/640/360', 'https://placekitten.com/640/360'],
   }));
 };
 

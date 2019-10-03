@@ -24,29 +24,20 @@ class ProjectDetails extends PureComponent<Props> {
   render() {
     return (
       <Fragment>
-        {this.props.project.cost && <View style={{ marginHorizontal: 10 }}>
-          {/*<Text style={styles.projectTitle}>{this.props.project.name}</Text>*/}
+        {this.props.project.cost &&
+        <View style={{ marginHorizontal: 10, flex: 1, flexDirection: 'column', justifyContent: 'center', alignContent: 'center', alignItems: 'center' }}>
+          <Text style={styles.fundText}>Funds Raised</Text>
+          <Text style={styles.collectedDonationText}>{`$ ${this.props.intl.formatNumber(this.props.project.collectedDonation)}`}</Text>
           <Progress isRTL
                     style={styles.progress}
                     color={colorConstants.PRIMARY_BLUE}
                     lineWidth={12}
-                    percent={this.props.project.collectedDonation / this.props.project.cost * 100}
+                    percent={Math.min(this.props.project.collectedDonation / this.props.project.cost * 100, 100)}
                     showInfo={false}
                     type={'line'}/>
-          <Text style={styles.costText}>
-            {`${this.props.intl.formatNumber(this.props.project.collectedDonation, {
-              style: 'currency',
-              currency: 'USD',
-              currencyDisplay: 'symbol',
-              maximumFractionDigits: 0,
-            })} ${this.props.intl.formatMessage({ id: translationConstants.FROM })} ${this.props.intl.formatNumber(this.props.project.cost, {
-                style: 'currency',
-                currency: 'USD',
-                currencyDisplay: 'symbol',
-                maximumFractionDigits: 0,
-              },
-            )}`}
-          </Text>
+          {/* <Text style={styles.costText}>
+            {`${this.props.intl.formatNumber(this.props.project.collectedDonation)} ${this.props.intl.formatMessage({ id: translationConstants.FROM })} ${this.props.intl.formatNumber(this.props.project.cost)}`}
+          </Text>*/}
         </View>}
         <ListItem
           title={this.props.intl.formatMessage({ id: translationConstants.COUNTRY })}
@@ -77,20 +68,20 @@ class ProjectDetails extends PureComponent<Props> {
           subtitleStyle={styles.text}
           bottomDivider
         />
-        <ListItem
+        {/* <ListItem
           title={this.props.intl.formatMessage({ id: translationConstants.COST })}
           titleProps={{ style: [styles.text, styles.listItemTitle] }}
           containerStyle={styles.listItemStyle} rightSubtitle={this.props.intl.formatNumber(this.props.project.cost)}
           subtitleStyle={styles.text}
           bottomDivider
         />
-        {!this.props.project.isCostCollectedDone && <ListItem
+        <ListItem
           title={this.props.intl.formatMessage({ id: translationConstants.COLLECTED_DONATION })}
           titleProps={{ style: [styles.text, styles.listItemTitle] }}
           containerStyle={styles.listItemStyle} rightSubtitle={this.props.intl.formatNumber(this.props.project.collectedDonation)}
           subtitleStyle={styles.text}
           bottomDivider
-        />}
+        />*/}
         {this.props.project.isCostCollectedDone && < ListItem
           title={this.props.intl.formatMessage({ id: translationConstants.EXECUTION_DURATION })}
           titleProps={{ style: [styles.text, styles.listItemTitle] }}
@@ -185,12 +176,19 @@ const styles = StyleSheet.create({
   },
   progress: {
     marginVertical: 10,
+    width: '50%',
   },
-  projectTitle: {
+  fundText: {
+    fontSize: 12,
+    color: colorConstants.PRIMARY_GRAY,
+    textAlign: 'center',
+
+  },
+  collectedDonationText: {
     fontWeight: 'bold',
-    fontSize: 18,
+    fontSize: 22,
     color: colorConstants.PRIMARY_BLACK,
-    marginVertical: 10,
+    textAlign: 'center',
   },
   costText: {
     textAlign: 'right',

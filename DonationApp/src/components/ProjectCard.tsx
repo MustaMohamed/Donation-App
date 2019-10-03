@@ -10,6 +10,7 @@ import { Project } from '../types';
 import { colorConstants, translationConstants } from '../constants';
 import Collapsible from 'react-native-collapsible';
 import ProjectDetails from './ProjectDetails';
+import { Progress } from './ProgressBar';
 
 interface Props {
   intl: IntlShape;
@@ -50,16 +51,21 @@ class ProjectCard extends PureComponent<Props, State> {
               <Text style={[styles.text, styles.projectTitle]}>{this.props.project.name}</Text>
             </View>
             <View style={styles.costView}>
-              <Badge status="success"
-                     value={this.props.intl.formatNumber(this.props.project.cost, {
-                       style: 'currency', currency: 'USD', currencyDisplay: 'symbol', maximumFractionDigits: 0,
-                     })}
-                     textStyle={styles.badgeText}
-                     badgeStyle={styles.badge}
-                     containerStyle={{ width: '70%' }}
-              />
+              {this.props.project.cost && <Badge status="success"
+                                                 value={`$ ${this.props.intl.formatNumber(this.props.project.cost)}`}
+                                                 textStyle={styles.badgeText}
+                                                 badgeStyle={styles.badge}
+                                                 containerStyle={{ width: '70%' }}
+              />}
             </View>
           </View>
+          <Progress isRTL
+                    style={styles.progress}
+                    color={colorConstants.PRIMARY_BLUE}
+                    lineWidth={12}
+                    percent={Math.min(this.props.project.collectedDonation / this.props.project.cost * 100, 100)}
+                    showInfo={false}
+                    type={'line'}/>
         </TouchableOpacity>
         <Collapsible collapsed={this.state.isDetailsCollapsed}>
           <ProjectDetails project={this.props.project}/>
@@ -138,6 +144,9 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'center',
+  },
+  progress: {
+    marginVertical: 10,
   },
 });
 
