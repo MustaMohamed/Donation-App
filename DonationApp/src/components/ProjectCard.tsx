@@ -43,15 +43,6 @@ class ProjectCard extends PureComponent<Props> {
               />
             </View>
           </View>
-          {/* <View style={styles.progress}>
-            <Progress isRTL
-                      lineWidth={12}
-                      percent={this.props.project.collectedDonation / this.props.project.cost * 100}
-                      showInfo type={'line'}
-                      renderInfo={() =>
-                        <Text
-                          style={styles.progressText}>{`${this.props.intl.formatNumber(this.props.project.collectedDonation)} ${this.props.intl.formatMessage({ id: translationConstants.FROM })} ${this.props.intl.formatNumber(this.props.project.cost)}`}</Text>}/>
-          </View>*/}
         </Card>}
       </TouchableOpacity>
     );

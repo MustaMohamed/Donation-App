@@ -3,14 +3,14 @@
  */
 
 import React, { PureComponent } from 'react';
-import { Dimensions, ScrollView, StyleSheet, View } from 'react-native';
+import { Dimensions, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { NavigationParams, NavigationState } from 'react-navigation';
 import { Project, RelatedProjectsType } from '../types';
 import { injectIntl, IntlShape } from 'react-intl';
-import { navigationConstants, translationConstants } from '../constants';
+import { colorConstants, navigationConstants, translationConstants } from '../constants';
 import { Button, Image, ListItem } from 'react-native-elements';
 import { NavigationStackProp } from 'react-navigation-stack';
-import Carousel from 'react-native-snap-carousel';
+import { Progress } from '../components';
 
 interface Props {
   navigation: NavigationStackProp<NavigationState, NavigationParams>;
@@ -75,9 +75,32 @@ class ProjectDetailsScreen extends PureComponent<Props, State> {
     return (
       <View style={styles.detailsContainer}>
         <ScrollView>
-          {/*<Image source={{ uri: this.state.project.image }} containerStyle={styles.image}/>*/}
-
-          <Carousel
+          <Image source={{ uri: this.state.project.image }} containerStyle={styles.image}/>
+          {this.state.project.cost && <View style={{ marginHorizontal: 10 }}>
+            <Text style={styles.projectTitle}>{this.state.project.name}</Text>
+            <Progress isRTL
+                      style={styles.progress}
+                      color={colorConstants.PRIMARY_BLUE}
+                      lineWidth={12}
+                      percent={this.state.project.collectedDonation / this.state.project.cost * 100}
+                      showInfo={false}
+                      type={'line'}/>
+            <Text style={styles.costText}>
+              {`${this.props.intl.formatNumber(this.state.project.collectedDonation, {
+                style: 'currency',
+                currency: 'EGP',
+                currencyDisplay: 'symbol',
+                maximumFractionDigits: 0,
+              })} ${this.props.intl.formatMessage({ id: translationConstants.FROM })} ${this.props.intl.formatNumber(this.state.project.cost, {
+                  style: 'currency',
+                  currency: 'EGP',
+                  currencyDisplay: 'symbol',
+                  maximumFractionDigits: 0,
+                },
+              )}`}
+            </Text>
+          </View>}
+          {/* <Carousel
             ref={(c) => {
               this._carousel = c;
             }}
@@ -86,9 +109,7 @@ class ProjectDetailsScreen extends PureComponent<Props, State> {
             sliderWidth={Dimensions.get('window').width}
             itemWidth={Dimensions.get('window').width / 1.2}
             loop
-          />
-
-
+          />*/}
           <ListItem
             title={this.props.intl.formatMessage({ id: translationConstants.COUNTRY })}
             titleProps={{ style: [styles.text, styles.listItemTitle] }}
@@ -210,10 +231,10 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
     justifyContent: 'flex-start',
-    backgroundColor: 'rgba(47, 174, 144, 0.1)',
+    backgroundColor: colorConstants.PRIMARY_WHITE,
   },
   listItemStyle: {
-    backgroundColor: 'rgba(47, 174, 144, 0.1)',
+    backgroundColor: colorConstants.PRIMARY_WHITE,
   },
   image: {
     height: Dimensions.get('window').height / 3,
@@ -223,25 +244,25 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     padding: 10,
-    backgroundColor: 'rgba(47, 174, 144, 0.1)',
   },
   actionBtn: {
     paddingHorizontal: 15,
     paddingVertical: 10,
-    backgroundColor: '#058256',
+    backgroundColor: colorConstants.PRIMARY_BLUE,
     borderRadius: 20,
   },
   donateBtn: {
-    backgroundColor: '#058256',
+    backgroundColor: colorConstants.PRIMARY_BLUE,
     borderRadius: 20,
   },
   donateView: {
     paddingVertical: 10,
     padding: 10,
-    backgroundColor: 'rgba(47, 174, 144, 0.1)',
   },
   actionBtnText: {
     fontSize: 14,
+    fontWeight: 'bold',
+    color: colorConstants.PRIMARY_WHITE,
   },
   text: {
     textAlign: 'left',
@@ -249,7 +270,20 @@ const styles = StyleSheet.create({
   listItemTitle: {
     fontWeight: 'bold',
     fontSize: 16,
-    color: '#058256',
+    color: colorConstants.PRIMARY_BLACK,
+  },
+  progress: {
+    marginVertical: 10,
+  },
+  projectTitle: {
+    fontWeight: 'bold',
+    fontSize: 18,
+    color: colorConstants.PRIMARY_BLACK,
+    marginVertical: 10,
+  },
+  costText: {
+    textAlign: 'right',
+    marginBottom: 10,
   },
 });
 
