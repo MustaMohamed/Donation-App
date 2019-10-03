@@ -123,7 +123,7 @@ const styles = StyleSheet.create({
     fontSize: 12,
   },
   actionBtn: {
-    paddingHorizontal: 25,
+    paddingHorizontal: 45,
     paddingVertical: 10,
     backgroundColor: colorConstants.PRIMARY_BLUE,
     borderRadius: 20,

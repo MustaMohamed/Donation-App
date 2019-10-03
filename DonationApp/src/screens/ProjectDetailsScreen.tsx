@@ -3,7 +3,7 @@
  */
 
 import React, { PureComponent } from 'react';
-import { Dimensions, ScrollView, StyleSheet, View } from 'react-native';
+import { Dimensions, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { NavigationParams, NavigationState } from 'react-navigation';
 import { Project, RelatedProjectsType } from '../types';
 import { injectIntl, IntlShape } from 'react-intl';
@@ -34,6 +34,7 @@ class ProjectDetailsScreen extends PureComponent<Props, State> {
     const project = navigation.getParam(navigationConstants.SCREEN_PARAM_PROJECT);
     return {
       title: project.name,
+      titleStyle: { textTransform: 'capitalize' },
     };
   };
 
@@ -76,6 +77,7 @@ class ProjectDetailsScreen extends PureComponent<Props, State> {
       <View style={styles.detailsContainer}>
         <ScrollView>
           <Image source={{ uri: this.state.project.image }} containerStyle={styles.image}/>
+          <Text style={styles.projectTitle}>{this.state.project.name}</Text>
 
           {/* <Carousel
             ref={(c) => {
@@ -167,7 +169,8 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 18,
     color: colorConstants.PRIMARY_BLACK,
-    marginVertical: 10,
+    margin: 10,
+    textTransform: 'capitalize',
   },
   costText: {
     textAlign: 'right',
