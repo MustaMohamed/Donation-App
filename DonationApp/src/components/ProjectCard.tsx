@@ -24,9 +24,10 @@ class ProjectCard extends PureComponent<Props> {
     return (
       <TouchableOpacity activeOpacity={0.8} onPress={this._onCardPress}>
         {this.props.project &&
-        <Card containerStyle={{ borderRadius: 10, borderColor: '#E9EFF0' }}
-              wrapperStyle={{ borderRadius: 10 }}
-              image={{ uri: this.props.project.image }}>
+        <Card containerStyle={styles.cardContainer}
+              wrapperStyle={styles.cardWrapper}
+              image={{ uri: this.props.project.image }}
+        >
           <View style={styles.projectView}>
             <View style={styles.titlesView}>
               <Text style={[styles.text, styles.projectCountry]}>{this.props.project.country || 'Egypt'}</Text>
@@ -60,6 +61,13 @@ class ProjectCard extends PureComponent<Props> {
 const styles = StyleSheet.create({
   text: {
     textAlign: 'left',
+  },
+  cardContainer: {
+    borderRadius: 10,
+    borderColor: '#E9EFF0',
+  },
+  cardWrapper: {
+    borderRadius: 10,
   },
   projectView: {
     flex: 1,
