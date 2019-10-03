@@ -4,6 +4,7 @@ import ProjectCard from './ProjectCard';
 import DrawerToggle from './DrawerToggle';
 import DrawerContent from './DrawerContent';
 import TabItem from './TabItem';
+import ProjectDetails from './ProjectDetails';
 
 export {
   ProjectsList,
@@ -11,4 +12,5 @@ export {
   DrawerToggle,
   DrawerContent,
   TabItem,
+  ProjectDetails,
 };

@@ -4,10 +4,12 @@
 
 import React, { PureComponent } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { Badge, Card } from 'react-native-elements';
+import { Badge, Button, Card } from 'react-native-elements';
 import { injectIntl, IntlShape } from 'react-intl';
 import { Project } from '../types';
-import { colorConstants } from '../constants';
+import { colorConstants, translationConstants } from '../constants';
+import Collapsible from 'react-native-collapsible';
+import ProjectDetails from './ProjectDetails';
 
 interface Props {
   intl: IntlShape;
@@ -15,19 +17,33 @@ interface Props {
   project: Project
 }
 
-class ProjectCard extends PureComponent<Props> {
+interface State {
+  isDetailsCollapsed: boolean;
+}
+
+class ProjectCard extends PureComponent<Props, State> {
+  constructor(props) {
+    super(props);
+    this.state = {
+      isDetailsCollapsed: true,
+    };
+  }
+
   _onCardPress = () => {
     this.props.onCardPress && this.props.onCardPress(this.props.project);
   };
 
+  _toggleCollapse = () => {
+    this.setState(prevState => ({ isDetailsCollapsed: !prevState.isDetailsCollapsed }));
+  };
+
   render() {
-    return (
-      <TouchableOpacity activeOpacity={0.8} onPress={this._onCardPress}>
-        {this.props.project &&
-        <Card containerStyle={styles.cardContainer}
-              wrapperStyle={styles.cardWrapper}
-              image={{ uri: this.props.project.image }}
-        >
+    return this.props.project &&
+      (<Card containerStyle={styles.cardContainer}
+             wrapperStyle={styles.cardWrapper}
+             image={{ uri: this.props.project.image }}
+      >
+        <TouchableOpacity activeOpacity={0.8} onPress={this._toggleCollapse}>
           <View style={styles.projectView}>
             <View style={styles.titlesView}>
               <Text style={[styles.text, styles.projectCountry]}>{this.props.project.country || 'Egypt'}</Text>
@@ -36,16 +52,27 @@ class ProjectCard extends PureComponent<Props> {
             <View style={styles.costView}>
               <Badge status="success"
                      value={this.props.intl.formatNumber(this.props.project.cost, {
-                       style: 'currency', currency: 'USD', currencyDisplay: 'symbol',
+                       style: 'currency', currency: 'USD', currencyDisplay: 'symbol', maximumFractionDigits: 0,
                      })}
                      textStyle={styles.badgeText}
                      badgeStyle={styles.badge}
+                     containerStyle={{ width: '70%' }}
               />
             </View>
           </View>
-        </Card>}
-      </TouchableOpacity>
-    );
+        </TouchableOpacity>
+        <Collapsible collapsed={this.state.isDetailsCollapsed}>
+          <ProjectDetails project={this.props.project}/>
+          <View style={styles.actionBtnView}>
+
+            <Button buttonStyle={styles.actionBtn}
+                    titleStyle={styles.actionBtnText}
+                    title={this.props.intl.formatMessage({
+                      id: translationConstants.VIEW_MORE,
+                    })} onPress={this._onCardPress}/>
+          </View>
+        </Collapsible>
+      </Card>);
   }
 }
 
@@ -65,13 +92,16 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginVertical: 10,
+    marginVertical: 0,
   },
   titlesView: {
-    width: '40%',
+    width: '50%',
   },
   costView: {
     width: '40%',
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
   },
   badge: {
     padding: 10,
@@ -82,7 +112,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   projectTitle: {
-    fontSize: 22,
+    fontSize: 18,
     fontWeight: 'bold',
     color: colorConstants.PRIMARY_BLACK,
     textTransform: 'capitalize',
@@ -90,6 +120,24 @@ const styles = StyleSheet.create({
   projectCountry: {
     color: colorConstants.PRIMARY_BLUE,
     fontWeight: 'bold',
+    fontSize: 12,
+  },
+  actionBtn: {
+    paddingHorizontal: 25,
+    paddingVertical: 10,
+    backgroundColor: colorConstants.PRIMARY_BLUE,
+    borderRadius: 20,
+    marginVertical: 15,
+  },
+  actionBtnText: {
+    fontSize: 14,
+    fontWeight: 'bold',
+    color: colorConstants.PRIMARY_WHITE,
+  },
+  actionBtnView: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'center',
   },
 });
 

@@ -3,14 +3,14 @@
  */
 
 import React, { PureComponent } from 'react';
-import { Dimensions, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Dimensions, ScrollView, StyleSheet, View } from 'react-native';
 import { NavigationParams, NavigationState } from 'react-navigation';
 import { Project, RelatedProjectsType } from '../types';
 import { injectIntl, IntlShape } from 'react-intl';
 import { colorConstants, navigationConstants, translationConstants } from '../constants';
-import { Button, Image, ListItem } from 'react-native-elements';
+import { Button, Image } from 'react-native-elements';
 import { NavigationStackProp } from 'react-navigation-stack';
-import { Progress } from '../components';
+import { ProjectDetails } from '../components';
 
 interface Props {
   navigation: NavigationStackProp<NavigationState, NavigationParams>;
@@ -76,30 +76,7 @@ class ProjectDetailsScreen extends PureComponent<Props, State> {
       <View style={styles.detailsContainer}>
         <ScrollView>
           <Image source={{ uri: this.state.project.image }} containerStyle={styles.image}/>
-          {this.state.project.cost && <View style={{ marginHorizontal: 10 }}>
-            <Text style={styles.projectTitle}>{this.state.project.name}</Text>
-            <Progress isRTL
-                      style={styles.progress}
-                      color={colorConstants.PRIMARY_BLUE}
-                      lineWidth={12}
-                      percent={this.state.project.collectedDonation / this.state.project.cost * 100}
-                      showInfo={false}
-                      type={'line'}/>
-            <Text style={styles.costText}>
-              {`${this.props.intl.formatNumber(this.state.project.collectedDonation, {
-                style: 'currency',
-                currency: 'EGP',
-                currencyDisplay: 'symbol',
-                maximumFractionDigits: 0,
-              })} ${this.props.intl.formatMessage({ id: translationConstants.FROM })} ${this.props.intl.formatNumber(this.state.project.cost, {
-                  style: 'currency',
-                  currency: 'EGP',
-                  currencyDisplay: 'symbol',
-                  maximumFractionDigits: 0,
-                },
-              )}`}
-            </Text>
-          </View>}
+
           {/* <Carousel
             ref={(c) => {
               this._carousel = c;
@@ -110,96 +87,7 @@ class ProjectDetailsScreen extends PureComponent<Props, State> {
             itemWidth={Dimensions.get('window').width / 1.2}
             loop
           />*/}
-          <ListItem
-            title={this.props.intl.formatMessage({ id: translationConstants.COUNTRY })}
-            titleProps={{ style: [styles.text, styles.listItemTitle] }}
-            containerStyle={styles.listItemStyle}
-            rightSubtitle={this.state.project.country || 'Egypt'}
-            subtitleStyle={styles.text}
-            bottomDivider
-          />
-          <ListItem
-            title={this.props.intl.formatMessage({ id: translationConstants.VILLAGE })}
-            titleProps={{ style: [styles.text, styles.listItemTitle] }}
-            containerStyle={styles.listItemStyle} rightSubtitle={this.state.project.village.name || 'Egypt'}
-            subtitleStyle={styles.text}
-            bottomDivider
-          />
-          <ListItem
-            title={this.props.intl.formatMessage({ id: translationConstants.DESCRIPTION })}
-            titleProps={{ style: [styles.text, styles.listItemTitle] }}
-            containerStyle={styles.listItemStyle} subtitle={this.state.project.description}
-            subtitleStyle={styles.text}
-            bottomDivider
-          />
-          <ListItem
-            title={this.props.intl.formatMessage({ id: translationConstants.REASON })}
-            titleProps={{ style: [styles.text, styles.listItemTitle] }}
-            containerStyle={styles.listItemStyle} subtitle={this.state.project.cause}
-            subtitleStyle={styles.text}
-            bottomDivider
-          />
-          <ListItem
-            title={this.props.intl.formatMessage({ id: translationConstants.COST })}
-            titleProps={{ style: [styles.text, styles.listItemTitle] }}
-            containerStyle={styles.listItemStyle} rightSubtitle={this.props.intl.formatNumber(this.state.project.cost)}
-            subtitleStyle={styles.text}
-            bottomDivider
-          />
-          {!this.state.project.isCostCollectedDone && <ListItem
-            title={this.props.intl.formatMessage({ id: translationConstants.COLLECTED_DONATION })}
-            titleProps={{ style: [styles.text, styles.listItemTitle] }}
-            containerStyle={styles.listItemStyle} rightSubtitle={this.props.intl.formatNumber(this.state.project.collectedDonation)}
-            subtitleStyle={styles.text}
-            bottomDivider
-          />}
-          {this.state.project.isCostCollectedDone && < ListItem
-            title={this.props.intl.formatMessage({ id: translationConstants.EXECUTION_DURATION })}
-            titleProps={{ style: [styles.text, styles.listItemTitle] }}
-            containerStyle={styles.listItemStyle} rightSubtitle={this.state.project.executionDuration}
-            subtitleStyle={styles.text}
-            bottomDivider
-          />}
-          {this.state.project.isExecutionDone && this.state.project.result && <ListItem
-            title={this.props.intl.formatMessage({ id: translationConstants.RESULT })}
-            titleProps={{ style: [styles.text, styles.listItemTitle] }}
-            containerStyle={styles.listItemStyle} subtitle={this.state.project.result}
-            subtitleStyle={styles.text}
-            bottomDivider
-          />}
-          {this.state.project.isCostCollectedDone && <ListItem
-            title={this.props.intl.formatMessage({ id: translationConstants.START_AT })}
-            titleProps={{ style: [styles.text, styles.listItemTitle] }}
-            containerStyle={styles.listItemStyle} rightSubtitle={this.props.intl.formatDate(this.state.project.startAt ? this.state.project.startAt : new Date(), {
-            year: 'numeric',
-            month: 'numeric',
-            day: 'numeric',
-          })}
-            subtitleStyle={styles.text}
-            bottomDivider
-          />}
-          {this.state.project.isCostCollectedDone && <ListItem
-            title={this.props.intl.formatMessage({ id: translationConstants.EXPECTED_END_AT })}
-            titleProps={{ style: [styles.text, styles.listItemTitle] }}
-            containerStyle={styles.listItemStyle} rightSubtitle={this.props.intl.formatDate(this.state.project.expectedEndAt ? this.state.project.expectedEndAt : new Date(), {
-            year: 'numeric',
-            month: 'numeric',
-            day: 'numeric',
-          })}
-            subtitleStyle={styles.text}
-            bottomDivider
-          />}
-          {this.state.project.isExecutionDone && <ListItem
-            title={this.props.intl.formatMessage({ id: translationConstants.END_AT })}
-            titleProps={{ style: [styles.text, styles.listItemTitle] }}
-            containerStyle={styles.listItemStyle} rightSubtitle={this.props.intl.formatDate(this.state.project.endAt ? this.state.project.endAt : new Date(), {
-            year: 'numeric',
-            month: 'numeric',
-            day: 'numeric',
-          })}
-            subtitleStyle={styles.text}
-            bottomDivider
-          />}
+          {this.state.project && <ProjectDetails project={this.state.project}/>}
           <View style={styles.actionsView}>
             <Button buttonStyle={styles.actionBtn}
                     titleStyle={styles.actionBtnText}
@@ -231,7 +119,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
     justifyContent: 'flex-start',
-    backgroundColor: colorConstants.PRIMARY_WHITE,
+    backgroundColor: '#fff',
   },
   listItemStyle: {
     backgroundColor: colorConstants.PRIMARY_WHITE,

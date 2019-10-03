@@ -15,6 +15,7 @@
     "react": "16.8.6",
     "react-intl": "^3.2.3",
     "react-native": "0.60.5",
+    "react-native-collapsible": "^1.5.1",
     "react-native-country-picker-modal": "^0.8.0",
     "react-native-elements": "^1.2.0",
     "react-native-gesture-handler": "^1.4.1",
