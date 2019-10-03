@@ -1,6 +1,6 @@
 import React from 'react';
 import { createStackNavigator } from 'react-navigation-stack';
-import { DonationFormScreen, ProjectDetailsScreen, RelatedProjectsScreen } from '../screens';
+import { DonationFormScreen, ProjectDetailsScreen, RelatedProjectsScreen, SettingsScreen } from '../screens';
 import { colorConstants, navigationConstants, translationConstants } from '../constants';
 import { BottomTabsNavigator } from './BottomTabsNavigator';
 import { Icon } from 'react-native-elements';
@@ -12,7 +12,7 @@ export const MainNavigator = createStackNavigator({
         const title = screenProps.intl.formatMessage({ id: translationConstants.APP_TITLE, defaultMessage: 'Home' });
         return {
           title: title,
-          headerLeft: <Icon name={'settings-outline'} type={'material-community'} size={28}/>,
+          headerLeft: <Icon onPress={() => navigation.navigate(navigationConstants.SCREEN_SETTINGS)} name={'settings-outline'} type={'material-community'} size={28}/>,
           headerLeftContainerStyle: { padding: 10 },
         };
       },
@@ -20,6 +20,7 @@ export const MainNavigator = createStackNavigator({
     [navigationConstants.SCREEN_RELATED_PROJECTS]: RelatedProjectsScreen,
     [navigationConstants.SCREEN_PROJECT_DETAILS]: ProjectDetailsScreen,
     [navigationConstants.SCREEN_DONATE_FORM]: DonationFormScreen,
+    [navigationConstants.SCREEN_SETTINGS]: SettingsScreen,
   },
   {
     initialRouteName: navigationConstants.SCREEN_HOME,

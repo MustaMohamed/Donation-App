@@ -9,13 +9,18 @@ import { DrawerContent } from '../components';
 class SettingsScreen extends Component {
   render() {
     return (
-      <View>
+      <View style={styles.container}>
         <DrawerContent/>
       </View>
     );
   }
 }
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    flexDirection: 'column',
+  },
+});
 
 export default SettingsScreen;
