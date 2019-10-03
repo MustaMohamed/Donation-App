@@ -4,11 +4,10 @@
 
 import React, { PureComponent } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { Card } from 'react-native-elements';
+import { Badge, Card } from 'react-native-elements';
 import { injectIntl, IntlShape } from 'react-intl';
-import { translationConstants } from '../constants';
-import { Progress } from './ProgressBar';
 import { Project } from '../types';
+import { colorConstants } from '../constants';
 
 interface Props {
   intl: IntlShape;
@@ -24,15 +23,26 @@ class ProjectCard extends PureComponent<Props> {
   render() {
     return (
       <TouchableOpacity activeOpacity={0.8} onPress={this._onCardPress}>
-        {this.props.project && <Card title={this.props.project.name || ''}
-                                     containerStyle={{ borderRadius: 10, borderColor: '#E9EFF0' }}
-                                     titleStyle={{ fontSize: 22, textAlign: 'left', marginLeft: 20 }}
-                                     wrapperStyle={{ borderRadius: 10 }}
-                                     image={{ uri: this.props.project.image }}>
-          <View>
-            <Text style={styles.descriptionText}>{this.props.project.description}</Text>
+        {this.props.project &&
+        <Card containerStyle={{ borderRadius: 10, borderColor: '#E9EFF0' }}
+              wrapperStyle={{ borderRadius: 10 }}
+              image={{ uri: this.props.project.image }}>
+          <View style={styles.projectView}>
+            <View style={styles.titlesView}>
+              <Text style={[styles.text, styles.projectCountry]}>{this.props.project.country || 'Egypt'}</Text>
+              <Text style={[styles.text, styles.projectTitle]}>{this.props.project.name}</Text>
+            </View>
+            <View style={styles.costView}>
+              <Badge status="success"
+                     value={this.props.intl.formatNumber(this.props.project.cost, {
+                       style: 'currency', currency: 'USD', currencyDisplay: 'symbol',
+                     })}
+                     textStyle={styles.badgeText}
+                     badgeStyle={styles.badge}
+              />
+            </View>
           </View>
-          <View style={styles.progress}>
+          {/* <View style={styles.progress}>
             <Progress isRTL
                       lineWidth={12}
                       percent={this.props.project.collectedDonation / this.props.project.cost * 100}
@@ -40,7 +50,7 @@ class ProjectCard extends PureComponent<Props> {
                       renderInfo={() =>
                         <Text
                           style={styles.progressText}>{`${this.props.intl.formatNumber(this.props.project.collectedDonation)} ${this.props.intl.formatMessage({ id: translationConstants.FROM })} ${this.props.intl.formatNumber(this.props.project.cost)}`}</Text>}/>
-          </View>
+          </View>*/}
         </Card>}
       </TouchableOpacity>
     );
@@ -48,16 +58,40 @@ class ProjectCard extends PureComponent<Props> {
 }
 
 const styles = StyleSheet.create({
-  descriptionText: {
+  text: {
     textAlign: 'left',
   },
-  progress: {
+  projectView: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
     marginVertical: 10,
   },
-  progressText: {
-    marginLeft: 10,
+  titlesView: {
+    width: '40%',
   },
-
+  costView: {
+    width: '40%',
+  },
+  badge: {
+    padding: 10,
+    paddingVertical: 15,
+    borderRadius: 20,
+  },
+  badgeText: {
+    fontSize: 16,
+  },
+  projectTitle: {
+    fontSize: 22,
+    fontWeight: 'bold',
+    color: colorConstants.PRIMARY_BLACK,
+    textTransform: 'capitalize',
+  },
+  projectCountry: {
+    color: colorConstants.PRIMARY_BLUE,
+    fontWeight: 'bold',
+  },
 });
 
 export default injectIntl(ProjectCard);
