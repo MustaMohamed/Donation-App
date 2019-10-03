@@ -28,5 +28,6 @@
   "EXPECTED_END_AT": "تاريخ الانتهاء المتوقع",
   "SCREEN_DONATION_PROJECTS_TAB_TITLE": "متاحة للتبرع",
   "SCREEN_EXECUTION_PROJECTS_TAB_TITLE": "قيد التنفيذ",
-  "SCREEN_DONE_PROJECTS_TAB_TITLE": "اكتملت"
+  "SCREEN_DONE_PROJECTS_TAB_TITLE": "اكتملت",
+  "SCREEN_SETTINGS_TITLE": "الاعدادات"
 }

@@ -12,7 +12,11 @@ export const MainNavigator = createStackNavigator({
         const title = screenProps.intl.formatMessage({ id: translationConstants.APP_TITLE, defaultMessage: 'Home' });
         return {
           title: title,
-          headerLeft: <Icon onPress={() => navigation.navigate(navigationConstants.SCREEN_SETTINGS)} name={'settings-outline'} type={'material-community'} size={28}/>,
+          headerLeft: <Icon onPress={() => navigation.navigate(navigationConstants.SCREEN_SETTINGS)}
+                            name={'settings-outline'}
+                            color={colorConstants.PRIMARY_BLACK}
+                            type={'material-community'}
+                            size={28}/>,
           headerLeftContainerStyle: { padding: 10 },
         };
       },
