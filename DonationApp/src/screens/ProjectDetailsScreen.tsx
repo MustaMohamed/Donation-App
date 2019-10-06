@@ -8,7 +8,7 @@ import { NavigationParams, NavigationState } from 'react-navigation';
 import { Project, RelatedProjectsType } from '../types';
 import { injectIntl, IntlShape } from 'react-intl';
 import { colorConstants, navigationConstants, translationConstants } from '../constants';
-import { Button, Image } from 'react-native-elements';
+import { Badge, Button, Image } from 'react-native-elements';
 import { NavigationStackProp } from 'react-navigation-stack';
 import { ProjectDetails } from '../components';
 
@@ -77,18 +77,15 @@ class ProjectDetailsScreen extends PureComponent<Props, State> {
       <View style={styles.detailsContainer}>
         <ScrollView>
           <Image source={{ uri: this.state.project.image }} containerStyle={styles.image}/>
-          <Text style={styles.projectTitle}>{this.state.project.name}</Text>
-
-          {/* <Carousel
-            ref={(c) => {
-              this._carousel = c;
-            }}
-            data={this.state.project.gallery}
-            renderItem={this._renderGalleryItem}
-            sliderWidth={Dimensions.get('window').width}
-            itemWidth={Dimensions.get('window').width / 1.2}
-            loop
-          />*/}
+          <View style={styles.projectTitleView}>
+            <Text style={styles.projectTitle}>{this.state.project.name}</Text>
+            {this.state.project.cost && <Badge status="success"
+                                               value={`$ ${this.props.intl.formatNumber(this.state.project.cost)}`}
+                                               textStyle={styles.badgeText}
+                                               badgeStyle={styles.badge}
+                                               containerStyle={styles.badgeContainer}
+            />}
+          </View>
           {this.state.project && <ProjectDetails project={this.state.project}/>}
           <View style={styles.actionsView}>
             <Button buttonStyle={styles.actionBtn}
@@ -165,16 +162,35 @@ const styles = StyleSheet.create({
   progress: {
     marginVertical: 10,
   },
-  fundText: {
+  projectTitle: {
     fontWeight: 'bold',
     fontSize: 18,
     color: colorConstants.PRIMARY_BLACK,
     margin: 10,
     textTransform: 'capitalize',
+    width: '70%',
+  },
+  projectTitleView: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
   costText: {
     textAlign: 'right',
     marginBottom: 10,
+  },
+  badge: {
+    borderRadius: 20,
+    paddingVertical: 10,
+    paddingHorizontal: 5,
+    backgroundColor: colorConstants.PRIMARY_GREEN,
+  },
+  badgeContainer: {
+    width: '30%',
+  },
+  badgeText: {
+    fontSize: 16,
   },
 });
 

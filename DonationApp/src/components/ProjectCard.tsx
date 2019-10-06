@@ -55,17 +55,17 @@ class ProjectCard extends PureComponent<Props, State> {
                                                  value={`$ ${this.props.intl.formatNumber(this.props.project.cost)}`}
                                                  textStyle={styles.badgeText}
                                                  badgeStyle={styles.badge}
-                                                 containerStyle={{ width: '70%' }}
+                                                 containerStyle={styles.badgeContainer}
               />}
             </View>
           </View>
-          <Progress isRTL
-                    style={styles.progress}
-                    color={colorConstants.PRIMARY_BLUE}
-                    lineWidth={12}
-                    percent={Math.min(this.props.project.collectedDonation / this.props.project.cost * 100, 100)}
-                    showInfo={false}
-                    type={'line'}/>
+          {this.state.isDetailsCollapsed && <Progress isRTL
+                                                      style={styles.progress}
+                                                      color={colorConstants.PRIMARY_BLUE}
+                                                      lineWidth={12}
+                                                      percent={Math.min(this.props.project.collectedDonation / this.props.project.cost * 100, 100)}
+                                                      showInfo={false}
+                                                      type={'line'}/>}
         </TouchableOpacity>
         <Collapsible collapsed={this.state.isDetailsCollapsed}>
           <ProjectDetails project={this.props.project}/>
@@ -89,6 +89,7 @@ const styles = StyleSheet.create({
   cardContainer: {
     borderRadius: 10,
     borderColor: '#E9EFF0',
+    marginVertical: 20,
   },
   cardWrapper: {
     borderRadius: 10,
@@ -101,19 +102,21 @@ const styles = StyleSheet.create({
     marginVertical: 0,
   },
   titlesView: {
-    width: '50%',
+    width: '70%',
   },
   costView: {
-    width: '40%',
+    width: '30%',
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'flex-end',
   },
   badge: {
-    padding: 10,
-    paddingVertical: 15,
     borderRadius: 20,
+    paddingVertical: 10,
+    paddingHorizontal: 5,
+    backgroundColor: colorConstants.PRIMARY_GREEN,
   },
+  badgeContainer: {},
   badgeText: {
     fontSize: 16,
   },

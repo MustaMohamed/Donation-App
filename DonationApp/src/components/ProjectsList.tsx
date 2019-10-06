@@ -64,6 +64,7 @@ class ProjectsList extends PureComponent<Props, State> {
           refreshing={this.state.refresh}
           onEndReached={this._onEndReached}
           onEndReachedThreshold={0.5}
+          contentContainerStyle={styles.flatListContainer}
         />
       </View>
     );
@@ -73,6 +74,9 @@ class ProjectsList extends PureComponent<Props, State> {
 const styles = StyleSheet.create({
   projectsCardsView: {
     marginBottom: 0, flex: 1, flexDirection: 'column',
+  },
+  flatListContainer: {
+    paddingBottom: 20,
   },
 });
 
