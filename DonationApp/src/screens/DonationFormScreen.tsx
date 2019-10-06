@@ -9,7 +9,7 @@ import { FormattedMessage, injectIntl, IntlShape } from 'react-intl';
 import { NavigationStackProp } from 'react-navigation-stack';
 import { NavigationParams, NavigationState } from 'react-navigation';
 import { colorConstants, navigationConstants, translationConstants, validationConstants } from '../constants';
-import { ValidationField } from '../types';
+import { PaymentMethod, ValidationField } from '../types';
 import PhoneInput from 'react-native-phone-input';
 import { projectsService, validationService } from '../services';
 import { connect } from 'react-redux';
@@ -30,6 +30,7 @@ interface State {
   donorNumber: ValidationField;
   formError: boolean;
   moneyValue: string;
+  activePaymentMethodIndex: number;
 
   [key: string]: any;
 }
@@ -56,6 +57,7 @@ class DonationFormScreen extends PureComponent<Props, State> {
         value: '',
       },
       moneyValue: '',
+      activePaymentMethodIndex: 0,
     };
   }
 
@@ -133,6 +135,11 @@ class DonationFormScreen extends PureComponent<Props, State> {
     });
   };
 
+  onPaymentMethodItemPress = (index) => {
+    this.setState({ activePaymentMethodIndex: index });
+  };
+
+
   _formValidation = () => {
     let optionalFields = [];
     if (this.state.donorDetailsIsVisible) {
@@ -172,6 +179,7 @@ class DonationFormScreen extends PureComponent<Props, State> {
         <View style={styles.switchView}>
           <ListItem
             title={this.props.intl.formatMessage({ id: translationConstants.SWITCH_DONOR_PERSONAL_DETAILS })}
+            titleStyle={{ color: colorConstants.PRIMARY_GRAY }}
             containerStyle={styles.listItem}
             rightElement={<Switch style={styles.switch}
                                   value={this.state.donorDetailsIsVisible}
@@ -241,19 +249,22 @@ class DonationFormScreen extends PureComponent<Props, State> {
             style={styles.input}
           />
           <View style={styles.paymentMethods}>
-            <TouchableOpacity style={styles.imageContainer} onPress={() => console.log('image press')}>
+            <TouchableOpacity style={[styles.imageContainer, this.state.activePaymentMethodIndex == PaymentMethod.CreditCard && styles.imageContainerActive]}
+                              onPress={() => this.onPaymentMethodItemPress(PaymentMethod.CreditCard)}>
               <Image
                 source={require('../assets/images/ic-visa.png')}
                 style={styles.paymentMethodItem}
               />
             </TouchableOpacity>
-            <TouchableOpacity style={styles.imageContainer} onPress={() => console.log('image press')}>
+            <TouchableOpacity style={[styles.imageContainer, this.state.activePaymentMethodIndex == PaymentMethod.Fawry && styles.imageContainerActive]}
+                              onPress={() => this.onPaymentMethodItemPress(PaymentMethod.Fawry)}>
               <Image
                 source={require('../assets/images/ic-fawry.png')}
                 style={[styles.paymentMethodItem, styles.fawry]}
               />
             </TouchableOpacity>
-            <TouchableOpacity style={[styles.imageContainer, styles.imageContainerActive]} onPress={() => console.log('image press')}>
+            <TouchableOpacity style={[styles.imageContainer, this.state.activePaymentMethodIndex == PaymentMethod.Paypal && styles.imageContainerActive]}
+                              onPress={() => this.onPaymentMethodItemPress(PaymentMethod.Paypal)}>
               <Image
                 source={require('../assets/images/ic-paypal.png')}
                 style={styles.paymentMethodItem}
@@ -334,6 +345,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-around',
+    alignItems: 'flex-end',
     marginVertical: 20,
   },
   paymentMethodItem: {

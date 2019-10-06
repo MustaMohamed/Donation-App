@@ -13,9 +13,9 @@ export const MainNavigator = createStackNavigator({
         return {
           title: title,
           headerLeft: <Icon onPress={() => navigation.navigate(navigationConstants.SCREEN_SETTINGS)}
-                            name={'settings-outline'}
+                            name={'list'}
                             color={colorConstants.PRIMARY_BLACK}
-                            type={'material-community'}
+                            type={'entypo'}
                             size={28}/>,
           headerLeftContainerStyle: { padding: 10 },
         };

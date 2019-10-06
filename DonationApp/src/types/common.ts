@@ -19,3 +19,9 @@ export interface Language {
   prevLanguage: Languages;
   isRTL: boolean;
 }
+
+export enum PaymentMethod {
+  Paypal,
+  Fawry,
+  CreditCard
+}
