@@ -34,7 +34,7 @@ class FinishedProjectsScreen extends PureComponent<Props, State> {
     const title = screenProps.intl.formatMessage({ id: translationConstants.SCREEN_DONE_PROJECTS_TAB_TITLE });
     return {
       title: title,
-      tabBarButtonComponent: (props) => <TabItem title={title} {...props} />,
+      // tabBarButtonComponent: (props) => <TabItem title={title} {...props} />,
     };
   };
 

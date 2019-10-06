@@ -6,7 +6,7 @@ import React, { PureComponent } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Project, ProjectsWithPagination } from '../types/models';
 import { colorConstants, navigationConstants, translationConstants } from '../constants';
-import { ProjectsList, TabItem } from '../components';
+import { ProjectsList } from '../components';
 import { NavigationStackProp } from 'react-navigation-stack';
 import { NavigationParams, NavigationState } from 'react-navigation';
 import { getExecutionProjectsAction, hideUiLoaderAction, showUiLoaderAction } from '../redux-store/actions';
@@ -35,7 +35,7 @@ class ExecutionProjectsScreen extends PureComponent<Props, State> {
     return {
       title: title,
       tabBarLabel: title,
-      tabBarButtonComponent: (props) => <TabItem title={title} {...props} />,
+      // tabBarButtonComponent: (props) => <TabItem title={title} {...props} />,
     };
   };
 

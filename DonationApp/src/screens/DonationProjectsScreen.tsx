@@ -13,6 +13,7 @@ import { getDonationProjectsAction, hideUiLoaderAction, showUiLoaderAction } fro
 import { IntlShape } from 'react-intl';
 import { ApplicationState } from '../redux-store/store';
 import { connect } from 'react-redux';
+import { Icon } from 'react-native-elements';
 
 interface Props {
   navigation: NavigationStackProp<NavigationState, NavigationParams>;
@@ -33,7 +34,8 @@ class DonationProjectsScreen extends PureComponent<Props, State> {
     const title = screenProps.intl.formatMessage({ id: translationConstants.SCREEN_DONATION_PROJECTS_TAB_TITLE });
     return {
       title: title,
-      tabBarButtonComponent: (props) => <TabItem title={title} {...props} />,
+      // tabBarButtonComponent: (props) => <TabItem title={title} {...props} />,
+      tabBarIcon: <Icon name={'rightcircle'} type={'antdesign'}/>,
     };
   };
 
