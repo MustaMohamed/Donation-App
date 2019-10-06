@@ -3,7 +3,7 @@
  */
 
 import React, { PureComponent } from 'react';
-import { StyleSheet, Switch, Text, ToastAndroid, TouchableOpacity, View } from 'react-native';
+import { KeyboardAvoidingView, ScrollView, StyleSheet, Switch, Text, ToastAndroid, TouchableOpacity, View } from 'react-native';
 import { Button, Icon, Image, Input, ListItem } from 'react-native-elements';
 import { FormattedMessage, injectIntl, IntlShape } from 'react-intl';
 import { NavigationStackProp } from 'react-navigation-stack';
@@ -189,7 +189,7 @@ class DonationFormScreen extends PureComponent<Props, State> {
           />
 
         </View>
-        <View style={styles.actionsView}>
+        <ScrollView contentContainerStyle={styles.actionsView}>
 
           {this.state.donorDetailsIsVisible && <View>
             <Input
@@ -221,33 +221,35 @@ class DonationFormScreen extends PureComponent<Props, State> {
               this.props.intl.formatMessage({ id: translationConstants.DONOR_PHONE_INPUT_ERROR_MESSAGE })}</Text>}
           </View>}
           <Text style={styles.donationText}><FormattedMessage id={translationConstants.YOUR_DONATION}/></Text>
-          <TextInputMask
-            type={'money'}
-            options={{
-              precision: 0,
-              delimiter: ',',
-              unit: '$',
-              suffixUnit: '',
-            }}
-            customTextInput={Input}
-            customTextInputProps={{
-              inputStyle: [styles.input, styles.moneyInput],
-              errorMessage: this.state.formError && this.state.donationAmount.hasError &&
-                this.props.intl.formatMessage({ id: translationConstants.DONOR_MONEY_AMOUNT_INPUT_ERROR_MESSAGE }),
-              placeholder: this.props.intl.formatMessage({ id: translationConstants.DONOR_MONEY_AMOUNT }),
-              rightIcon:
-                <Icon color={colorConstants.PRIMARY_GRAY}
-                      name={'money'}
-                      type={'font-awesome'}
-                      size={22}/>,
-              keyboardType: 'numeric',
-              value: this.state.donationAmount.value,
-              onChangeText: this.onDonorAmountChange,
-            }}
-            value={this.state.moneyValue}
-            onChangeText={this.onMoneyTextChange}
-            style={styles.input}
-          />
+          <KeyboardAvoidingView>
+            <TextInputMask
+              type={'money'}
+              options={{
+                precision: 0,
+                delimiter: ',',
+                unit: '$',
+                suffixUnit: '',
+              }}
+              customTextInput={Input}
+              customTextInputProps={{
+                inputStyle: [styles.input, styles.moneyInput],
+                errorMessage: this.state.formError && this.state.donationAmount.hasError &&
+                  this.props.intl.formatMessage({ id: translationConstants.DONOR_MONEY_AMOUNT_INPUT_ERROR_MESSAGE }),
+                placeholder: this.props.intl.formatMessage({ id: translationConstants.DONOR_MONEY_AMOUNT }),
+                rightIcon:
+                  <Icon color={colorConstants.PRIMARY_GRAY}
+                        name={'money'}
+                        type={'font-awesome'}
+                        size={22}/>,
+                keyboardType: 'numeric',
+                value: this.state.donationAmount.value,
+                onChangeText: this.onDonorAmountChange,
+              }}
+              value={this.state.moneyValue}
+              onChangeText={this.onMoneyTextChange}
+              style={styles.input}
+            />
+          </KeyboardAvoidingView>
           <View style={styles.paymentMethods}>
             <TouchableOpacity style={[styles.imageContainer, this.state.activePaymentMethodIndex == PaymentMethod.CreditCard && styles.imageContainerActive]}
                               onPress={() => this.onPaymentMethodItemPress(PaymentMethod.CreditCard)}>
@@ -271,11 +273,13 @@ class DonationFormScreen extends PureComponent<Props, State> {
               />
             </TouchableOpacity>
           </View>
-          <Button buttonStyle={styles.donateBtn}
-                  title={this.props.intl.formatMessage({ id: translationConstants.DONATE })}
-                  onPress={this.submitDonation}
-          />
-        </View>
+          <View>
+            <Button buttonStyle={styles.donateBtn}
+                    title={this.props.intl.formatMessage({ id: translationConstants.DONATE })}
+                    onPress={this.submitDonation}
+            />
+          </View>
+        </ScrollView>
       </View>
     );
   }
@@ -300,6 +304,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
     backgroundColor: colorConstants.PRIMARY_BLUE,
     borderRadius: 20,
+    marginTop: 100,
   },
   text: {
     textAlign: 'left',
@@ -321,6 +326,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
     flex: 1,
     flexDirection: 'column',
+    justifyContent: 'space-between',
   },
   switchView: {
     justifyContent: 'space-between',
@@ -345,7 +351,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-around',
-    alignItems: 'flex-end',
+    alignItems: 'flex-start',
     marginVertical: 20,
   },
   paymentMethodItem: {
