@@ -3,17 +3,18 @@
  */
 
 import React, { PureComponent } from 'react';
-import { StyleSheet, Switch, Text, ToastAndroid, View } from 'react-native';
-import { Button, Icon, Input, ListItem } from 'react-native-elements';
-import { injectIntl, IntlShape } from 'react-intl';
+import { StyleSheet, Switch, Text, ToastAndroid, TouchableOpacity, View } from 'react-native';
+import { Button, Icon, Image, Input, ListItem } from 'react-native-elements';
+import { FormattedMessage, injectIntl, IntlShape } from 'react-intl';
 import { NavigationStackProp } from 'react-navigation-stack';
 import { NavigationParams, NavigationState } from 'react-navigation';
-import { navigationConstants, translationConstants, validationConstants } from '../constants';
+import { colorConstants, navigationConstants, translationConstants, validationConstants } from '../constants';
 import { ValidationField } from '../types';
 import PhoneInput from 'react-native-phone-input';
 import { projectsService, validationService } from '../services';
 import { connect } from 'react-redux';
 import { hideUiLoaderAction, showUiLoaderAction } from '../redux-store/actions';
+import { TextInputMask } from 'react-native-masked-text';
 
 interface Props {
   intl: IntlShape,
@@ -28,6 +29,7 @@ interface State {
   donorName: ValidationField;
   donorNumber: ValidationField;
   formError: boolean;
+  moneyValue: string;
 
   [key: string]: any;
 }
@@ -53,6 +55,7 @@ class DonationFormScreen extends PureComponent<Props, State> {
         validationTypes: [validationConstants.NOT_EMPTY],
         value: '',
       },
+      moneyValue: '',
     };
   }
 
@@ -95,7 +98,6 @@ class DonationFormScreen extends PureComponent<Props, State> {
     }
   };
 
-
   onChangePhoneNumber = (value) => {
     this.setState(prevState => ({
       donorNumber: {
@@ -106,7 +108,6 @@ class DonationFormScreen extends PureComponent<Props, State> {
     }));
   };
 
-
   onDonorNameChange = (value) => {
     this.setState(prevState => ({
       donorName: {
@@ -116,7 +117,6 @@ class DonationFormScreen extends PureComponent<Props, State> {
     }));
   };
 
-
   onDonorAmountChange = (value) => {
     this.setState(prevState => ({
       donationAmount: {
@@ -124,7 +124,13 @@ class DonationFormScreen extends PureComponent<Props, State> {
         value,
       },
     }));
+  };
 
+  onMoneyTextChange = (text) => {
+    this.onDonorAmountChange(text.slice(1));
+    this.setState({
+      moneyValue: text,
+    });
   };
 
   _formValidation = () => {
@@ -166,11 +172,11 @@ class DonationFormScreen extends PureComponent<Props, State> {
         <View style={styles.switchView}>
           <ListItem
             title={this.props.intl.formatMessage({ id: translationConstants.SWITCH_DONOR_PERSONAL_DETAILS })}
-            containerStyle={{ backgroundColor: 'rgba(47, 174, 144, 0.2)' }}
+            containerStyle={styles.listItem}
             rightElement={<Switch style={styles.switch}
                                   value={this.state.donorDetailsIsVisible}
-                                  thumbColor={'#058256'}
-                                  trackColor={{ true: '#2FAE90', false: 'gray' }}
+                                  thumbColor={colorConstants.PRIMARY_BLUE}
+                                  trackColor={{ true: colorConstants.PRIMARY_GRAY, false: 'gray' }}
                                   onValueChange={this._onDonorDetailsIsVisibleChange}/>}
           />
 
@@ -183,7 +189,7 @@ class DonationFormScreen extends PureComponent<Props, State> {
               errorMessage={this.state.formError && this.state.donorName.hasError && this.props.intl.formatMessage({ id: translationConstants.DONOR_NAME_INPUT_ERROR_MESSAGE })}
               placeholder={this.props.intl.formatMessage({ id: translationConstants.DONOR_NAME_PLACEHOLDER })}
               rightIcon={
-                <Icon color={'#2FAE90'}
+                <Icon color={colorConstants.PRIMARY_GRAY}
                       name={'account-card-details'}
                       type={'material-community'}
                       size={22}/>
@@ -206,21 +212,54 @@ class DonationFormScreen extends PureComponent<Props, State> {
             {this.state.formError && this.state.donorNumber.hasError && <Text style={styles.errorText}>{
               this.props.intl.formatMessage({ id: translationConstants.DONOR_PHONE_INPUT_ERROR_MESSAGE })}</Text>}
           </View>}
-          <Input
-            inputStyle={styles.input}
-            errorMessage={this.state.formError && this.state.donationAmount.hasError &&
-            this.props.intl.formatMessage({ id: translationConstants.DONOR_MONEY_AMOUNT_INPUT_ERROR_MESSAGE })}
-            placeholder={this.props.intl.formatMessage({ id: translationConstants.DONOR_MONEY_AMOUNT })}
-            rightIcon={
-              <Icon color={'#2FAE90'}
-                    name={'money'}
-                    type={'font-awesome'}
-                    size={22}/>
-            }
-            keyboardType={'numeric'}
-            value={this.state.donationAmount.value}
-            onChangeText={this.onDonorAmountChange}
+          <Text style={styles.donationText}><FormattedMessage id={translationConstants.YOUR_DONATION}/></Text>
+          <TextInputMask
+            type={'money'}
+            options={{
+              precision: 0,
+              delimiter: ',',
+              unit: '$',
+              suffixUnit: '',
+            }}
+            customTextInput={Input}
+            customTextInputProps={{
+              inputStyle: [styles.input, styles.moneyInput],
+              errorMessage: this.state.formError && this.state.donationAmount.hasError &&
+                this.props.intl.formatMessage({ id: translationConstants.DONOR_MONEY_AMOUNT_INPUT_ERROR_MESSAGE }),
+              placeholder: this.props.intl.formatMessage({ id: translationConstants.DONOR_MONEY_AMOUNT }),
+              rightIcon:
+                <Icon color={colorConstants.PRIMARY_GRAY}
+                      name={'money'}
+                      type={'font-awesome'}
+                      size={22}/>,
+              keyboardType: 'numeric',
+              value: this.state.donationAmount.value,
+              onChangeText: this.onDonorAmountChange,
+            }}
+            value={this.state.moneyValue}
+            onChangeText={this.onMoneyTextChange}
+            style={styles.input}
           />
+          <View style={styles.paymentMethods}>
+            <TouchableOpacity style={styles.imageContainer} onPress={() => console.log('image press')}>
+              <Image
+                source={require('../assets/images/ic-visa.png')}
+                style={styles.paymentMethodItem}
+              />
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.imageContainer} onPress={() => console.log('image press')}>
+              <Image
+                source={require('../assets/images/ic-fawry.png')}
+                style={[styles.paymentMethodItem, styles.fawry]}
+              />
+            </TouchableOpacity>
+            <TouchableOpacity style={[styles.imageContainer, styles.imageContainerActive]} onPress={() => console.log('image press')}>
+              <Image
+                source={require('../assets/images/ic-paypal.png')}
+                style={styles.paymentMethodItem}
+              />
+            </TouchableOpacity>
+          </View>
           <Button buttonStyle={styles.donateBtn}
                   title={this.props.intl.formatMessage({ id: translationConstants.DONATE })}
                   onPress={this.submitDonation}
@@ -240,12 +279,15 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 5,
-    backgroundColor: 'rgba(47, 174, 144, 0.2)',
+    backgroundColor: colorConstants.PRIMARY_WHITE,
+  },
+  listItem: {
+    backgroundColor: colorConstants.PRIMARY_WHITE,
   },
   donateBtn: {
     marginVertical: 10,
     marginHorizontal: 10,
-    backgroundColor: '#058256',
+    backgroundColor: colorConstants.PRIMARY_BLUE,
     borderRadius: 20,
   },
   text: {
@@ -254,8 +296,19 @@ const styles = StyleSheet.create({
   input: {
     marginHorizontal: 10,
   },
+  donationText: {
+    color: colorConstants.PRIMARY_GRAY,
+    textAlign: 'center',
+    marginVertical: 20,
+  },
+  moneyInput: {
+    fontSize: 32,
+    width: '60%',
+    textAlign: 'center',
+  },
   actionsView: {
     marginTop: 20,
+    flex: 1,
     flexDirection: 'column',
   },
   switchView: {
@@ -263,13 +316,50 @@ const styles = StyleSheet.create({
   },
   switch: {},
   flagStyle: {
-    marginLeft: 10, borderWidth: 2, marginTop: 10, padding: 2, width: 50, height: 30, borderColor: '#bdc3c7',
+    marginLeft: 10,
+    borderWidth: 2,
+    marginTop: 10,
+    padding: 2,
+    width: 50,
+    height: 30,
+    borderColor: colorConstants.PRIMARY_GRAY,
   },
   errorText: {
     textAlign: 'left',
-    color: '#ff190c',
+    color: colorConstants.PRIMARY_RED,
     fontSize: 12,
     marginLeft: 85,
   },
+  paymentMethods: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    marginVertical: 20,
+  },
+  paymentMethodItem: {
+    width: 80,
+    height: 80,
+    resizeMode: 'center',
+  },
+  imageContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: 100,
+    height: 100,
+    marginHorizontal: 20,
+    borderRadius: 10,
+    padding: 20,
+    borderWidth: 1,
+    borderColor: colorConstants.PRIMARY_GRAY,
+  },
+  imageContainerActive: {
+    borderWidth: 2,
+    borderColor: colorConstants.PRIMARY_BLUE,
+  },
+  fawry: {
+    width: 90,
+  },
+
 });
 

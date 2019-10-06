@@ -5,7 +5,8 @@ export const colorConstants = {
   PRIMARY_BLACK: '#423E4C',
   PRIMARY_BROWN: '#897D8B',
   PRIMARY_GRAY: '#94B9B4',
-  PRIMARY_RED: '#DE9371',
+  PRIMARY_RED: '#ff190c',
+  SECONDARY_RED: '#DE9371',
   PRIMARY_ORANGE: '#EED18B',
   PRIMARY_GREEN: '#56e85e',
 };

@@ -94,7 +94,7 @@ class Startup extends PureComponent<Props, State> {
     return (
       <IntlProvider messages={langs[this.state.localLang]} locale={this.state.localLang} defaultLocale={'en'}>
         <StatusBar backgroundColor={colorConstants.PRIMARY_GRAY} barStyle='light-content'/>
-        <Loader loading={this.state.isLoading} size={'large'} color={colorConstants.PRIMARY_RED}/>
+        <Loader loading={this.state.isLoading} size={'large'} color={colorConstants.SECONDARY_RED}/>
         <ThemeProvider>
           <LocalizedAppNavigator/>
         </ThemeProvider>
