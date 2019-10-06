@@ -5,20 +5,27 @@
 import React, { PureComponent } from 'react';
 import { Dimensions, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { NavigationParams, NavigationState } from 'react-navigation';
-import { Project, RelatedProjectsType } from '../types';
+import { Project, ProjectsWithPagination, RelatedProjectsType } from '../types';
 import { injectIntl, IntlShape } from 'react-intl';
-import { colorConstants, navigationConstants, translationConstants } from '../constants';
+import { apiConstants, colorConstants, navigationConstants, translationConstants } from '../constants';
 import { Badge, Button, Image } from 'react-native-elements';
 import { NavigationStackProp } from 'react-navigation-stack';
-import { ProjectDetails } from '../components';
+import { ProjectDetails, RelatedProjectsList } from '../components';
+import { hideUiLoaderAction, showUiLoaderAction } from '../redux-store/actions';
+import { connect } from 'react-redux';
+import { projectsService } from '../services';
 
 interface Props {
   navigation: NavigationStackProp<NavigationState, NavigationParams>;
   intl: IntlShape;
+  showUiLoader: typeof showUiLoaderAction;
+  hideUiLoader: typeof hideUiLoaderAction;
 }
 
 interface State {
-  project: Project
+  project: Project;
+  relatedCategoryProjects: Project[];
+  relatedVillageProjects: Project[];
 }
 
 class ProjectDetailsScreen extends PureComponent<Props, State> {
@@ -29,6 +36,8 @@ class ProjectDetailsScreen extends PureComponent<Props, State> {
         name: 'dummy',
       },
     } as Project,
+    relatedCategoryProjects: [],
+    relatedVillageProjects: [],
   };
   static navigationOptions = ({ screenProps, navigation }) => {
     const project = navigation.getParam(navigationConstants.SCREEN_PARAM_PROJECT);
@@ -38,9 +47,22 @@ class ProjectDetailsScreen extends PureComponent<Props, State> {
     };
   };
 
-  componentDidMount(): void {
-    const project = this.props.navigation.getParam(navigationConstants.SCREEN_PARAM_PROJECT);
-    this.setState({ project });
+  async componentDidMount() {
+    this.props.showUiLoader();
+    try {
+      const project: Project = this.props.navigation.getParam(navigationConstants.SCREEN_PARAM_PROJECT);
+      this.setState({ project });
+      const relatedVillageType = apiConstants.RELATED_PROJECTS_VILLAGE;
+      const relatedCategoryType = apiConstants.RELATED_PROJECTS_CATEGORY;
+      const relatedVillageProjects: ProjectsWithPagination = await projectsService.getRelatedProjects(relatedVillageType, project.village.id, this.props.intl.locale);
+      const relatedCategoryProjects: ProjectsWithPagination = await projectsService.getRelatedProjects(relatedCategoryType, project.projectCategory.id, this.props.intl.locale);
+      this.setState({ relatedVillageProjects: relatedVillageProjects.projects, relatedCategoryProjects: relatedCategoryProjects.projects });
+      console.log(relatedCategoryProjects, relatedVillageProjects);
+    } catch (e) {
+      console.log(e);
+    } finally {
+      this.props.hideUiLoader();
+    }
   }
 
   _onRelatedProjectsActionPress = () => {
@@ -88,17 +110,35 @@ class ProjectDetailsScreen extends PureComponent<Props, State> {
           </View>
           {this.state.project && <ProjectDetails project={this.state.project}/>}
           <View style={styles.actionsView}>
-            <Button buttonStyle={styles.actionBtn}
-                    titleStyle={styles.actionBtnText}
-                    title={this.props.intl.formatMessage({
-                      id: translationConstants.PROJECT_ACTION_TEXT_VILLAGE_PREV_PROJECTS,
-                    })} onPress={this._onPrevProjectsActionPress}/>
-            <Button buttonStyle={styles.actionBtn}
-                    titleStyle={styles.actionBtnText}
-                    title={this.props.intl.formatMessage({
-                      id: translationConstants.PROJECT_ACTION_TEXT_PREV_PROJECT_WORK,
-                    })} onPress={this._onRelatedProjectsActionPress}/>
+
+
           </View>
+
+          <View>
+            <RelatedProjectsList
+              listTitle={this.props.intl.formatMessage({
+                id: translationConstants.PROJECT_ACTION_TEXT_PREV_PROJECT_WORK,
+              })}
+              projects={this.state.relatedCategoryProjects}
+              children={<Button buttonStyle={styles.actionBtn}
+                                titleStyle={styles.actionBtnText}
+                                title={this.props.intl.formatMessage({
+                                  id: translationConstants.VIEW_MORE,
+                                })} onPress={this._onRelatedProjectsActionPress}/>}
+            />
+
+            <RelatedProjectsList
+              listTitle={this.props.intl.formatMessage({
+                id: translationConstants.PROJECT_ACTION_TEXT_VILLAGE_PREV_PROJECTS,
+              })} projects={this.state.relatedVillageProjects}
+              children={<Button buttonStyle={styles.actionBtn}
+                                titleStyle={styles.actionBtnText}
+                                title={this.props.intl.formatMessage({
+                                  id: translationConstants.VIEW_MORE,
+                                })} onPress={this._onPrevProjectsActionPress}/>}
+            />
+          </View>
+
           <View style={styles.donateView}>
             <Button buttonStyle={styles.donateBtn}
                     titleStyle={styles.actionBtnText}
@@ -133,7 +173,7 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   actionBtn: {
-    paddingHorizontal: 15,
+    paddingHorizontal: 25,
     paddingVertical: 10,
     backgroundColor: colorConstants.PRIMARY_BLUE,
     borderRadius: 20,
@@ -194,4 +234,7 @@ const styles = StyleSheet.create({
   },
 });
 
-export default injectIntl(ProjectDetailsScreen);
+export default connect(null, {
+  showUiLoader: showUiLoaderAction,
+  hideUiLoader: hideUiLoaderAction,
+})(injectIntl(ProjectDetailsScreen));

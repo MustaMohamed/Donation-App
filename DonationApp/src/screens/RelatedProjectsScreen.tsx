@@ -8,7 +8,7 @@ import { ProjectsList } from '../components';
 import { NavigationParams, NavigationState } from 'react-navigation';
 import { NavigationStackProp } from 'react-navigation-stack';
 import { Language, Project, ProjectFilterType, ProjectsWithPagination, RelatedProjectsType } from '../types';
-import { apiConstants, navigationConstants, translationConstants } from '../constants';
+import { apiConstants, colorConstants, navigationConstants, translationConstants } from '../constants';
 import { connect } from 'react-redux';
 import { hideUiLoaderAction, showUiLoaderAction } from '../redux-store/actions';
 import { projectsService } from '../services';
@@ -126,9 +126,9 @@ class RelatedProjectsScreen extends Component<Props, State> {
           onTabPress={this.handleIndexChange}
           tabsContainerStyle={{ marginHorizontal: 10, marginVertical: 10 }}
           borderRadius={15}
-          tabStyle={{ backgroundColor: '#2FAE90', borderColor: '#058256' }}
+          tabStyle={{ backgroundColor: colorConstants.PRIMARY_GRAY, borderColor: colorConstants.PRIMARY_BLUE }}
           tabTextStyle={{ color: '#E9EFF0' }}
-          activeTabStyle={{ backgroundColor: '#058256' }}
+          activeTabStyle={{ backgroundColor: colorConstants.PRIMARY_BLUE }}
         />
         <ProjectsList
           onItemPress={this.onProjectItemPress}
@@ -143,7 +143,7 @@ class RelatedProjectsScreen extends Component<Props, State> {
 const styles = StyleSheet.create({
   relatedProjectsView: {
     flex: 1,
-    backgroundColor: 'rgba(47, 174, 144, 0.2)',
+    backgroundColor: colorConstants.SECONDARY_WHITE,
   },
 });
 

@@ -55,6 +55,8 @@ export const BottomTabsNavigator = createMaterialBottomTabNavigator({
     inactiveColor: colorConstants.PRIMARY_GRAY,
     barStyle: {
       backgroundColor: colorConstants.PRIMARY_WHITE,
+      borderTopWidth: 2,
+      borderTopColor: 'rgba(0,0,0,0.2)',
     },
   },
 );

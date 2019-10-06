@@ -3,7 +3,7 @@
  */
 
 import React, { PureComponent } from 'react';
-import { KeyboardAvoidingView, ScrollView, StyleSheet, Switch, Text, ToastAndroid, TouchableOpacity, View } from 'react-native';
+import { KeyboardAvoidingView, Picker, ScrollView, StyleSheet, Switch, Text, ToastAndroid, TouchableOpacity, View } from 'react-native';
 import { Button, Icon, Image, Input, ListItem } from 'react-native-elements';
 import { FormattedMessage, injectIntl, IntlShape } from 'react-intl';
 import { NavigationStackProp } from 'react-navigation-stack';
@@ -187,7 +187,6 @@ class DonationFormScreen extends PureComponent<Props, State> {
                                   trackColor={{ true: colorConstants.PRIMARY_GRAY, false: 'gray' }}
                                   onValueChange={this._onDonorDetailsIsVisibleChange}/>}
           />
-
         </View>
         <ScrollView contentContainerStyle={styles.actionsView}>
 
