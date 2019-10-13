@@ -56,7 +56,10 @@ class ProjectDetailsScreen extends PureComponent<Props, State> {
       const relatedCategoryType = apiConstants.RELATED_PROJECTS_CATEGORY;
       const relatedVillageProjects: ProjectsWithPagination = await projectsService.getRelatedProjects(relatedVillageType, project.village.id, this.props.intl.locale);
       const relatedCategoryProjects: ProjectsWithPagination = await projectsService.getRelatedProjects(relatedCategoryType, project.projectCategory.id, this.props.intl.locale);
-      this.setState({ relatedVillageProjects: relatedVillageProjects.projects, relatedCategoryProjects: relatedCategoryProjects.projects });
+      this.setState({
+        relatedVillageProjects: relatedVillageProjects.projects.filter((item, idx) => idx < 5),
+        relatedCategoryProjects: relatedCategoryProjects.projects.filter((item, idx) => idx < 5),
+      });
       console.log(relatedCategoryProjects, relatedVillageProjects);
     } catch (e) {
       console.log(e);
@@ -72,9 +75,9 @@ class ProjectDetailsScreen extends PureComponent<Props, State> {
     });
   };
 
-  _onPrevProjectsActionPress = () => {
+  _onPrevProjectsActionPress = (project?: Project) => {
     this.props.navigation.push(navigationConstants.SCREEN_RELATED_PROJECTS, {
-      [navigationConstants.SCREEN_PARAM_PROJECT]: this.state.project,
+      [navigationConstants.SCREEN_PARAM_PROJECT]: project ? project : this.state.project,
       [navigationConstants.SCREEN_PARAM_RELATED_PROJECT_TYPE]: RelatedProjectsType.Village,
     });
   };
@@ -120,6 +123,7 @@ class ProjectDetailsScreen extends PureComponent<Props, State> {
                 id: translationConstants.PROJECT_ACTION_TEXT_PREV_PROJECT_WORK,
               })}
               projects={this.state.relatedCategoryProjects}
+              onItemPress={this._onPrevProjectsActionPress}
               children={<Button buttonStyle={styles.actionBtn}
                                 titleStyle={styles.actionBtnText}
                                 title={this.props.intl.formatMessage({

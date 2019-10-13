@@ -3,36 +3,48 @@ import { Pagination, Project, ProjectsWithPagination } from '../types';
 import { apiConstants } from '../constants';
 
 export const getDonationProjects = async (localLang: string, pageNumber?: number): Promise<ProjectsWithPagination> => {
-  const { data } = await requestFactory.get(apiConstants.PROJECTS_BY_STATUS, {
-    status: apiConstants.PROJECTS_STATUS_DONATION,
-    locale: localLang,
-    page: pageNumber,
-  });
-  const projects = mapResponseToProjectList(data.data);
-  const pagination = mapResponseToPagination(data.meta);
-  return { projects, pagination };
+  try {
+    const { data } = await requestFactory.get(apiConstants.PROJECTS_BY_STATUS, {
+      status: apiConstants.PROJECTS_STATUS_DONATION,
+      locale: localLang,
+      page: pageNumber,
+    });
+    const projects = mapResponseToProjectList(data.data);
+    const pagination = mapResponseToPagination(data.meta);
+    return { projects, pagination };
+  } catch (e) {
+    throw new Error('Check Your Internet Connection!' + e.errorMessage);
+  }
 };
 
 export const getExecutionProjects = async (localLang: string, pageNumber?: number): Promise<ProjectsWithPagination> => {
-  const { data } = await requestFactory.get(apiConstants.PROJECTS_BY_STATUS, {
-    status: apiConstants.PROJECT_STATUS_EXECUTION,
-    locale: localLang,
-    page: pageNumber,
-  });
-  const projects = mapResponseToProjectList(data.data);
-  const pagination = mapResponseToPagination(data.meta);
-  return { projects, pagination };
+  try {
+    const { data } = await requestFactory.get(apiConstants.PROJECTS_BY_STATUS, {
+      status: apiConstants.PROJECT_STATUS_EXECUTION,
+      locale: localLang,
+      page: pageNumber,
+    });
+    const projects = mapResponseToProjectList(data.data);
+    const pagination = mapResponseToPagination(data.meta);
+    return { projects, pagination };
+  } catch (e) {
+    throw new Error('Check Your Internet Connection!' + e.errorMessage);
+  }
 };
 
 export const getDoneProjects = async (localLang: string, pageNumber?: number): Promise<ProjectsWithPagination> => {
-  const { data } = await requestFactory.get(apiConstants.PROJECTS_BY_STATUS, {
-    status: apiConstants.PROJECT_STATUS_FINISHED,
-    locale: localLang,
-    page: pageNumber,
-  });
-  const projects = mapResponseToProjectList(data.data);
-  const pagination = mapResponseToPagination(data.meta);
-  return { projects, pagination };
+  try {
+    const { data } = await requestFactory.get(apiConstants.PROJECTS_BY_STATUS, {
+      status: apiConstants.PROJECT_STATUS_FINISHED,
+      locale: localLang,
+      page: pageNumber,
+    });
+    const projects = mapResponseToProjectList(data.data);
+    const pagination = mapResponseToPagination(data.meta);
+    return { projects, pagination };
+  } catch (e) {
+    throw new Error('Check Your Internet Connection!' + e.errorMessage);
+  }
 };
 
 export const getAllProjects = async (): Promise<any> => {
@@ -40,14 +52,18 @@ export const getAllProjects = async (): Promise<any> => {
 };
 
 export const getRelatedProjects = async (relatedToType: string, relatedToId: number, localLang: string, pageNumber?: number): Promise<any> => {
-  const { data } = await requestFactory.get(apiConstants.RELATED_PROJECTS, {
-    [relatedToType]: relatedToId,
-    locale: localLang,
-    page: pageNumber,
-  });
-  const projects = mapResponseToProjectList(data.data);
-  const pagination = mapResponseToPagination(data.meta);
-  return { projects, pagination };
+  try {
+    const { data } = await requestFactory.get(apiConstants.RELATED_PROJECTS, {
+      [relatedToType]: relatedToId,
+      locale: localLang,
+      page: pageNumber,
+    });
+    const projects = mapResponseToProjectList(data.data);
+    const pagination = mapResponseToPagination(data.meta);
+    return { projects, pagination };
+  }catch (e) {
+    throw new Error('Check Your Internet Connection!' + e.errorMessage);
+  }
 };
 
 export const donateForProject = async (donationData): Promise<any> => {

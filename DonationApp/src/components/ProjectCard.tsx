@@ -4,7 +4,7 @@
 
 import React, { PureComponent } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { Badge, Button, Card } from 'react-native-elements';
+import { Badge, Button, Card, Icon } from 'react-native-elements';
 import { injectIntl, IntlShape } from 'react-intl';
 import { Project } from '../types';
 import { colorConstants, translationConstants } from '../constants';
@@ -49,6 +49,7 @@ class ProjectCard extends PureComponent<Props, State> {
             <View style={styles.titlesView}>
               <Text style={[styles.text, styles.projectCountry]}>{this.props.project.country || 'Egypt'}</Text>
               <Text style={[styles.text, styles.projectTitle]}>{this.props.project.name}</Text>
+
             </View>
             <View style={styles.costView}>
               {this.props.project.cost && <Badge status="success"
@@ -57,6 +58,9 @@ class ProjectCard extends PureComponent<Props, State> {
                                                  badgeStyle={styles.badge}
                                                  containerStyle={styles.badgeContainer}
               />}
+            </View>
+            <View style={styles.collapsedIcon}>
+              <Icon name={this.state.isDetailsCollapsed ? 'down' : 'up'} type={'antdesign'}/>
             </View>
           </View>
           {this.state.isDetailsCollapsed && <Progress isRTL
@@ -150,6 +154,10 @@ const styles = StyleSheet.create({
   },
   progress: {
     marginVertical: 10,
+  },
+  collapsedIcon: {
+    marginLeft: 20,
+    marginTop: 5,
   },
 });
 

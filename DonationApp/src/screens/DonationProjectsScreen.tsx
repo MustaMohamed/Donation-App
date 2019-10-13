@@ -3,9 +3,9 @@
  */
 
 import React, { PureComponent } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, ToastAndroid, View } from 'react-native';
 import { colorConstants, navigationConstants, translationConstants } from '../constants';
-import { ProjectsList, TabItem } from '../components';
+import { ProjectsList } from '../components';
 import { Language, Languages, Project, ProjectsWithPagination } from '../types';
 import { NavigationStackProp } from 'react-navigation-stack';
 import { NavigationParams, NavigationState } from 'react-navigation';
@@ -40,9 +40,13 @@ class DonationProjectsScreen extends PureComponent<Props, State> {
   };
 
   async componentDidMount() {
-    this.props.showUiLoader();
-    await this._refreshProjectsList();
-    this.props.hideUiLoader();
+    try {
+      this.props.showUiLoader();
+      await this._refreshProjectsList();
+      this.props.hideUiLoader();
+    } catch (e) {
+      ToastAndroid.show(e.errorMessage, ToastAndroid.SHORT);
+    }
   }
 
   onProjectItemPress = (item: Project) => {
@@ -56,12 +60,16 @@ class DonationProjectsScreen extends PureComponent<Props, State> {
   };
 
   onEndReached = async () => {
-    const currentPageNumber = this.props.donationProjects.pagination.page;
-    const totalPages = this.props.donationProjects.pagination.totalPages;
-    if (currentPageNumber < totalPages) {
-      this.props.showUiLoader();
-      await this._refreshProjectsList(currentPageNumber + 1);
-      this.props.hideUiLoader();
+    try {
+      const currentPageNumber = this.props.donationProjects.pagination.page;
+      const totalPages = this.props.donationProjects.pagination.totalPages;
+      if (currentPageNumber < totalPages) {
+        this.props.showUiLoader();
+        await this._refreshProjectsList(currentPageNumber + 1);
+        this.props.hideUiLoader();
+      }
+    } catch (e) {
+      ToastAndroid.show(e.errorMessage, ToastAndroid.SHORT);
     }
   };
 

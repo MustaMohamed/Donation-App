@@ -11,7 +11,7 @@ import { ActionCreator, Dispatch } from 'redux';
 import { Languages, ProjectsActions, ProjectsState, ProjectsWithPagination } from '../../types';
 import { ThunkAction } from 'redux-thunk';
 import { projects } from '../../utils';
-import { projectsActionsConstants } from '../../constants/redux-store/actions';
+import { appActionsConstants, projectsActionsConstants } from '../../constants';
 import { projectsService } from '../../services';
 
 type ProjectsThunkAction = ThunkAction<Promise<any>, ProjectsState, null, ProjectsActions>;
@@ -28,7 +28,11 @@ export const getDonationProjectsAction: ActionCreator<ProjectsThunkAction> = (lo
         },
       });
     } catch (e) {
-      console.log(e);
+      console.log(e.errorMessage);
+      dispatch({
+        type: appActionsConstants.HIDE_APP_LOADER
+      });
+      throw new Error(e.errorMessage);
     }
   };
 };
@@ -45,7 +49,11 @@ export const getExecutionProjectsAction: ActionCreator<ProjectsThunkAction> = (l
         },
       });
     } catch (e) {
-      console.log(e);
+      console.log(e.errorMessage);
+      dispatch({
+        type: appActionsConstants.HIDE_APP_LOADER
+      });
+      throw new Error(e.errorMessage);
     }
   };
 };
@@ -62,7 +70,11 @@ export const getDoneProjectsAction: ActionCreator<ProjectsThunkAction> = (localL
         },
       });
     } catch (e) {
-      console.log(e);
+      console.log(e.errorMessage);
+      dispatch({
+        type: appActionsConstants.HIDE_APP_LOADER
+      });
+      throw new Error(e.errorMessage);
     }
   };
 };
@@ -76,7 +88,11 @@ export const getAllProjectsAction: ActionCreator<ProjectsThunkAction> = (): Proj
         payload: projects,
       });
     } catch (e) {
-      console.log(e);
+      console.log(e.errorMessage);
+      dispatch({
+        type: appActionsConstants.HIDE_APP_LOADER
+      });
+      throw new Error(e.errorMessage);
     }
   };
 };
