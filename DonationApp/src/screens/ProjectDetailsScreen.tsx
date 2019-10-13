@@ -88,6 +88,10 @@ class ProjectDetailsScreen extends PureComponent<Props, State> {
     });
   };
 
+  _navigateToHome = () => {
+    this.props.navigation.navigate(navigationConstants.SCREEN_DONATION_PROJECTS);
+  };
+
   _renderGalleryItem({ item, index }) {
     return (
       <Image
@@ -142,13 +146,14 @@ class ProjectDetailsScreen extends PureComponent<Props, State> {
                                 })} onPress={this._onPrevProjectsActionPress}/>}
             />
           </View>
-
           <View style={styles.donateView}>
             <Button buttonStyle={styles.donateBtn}
                     titleStyle={styles.actionBtnText}
-                    title={this.props.intl.formatMessage({
+                    title={this.state.project.isCostCollectedDone ? this.props.intl.formatMessage({
+                      id: translationConstants.MORE_PROJECTS_WAITING,
+                    }) : this.props.intl.formatMessage({
                       id: translationConstants.DONATE,
-                    })} onPress={this._onDonateActionPress}/>
+                    })} onPress={this.state.project.isCostCollectedDone ? this._navigateToHome : this._onDonateActionPress}/>
           </View>
         </ScrollView>
 
