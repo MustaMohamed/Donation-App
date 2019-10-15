@@ -109,7 +109,6 @@ class DonationProjectsScreen extends PureComponent<Props, State> {
       id: -1,
     });
     this.setState({ filtersRanges: filterRanges });
-    console.log(filterRanges);
   };
 
   _applyProjectsFilter = () => {

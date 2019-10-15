@@ -70,7 +70,6 @@ class FinishedProjectsScreen extends PureComponent<Props, State> {
   }
 
   componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<State>, snapshot?: any): void {
-    console.log('update', prevProps.doneProjects, this.props.doneProjects);
     if (this.props.doneProjects !== prevProps.doneProjects) {
       this._constructProjectsCountries();
       this._constructCostFilterRanges();
@@ -83,7 +82,6 @@ class FinishedProjectsScreen extends PureComponent<Props, State> {
     let countries = this.props.doneProjects.projects.map((item, idx) => ({ value: item.country, id: idx })).filter(item => item.value !== undefined);
     countries.unshift({ value: this.props.intl.formatMessage({ id: translationConstants.FILTER_ALL_COUNTRIES }), id: -1 });
     this.setState({ countries: [...new Set(countries)] });
-    console.log(countries);
   };
 
   _constructCostFilterRanges = () => {
@@ -111,7 +109,6 @@ class FinishedProjectsScreen extends PureComponent<Props, State> {
       id: -1,
     });
     this.setState({ filtersRanges: filterRanges });
-    console.log(filterRanges);
   };
 
   _applyProjectsFilter = () => {

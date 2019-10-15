@@ -32,3 +32,8 @@ export interface FilterRange {
   to: number;
   id: number;
 };
+
+export interface Category {
+  id: number;
+  name: string;
+}

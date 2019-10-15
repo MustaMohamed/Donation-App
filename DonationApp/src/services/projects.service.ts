@@ -61,9 +61,14 @@ export const getRelatedProjects = async (relatedToType: string, relatedToId: num
     const projects = mapResponseToProjectList(data.data);
     const pagination = mapResponseToPagination(data.meta);
     return { projects, pagination };
-  }catch (e) {
+  } catch (e) {
     throw new Error('Check Your Internet Connection!' + e.errorMessage);
   }
+};
+
+export const getProjectCategories = () => {
+  // TODO: add get categories request
+  return [{ name: 'A', id: 1 }, { name: 'B', id: 2 }, { name: 'C', id: 3 }];
 };
 
 export const donateForProject = async (donationData): Promise<any> => {
@@ -116,4 +121,5 @@ export default {
   getRelatedProjects,
   getAllProjects,
   donateForProject,
+  getProjectCategories,
 };

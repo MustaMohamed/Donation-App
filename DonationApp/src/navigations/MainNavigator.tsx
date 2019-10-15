@@ -17,7 +17,7 @@ export const MainNavigator = createStackNavigator({
                             color={colorConstants.PRIMARY_BLACK}
                             type={'entypo'}
                             size={28}/>,*/
-          headerLeft: <DrawerToggle onTogglePress={() => navigation.toggleDrawer()}/>,
+          headerLeft: <DrawerToggle onTogglePress={() => navigation.openDrawer()}/>,
           headerLeftContainerStyle: { padding: 10 },
         };
       },

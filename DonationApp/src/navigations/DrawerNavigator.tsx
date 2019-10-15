@@ -12,4 +12,5 @@ export const DrawerNavigator = createDrawerNavigator({
     // drawerPosition: 'left',
     drawerType: 'slide',
     contentComponent: props => <DrawerContent/>,
+
   });

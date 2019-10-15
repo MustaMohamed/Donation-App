@@ -1,4 +1,4 @@
-import { Language } from '../common';
+import { Category, Language } from '../common';
 import { ProjectsWithPagination } from '../models';
 
 export interface AppState {
@@ -10,4 +10,8 @@ export interface ProjectsState {
   donationProjects: ProjectsWithPagination;
   executionProjects: ProjectsWithPagination;
   doneProjects: ProjectsWithPagination;
+  categories: {
+    categoriesList: Category[];
+    activeCategory: Category;
+  }
 }

@@ -8,7 +8,7 @@
 * */
 
 import { ActionCreator, Dispatch } from 'redux';
-import { Languages, ProjectsActions, ProjectsState, ProjectsWithPagination } from '../../types';
+import { Category, Languages, ProjectsActions, ProjectsState, ProjectsWithPagination } from '../../types';
 import { ThunkAction } from 'redux-thunk';
 import { projects } from '../../utils';
 import { appActionsConstants, projectsActionsConstants } from '../../constants';
@@ -30,7 +30,7 @@ export const getDonationProjectsAction: ActionCreator<ProjectsThunkAction> = (lo
     } catch (e) {
       console.log(e.errorMessage);
       dispatch({
-        type: appActionsConstants.HIDE_APP_LOADER
+        type: appActionsConstants.HIDE_APP_LOADER,
       });
       throw new Error(e.errorMessage);
     }
@@ -51,7 +51,7 @@ export const getExecutionProjectsAction: ActionCreator<ProjectsThunkAction> = (l
     } catch (e) {
       console.log(e.errorMessage);
       dispatch({
-        type: appActionsConstants.HIDE_APP_LOADER
+        type: appActionsConstants.HIDE_APP_LOADER,
       });
       throw new Error(e.errorMessage);
     }
@@ -72,7 +72,7 @@ export const getDoneProjectsAction: ActionCreator<ProjectsThunkAction> = (localL
     } catch (e) {
       console.log(e.errorMessage);
       dispatch({
-        type: appActionsConstants.HIDE_APP_LOADER
+        type: appActionsConstants.HIDE_APP_LOADER,
       });
       throw new Error(e.errorMessage);
     }
@@ -90,10 +90,44 @@ export const getAllProjectsAction: ActionCreator<ProjectsThunkAction> = (): Proj
     } catch (e) {
       console.log(e.errorMessage);
       dispatch({
-        type: appActionsConstants.HIDE_APP_LOADER
+        type: appActionsConstants.HIDE_APP_LOADER,
       });
       throw new Error(e.errorMessage);
     }
   };
 };
 
+export const getProjectCategoriesAction: ActionCreator<ProjectsThunkAction> = (): ProjectsThunkAction => {
+  return async (dispatch: Dispatch) => {
+    try {
+      const results = await projectsService.getProjectCategories();
+      dispatch({
+        type: projectsActionsConstants.GET_PROJECT_CATEGORIES,
+        payload: results,
+      });
+    } catch (e) {
+      console.log(e.errorMessage);
+      dispatch({
+        type: appActionsConstants.HIDE_APP_LOADER,
+      });
+      throw new Error(e.errorMessage);
+    }
+  };
+};
+
+export const changeActiveCategoryAction: ActionCreator<ProjectsThunkAction> = (activeCategory: Category): ProjectsThunkAction => {
+  return async (dispatch: Dispatch) => {
+    try {
+      dispatch({
+        type: projectsActionsConstants.GET_PROJECT_CATEGORIES,
+        payload: activeCategory,
+      });
+    } catch (e) {
+      console.log(e.errorMessage);
+      dispatch({
+        type: appActionsConstants.HIDE_APP_LOADER,
+      });
+      throw new Error(e.errorMessage);
+    }
+  };
+};

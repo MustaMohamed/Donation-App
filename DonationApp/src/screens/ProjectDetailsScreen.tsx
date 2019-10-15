@@ -60,7 +60,6 @@ class ProjectDetailsScreen extends PureComponent<Props, State> {
         relatedVillageProjects: relatedVillageProjects.projects.filter((item, idx) => idx < 5),
         relatedCategoryProjects: relatedCategoryProjects.projects.filter((item, idx) => idx < 5),
       });
-      console.log(relatedCategoryProjects, relatedVillageProjects);
     } catch (e) {
       console.log(e);
     } finally {

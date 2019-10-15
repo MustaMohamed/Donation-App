@@ -17,7 +17,13 @@ const initialState: ProjectsState = {
     projects: [],
     pagination: null,
   },
-
+  categories: {
+    activeCategory: {
+      name: '',
+      id: -1,
+    },
+    categoriesList: [],
+  },
 };
 
 export const projectsReducer: Reducer<ProjectsState, ProjectsActions> = (state: ProjectsState = initialState, action: ProjectsActions): ProjectsState => {
@@ -56,6 +62,23 @@ export const projectsReducer: Reducer<ProjectsState, ProjectsActions> = (state: 
         } as ProjectsWithPagination : {
           projects: action.payload.projects,
           pagination: action.payload.pagination,
+        },
+      };
+    case projectsActionsConstants.GET_PROJECT_CATEGORIES:
+      const { categories } = state;
+      return {
+        ...state,
+        categories: {
+          ...categories,
+          categoriesList: action.payload,
+        },
+      };
+    case projectsActionsConstants.CHANGE_ACTIVE_CATEGORY:
+      return {
+        ...state,
+        categories: {
+          ...categories,
+          activeCategory: action.payload,
         },
       };
     default:

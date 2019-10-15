@@ -1,6 +1,7 @@
 import { Action } from 'redux';
 import { projectsActionsConstants } from '../../../constants';
 import { ProjectsWithPagination } from '../../models';
+import { Category } from '../../common';
 
 interface ProjectsActionsPayload extends ProjectsWithPagination {
   withPages: boolean;
@@ -22,4 +23,14 @@ export interface GetDoneProjectsAction extends Action {
   payload: ProjectsActionsPayload;
 }
 
-export type ProjectsActions = GetDonationProjectsAction | GetExecutionProjectsAction | GetDoneProjectsAction;
+export interface GetProjectCategoriesAction extends Action {
+  type: typeof projectsActionsConstants.GET_PROJECT_CATEGORIES,
+  payload: Category[]
+}
+
+export interface ChangeActiveCategoryAction {
+  type: typeof projectsActionsConstants.GET_PROJECT_CATEGORIES,
+  payload: Category;
+}
+
+export type ProjectsActions = GetDonationProjectsAction | GetExecutionProjectsAction | GetDoneProjectsAction | GetProjectCategoriesAction | ChangeActiveCategoryAction;
