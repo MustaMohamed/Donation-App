@@ -11,8 +11,10 @@
 import React from 'react';
 import { StyleSheet } from 'react-native';
 import Application from './src/Application';
+import { enableScreens, useScreens } from 'react-native-screens';
 
-
+enableScreens();
+useScreens(true);
 const App = () => {
   return (
     <Application/>
