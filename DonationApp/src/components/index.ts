@@ -5,6 +5,7 @@ import DrawerContent from './DrawerContent';
 import TabItem from './TabItem';
 import ProjectDetails from './ProjectDetails';
 import RelatedProjectsList from './RelatedProjectsList';
+import Filters from './Filters';
 
 export * from './ProgressBar';
 export {
@@ -15,4 +16,5 @@ export {
   TabItem,
   ProjectDetails,
   RelatedProjectsList,
+  Filters,
 };

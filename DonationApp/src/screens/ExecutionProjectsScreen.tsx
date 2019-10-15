@@ -6,7 +6,7 @@ import React, { PureComponent } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Project, ProjectsWithPagination } from '../types/models';
 import { colorConstants, navigationConstants, translationConstants } from '../constants';
-import { ProjectsList } from '../components';
+import { Filters, ProjectsList } from '../components';
 import { NavigationStackProp } from 'react-navigation-stack';
 import { NavigationParams, NavigationState } from 'react-navigation';
 import { getExecutionProjectsAction, hideUiLoaderAction, showUiLoaderAction } from '../redux-store/actions';
@@ -26,10 +26,29 @@ interface Props {
 }
 
 interface State {
-
+  categoryFilterValue: string;
+  costFilterRange: {
+    value: string;
+    from: number;
+    to: number;
+    id: number;
+  };
 }
 
 class ExecutionProjectsScreen extends PureComponent<Props, State> {
+  constructor(props) {
+    super(props);
+    this.state = {
+      categoryFilterValue: 'All Categories',
+      costFilterRange: {
+        value: '$100 - 500',
+        from: 100,
+        to: 500,
+        id: 0,
+      },
+    };
+  }
+
   static navigationOptions = ({ screenProps, navigation }) => {
     const title = screenProps.intl.formatMessage({ id: translationConstants.SCREEN_EXECUTION_PROJECTS_TAB_TITLE });
     return {
@@ -68,14 +87,26 @@ class ExecutionProjectsScreen extends PureComponent<Props, State> {
   _refreshProjectsList = async (page?: number) => {
     await this.props.getExecutionProjects(this.props.language.currentLanguage || Languages.En, page);
   };
+  _onCategoryMenuChange = (value) => {
+    this.setState({ categoryFilterValue: value });
+  };
+
+  _onCostRangeMenuChange = (value) => {
+    this.setState({ costFilterRange: value });
+  };
 
   render() {
     return (
       <View style={styles.startupContainer}>
+        <Filters categoriesData={[{ value: 'A', id: 1 }, { value: 'B', id: 2 }]}
+                 costFilterData={[{ value: '$100 - 300', from: 100, to: 300, id: 1 }, { value: '$300 - 500', from: 500, to: 800, id: 2 }]}
+                 onCategoryValueChange={this._onCategoryMenuChange}
+                 onFilterRangeChange={this._onCostRangeMenuChange}
+        />
         <ProjectsList onItemPress={this.onProjectItemPress}
                       onListRefresh={this.onProjectsListRefresh}
                       onEndReached={this.onEndReached}
-                      projects={this.props.executionProjects.projects}/>
+                      projects={this.props.executionProjects.projects.filter(item => item.cost >= this.state.costFilterRange.from && item.cost <= this.state.costFilterRange.to)}/>
       </View>
     );
   }
@@ -99,5 +130,19 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'flex-start',
     backgroundColor: colorConstants.SECONDARY_WHITE,
+  },
+  filtersView: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginVertical: 10,
+    marginHorizontal: 5,
+  },
+  dropdownContainer: {
+    backgroundColor: colorConstants.PRIMARY_WHITE,
+    width: '49.5%',
+    height: 50,
+    borderRadius: 3,
+    paddingVertical: 0,
+    paddingHorizontal: 8,
   },
 });

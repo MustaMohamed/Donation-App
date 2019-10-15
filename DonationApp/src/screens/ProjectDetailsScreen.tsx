@@ -4,7 +4,7 @@
 
 import React, { PureComponent } from 'react';
 import { Dimensions, ScrollView, StyleSheet, Text, View } from 'react-native';
-import { NavigationParams, NavigationState } from 'react-navigation';
+import { NavigationEvents, NavigationParams, NavigationState } from 'react-navigation';
 import { Project, ProjectsWithPagination, RelatedProjectsType } from '../types';
 import { injectIntl, IntlShape } from 'react-intl';
 import { apiConstants, colorConstants, navigationConstants, translationConstants } from '../constants';
@@ -104,6 +104,12 @@ class ProjectDetailsScreen extends PureComponent<Props, State> {
   render() {
     return (
       <View style={styles.detailsContainer}>
+        <NavigationEvents
+          onWillFocus={payload => console.log('will focus', payload)}
+          onDidFocus={payload => console.log('did focus', payload)}
+          onWillBlur={payload => console.log('will blur', payload)}
+          onDidBlur={payload => console.log('did blur', payload)}
+        />
         <ScrollView>
           <Image source={{ uri: this.state.project.image }} containerStyle={styles.image}/>
           <View style={styles.projectTitleView}>
