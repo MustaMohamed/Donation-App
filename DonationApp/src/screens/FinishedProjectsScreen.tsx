@@ -70,8 +70,8 @@ class FinishedProjectsScreen extends PureComponent<Props, State> {
   }
 
   componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<State>, snapshot?: any): void {
-    console.log('update', prevProps.executionProjects, this.props.executionProjects);
-    if (this.props.executionProjects !== prevProps.executionProjects) {
+    console.log('update', prevProps.doneProjects, this.props.doneProjects);
+    if (this.props.doneProjects !== prevProps.doneProjects) {
       this._constructProjectsCountries();
       this._constructCostFilterRanges();
       this._applyProjectsFilter();
@@ -80,14 +80,14 @@ class FinishedProjectsScreen extends PureComponent<Props, State> {
 
 
   _constructProjectsCountries = () => {
-    let countries = this.props.executionProjects.projects.map((item, idx) => ({ value: item.country, id: idx })).filter(item => item.value !== undefined);
+    let countries = this.props.doneProjects.projects.map((item, idx) => ({ value: item.country, id: idx })).filter(item => item.value !== undefined);
     countries.unshift({ value: this.props.intl.formatMessage({ id: translationConstants.FILTER_ALL_COUNTRIES }), id: -1 });
     this.setState({ countries: [...new Set(countries)] });
     console.log(countries);
   };
 
   _constructCostFilterRanges = () => {
-    const sortedItem = this.props.executionProjects.projects.sort((first, second) => (first.cost > second.cost ? 1 : (first.cost < second.cost ? -1 : 0)))
+    const sortedItem = this.props.doneProjects.projects.sort((first, second) => (first.cost > second.cost ? 1 : (first.cost < second.cost ? -1 : 0)))
       .map(item => item.cost);
     const distinct = new Set<number>(sortedItem);
     const costsList = [...distinct];
@@ -116,7 +116,7 @@ class FinishedProjectsScreen extends PureComponent<Props, State> {
 
   _applyProjectsFilter = () => {
     this.setState({
-      projects: this.props.executionProjects.projects.filter(
+      projects: this.props.doneProjects.projects.filter(
         item => (((item.cost <= this.state.costFilterRangeValue.to && item.cost >= this.state.costFilterRangeValue.from) || this.state.costFilterRangeValue.id === -1)
           && (item.country === this.state.countiesFilterValue.value || this.state.countiesFilterValue.id === -1))),
     });
