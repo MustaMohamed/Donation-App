@@ -10,18 +10,17 @@ import { Icon } from 'react-native-elements';
 
 
 interface Props {
-  categoriesData: {
-    value: string;
-    id: number
-  }[];
+  countriesData: { value: string; id: number; }[];
   costFilterData: {
     value: string;
     from: number;
     to: number;
     id: number;
   }[];
-  onCategoryValueChange: Function;
+  onCountryValueChange: Function;
   onFilterRangeChange: Function;
+  defaultRangeValue?: string;
+  defaultCountryValue?: string;
 }
 
 interface State {
@@ -34,8 +33,8 @@ class Filters extends PureComponent<Props, State> {
     this.state = {};
   }
 
-  _onCategoryMenuChange = (idx, value) => {
-    this.props.onCategoryValueChange(this.props.categoriesData[idx]);
+  _onCountryMenuChange = (idx, value) => {
+    this.props.onCountryValueChange(this.props.countriesData[idx]);
   };
 
   _onCostRangeMenuChange = (idx, value) => {
@@ -47,14 +46,16 @@ class Filters extends PureComponent<Props, State> {
       <View>
         <View style={styles.filtersView}>
           <View style={styles.dropdownContainer}>
-            <ModalDropdown options={this.props.categoriesData.map(item => item.value)}
+            <ModalDropdown options={this.props.countriesData.map(item => item.value)}
                            renderSeparator={() => {
                            }}
                            style={styles.dropdownInput}
-                           dropdownStyle={[styles.dropdown, { height: Math.min(180, this.props.categoriesData.length * 36) }]}
-                           onSelect={this._onCategoryMenuChange}
-                           defaultValue={'All Countries'}
+                           dropdownStyle={[styles.dropdown, { height: Math.min(180, this.props.countriesData.length * 36) }]}
+                           onSelect={this._onCountryMenuChange}
+                           defaultValue={this.props.defaultCountryValue}
                            adjustFrame={(styles) => ({ ...styles, left: 5 })}
+                           textStyle={styles.text}
+                           dropdownTextStyle={styles.text}
             />
             <Icon name={'down'} type={'antdesign'} size={13}/>
           </View>
@@ -65,8 +66,10 @@ class Filters extends PureComponent<Props, State> {
                            style={styles.dropdownInput}
                            dropdownStyle={[styles.dropdown, { height: Math.min(180, this.props.costFilterData.length * 36) }]}
                            onSelect={this._onCostRangeMenuChange}
-                           defaultValue={'$100 - 500'}
+                           defaultValue={this.props.defaultRangeValue}
                            adjustFrame={(styles) => ({ ...styles, left: '50.5%' })}
+                           textStyle={styles.text}
+                           dropdownTextStyle={styles.text}
             />
             <Icon name={'down'} type={'antdesign'} size={13}/>
           </View>
@@ -83,6 +86,9 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     marginVertical: 10,
     marginHorizontal: 5,
+  },
+  text: {
+    textAlign: 'left',
   },
   dropdownContainer: {
     backgroundColor: colorConstants.PRIMARY_WHITE,

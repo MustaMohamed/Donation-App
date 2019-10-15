@@ -25,3 +25,10 @@ export enum PaymentMethod {
   Fawry,
   CreditCard
 }
+
+export interface FilterRange {
+  value: string;
+  from: number;
+  to: number;
+  id: number;
+};
