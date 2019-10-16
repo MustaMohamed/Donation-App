@@ -66,9 +66,18 @@ export const getRelatedProjects = async (relatedToType: string, relatedToId: num
   }
 };
 
-export const getProjectCategories = () => {
+export const getProjectCategories = async (localLang: string) => {
   // TODO: add get categories request
   return [{ name: 'A', id: 1 }, { name: 'B', id: 2 }, { name: 'C', id: 3 }];
+  try {
+    const { data } = await requestFactory.get(apiConstants.RELATED_PROJECTS, {
+      locale: localLang,
+    });
+    const categories = data.data.map(item => ({ name: item.name, id: item.id }));
+    return { categories };
+  } catch (e) {
+    throw new Error('Check Your Internet Connection!' + e.errorMessage);
+  }
 };
 
 export const donateForProject = async (donationData): Promise<any> => {
