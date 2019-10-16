@@ -3,7 +3,7 @@
  */
 
 import React, { PureComponent } from 'react';
-import { ScrollView, StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { ScrollView, StyleSheet, Text, ToastAndroid, TouchableOpacity } from 'react-native';
 import { Icon } from 'react-native-elements';
 import { ApplicationState } from '../redux-store/store';
 import { connect } from 'react-redux';
@@ -33,7 +33,11 @@ class DrawerContent extends PureComponent<Props> {
   }
 
   async componentDidMount() {
-    await this.props.getProjectCategories();
+    try {
+      await this.props.getProjectCategories(this.props.intl.locale);
+    } catch (e) {
+      ToastAndroid.show(e.message, ToastAndroid.SHORT);
+    }
   }
 
   navigateToSettings = () => {

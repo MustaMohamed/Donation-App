@@ -65,7 +65,7 @@ class FinishedProjectsScreen extends PureComponent<Props, State> {
       await this._refreshProjectsList();
       this.props.hideUiLoader();
     } catch (e) {
-      ToastAndroid.show(e.errorMessage, ToastAndroid.SHORT);
+      ToastAndroid.show(e, ToastAndroid.SHORT);
     }
   }
 

@@ -13,7 +13,7 @@ export const getDonationProjects = async (localLang: string, pageNumber?: number
     const pagination = mapResponseToPagination(data.meta);
     return { projects, pagination };
   } catch (e) {
-    throw new Error('Check Your Internet Connection!' + e.errorMessage);
+    throw new Error('Check Your Internet Connection! ' + e.message);
   }
 };
 
@@ -28,7 +28,7 @@ export const getExecutionProjects = async (localLang: string, pageNumber?: numbe
     const pagination = mapResponseToPagination(data.meta);
     return { projects, pagination };
   } catch (e) {
-    throw new Error('Check Your Internet Connection!' + e.errorMessage);
+    throw new Error('Check Your Internet Connection! ' + e.message);
   }
 };
 
@@ -43,7 +43,7 @@ export const getDoneProjects = async (localLang: string, pageNumber?: number): P
     const pagination = mapResponseToPagination(data.meta);
     return { projects, pagination };
   } catch (e) {
-    throw new Error('Check Your Internet Connection!' + e.errorMessage);
+    throw new Error('Check Your Internet Connection! ' + e.message);
   }
 };
 
@@ -52,11 +52,10 @@ export const getProjectById = async (projectId: number, localLang: string): Prom
     const { data } = await requestFactory.get(`${apiConstants.PROJECT_BY_ID}/${projectId}`, {
       locale: localLang,
     });
-    console.log(data);
     const projects = mapResponseToProjectList(data.data);
     return projects[0];
   } catch (e) {
-    throw new Error('Check Your Internet Connection!' + e.errorMessage);
+    throw new Error('Check Your Internet Connection! ' + e.message);
   }
 };
 
@@ -75,7 +74,7 @@ export const getRelatedProjects = async (relatedToType: string, relatedToId: num
     const pagination = mapResponseToPagination(data.meta);
     return { projects, pagination };
   } catch (e) {
-    throw new Error('Check Your Internet Connection!' + e.errorMessage);
+    throw new Error('Check Your Internet Connection! ' + e.message);
   }
 };
 
@@ -87,14 +86,19 @@ export const getProjectCategories = async (localLang: string) => {
     const categories = data.data.map(item => ({ name: item.name, id: item.id }));
     return categories;
   } catch (e) {
-    throw new Error('Check Your Internet Connection!' + e.errorMessage);
+    console.log('from categories ! ', e);
+    throw new Error('Check Your Internet Connection! ' + e.message);
   }
 };
 
 export const donateForProject = async (donationData): Promise<any> => {
-  const res = await requestFactory.post(apiConstants.DONATE, donationData);
-  const { message } = res.data;
-  return message;
+  try {
+    const res = await requestFactory.post(apiConstants.DONATE, donationData);
+    const { message } = res.data;
+    return message;
+  } catch (e) {
+    throw new Error('Check Your Internet Connection! ' + e.message);
+  }
 };
 
 const mapResponseToProjectList = (data): Project[] => {

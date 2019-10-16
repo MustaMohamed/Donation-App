@@ -64,9 +64,10 @@ class DonationProjectsScreen extends PureComponent<Props, State> {
     try {
       this.props.showUiLoader();
       await this._refreshProjectsList();
-      this.props.hideUiLoader();
     } catch (e) {
-      ToastAndroid.show(e.errorMessage, ToastAndroid.SHORT);
+      ToastAndroid.show(e.message, ToastAndroid.SHORT);
+    } finally {
+      this.props.hideUiLoader();
     }
   }
 
@@ -126,7 +127,11 @@ class DonationProjectsScreen extends PureComponent<Props, State> {
   };
 
   onProjectsListRefresh = async () => {
-    await this._refreshProjectsList();
+    try {
+      await this._refreshProjectsList();
+    } catch (e) {
+      ToastAndroid.show(e.message, ToastAndroid.SHORT);
+    }
   };
 
   onEndReached = async () => {
@@ -136,15 +141,21 @@ class DonationProjectsScreen extends PureComponent<Props, State> {
       if (currentPageNumber < totalPages) {
         this.props.showUiLoader();
         await this._refreshProjectsList(currentPageNumber + 1);
-        this.props.hideUiLoader();
       }
     } catch (e) {
-      ToastAndroid.show(e.errorMessage, ToastAndroid.SHORT);
+      ToastAndroid.show(e.message, ToastAndroid.SHORT);
+    } finally {
+      this.props.hideUiLoader();
     }
   };
 
   _refreshProjectsList = async (page?: number) => {
-    await this.props.getDonationProjects(this.props.language.currentLanguage || Languages.En, page);
+    try {
+      await this.props.getDonationProjects(this.props.language.currentLanguage || Languages.En, page);
+    } catch (e) {
+      console.log(e, e.message);
+      ToastAndroid.show(e.message, ToastAndroid.SHORT);
+    }
   };
 
   onCountryMenuChange = (value) => {

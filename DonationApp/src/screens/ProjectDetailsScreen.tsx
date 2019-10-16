@@ -99,7 +99,7 @@ class ProjectDetailsScreen extends PureComponent<Props, State> {
     try {
       await this._getProjectDetails();
     } catch (e) {
-      console.log(e);
+      console.log(e.message);
     } finally {
       this.props.hideUiLoader();
     }

@@ -28,11 +28,11 @@ export const getDonationProjectsAction: ActionCreator<ProjectsThunkAction> = (lo
         },
       });
     } catch (e) {
-      console.log(e.errorMessage);
+      console.log(e.message);
       dispatch({
         type: appActionsConstants.HIDE_APP_LOADER,
       });
-      throw new Error(e.errorMessage);
+      throw new Error(e.message);
     }
   };
 };
@@ -49,11 +49,11 @@ export const getExecutionProjectsAction: ActionCreator<ProjectsThunkAction> = (l
         },
       });
     } catch (e) {
-      console.log(e.errorMessage);
+      console.log(e.message);
       dispatch({
         type: appActionsConstants.HIDE_APP_LOADER,
       });
-      throw new Error(e.errorMessage);
+      throw new Error(e.message);
     }
   };
 };
@@ -70,11 +70,11 @@ export const getDoneProjectsAction: ActionCreator<ProjectsThunkAction> = (localL
         },
       });
     } catch (e) {
-      console.log(e.errorMessage);
+      console.log(e.message);
       dispatch({
         type: appActionsConstants.HIDE_APP_LOADER,
       });
-      throw new Error(e.errorMessage);
+      throw new Error(e.message);
     }
   };
 };
@@ -88,29 +88,29 @@ export const getAllProjectsAction: ActionCreator<ProjectsThunkAction> = (): Proj
         payload: projects,
       });
     } catch (e) {
-      console.log(e.errorMessage);
+      console.log(e.message);
       dispatch({
         type: appActionsConstants.HIDE_APP_LOADER,
       });
-      throw new Error(e.errorMessage);
+      throw new Error(e.message);
     }
   };
 };
 
-export const getProjectCategoriesAction: ActionCreator<ProjectsThunkAction> = (): ProjectsThunkAction => {
+export const getProjectCategoriesAction: ActionCreator<ProjectsThunkAction> = (localLang: string): ProjectsThunkAction => {
   return async (dispatch: Dispatch) => {
     try {
-      const results = await projectsService.getProjectCategories();
+      const results = await projectsService.getProjectCategories(localLang);
       dispatch({
         type: projectsActionsConstants.GET_PROJECT_CATEGORIES,
         payload: results,
       });
     } catch (e) {
-      console.log(e.errorMessage);
+      console.log(e.message);
       dispatch({
         type: appActionsConstants.HIDE_APP_LOADER,
       });
-      throw new Error(e.errorMessage);
+      throw new Error(e.message);
     }
   };
 };
@@ -123,11 +123,11 @@ export const changeActiveCategoryAction: ActionCreator<ProjectsThunkAction> = (a
         payload: activeCategory,
       });
     } catch (e) {
-      console.log(e.errorMessage);
+      console.log(e.message);
       dispatch({
         type: appActionsConstants.HIDE_APP_LOADER,
       });
-      throw new Error(e.errorMessage);
+      throw new Error(e.message);
     }
   };
 };
