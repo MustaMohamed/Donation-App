@@ -7,15 +7,16 @@ import { ScrollView, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { Icon } from 'react-native-elements';
 import { ApplicationState } from '../redux-store/store';
 import { connect } from 'react-redux';
-import { changeActiveCategoryAction, changeCurrentLanguageAction, getProjectCategoriesAction } from '../redux-store/actions';
+import { changeActiveCategoryAction, getProjectCategoriesAction } from '../redux-store/actions';
 import { FormattedMessage, injectIntl, IntlShape } from 'react-intl';
-import { AppState } from '../types/redux-store';
-import { Category, Languages } from '../types';
-import { translationConstants } from '../constants';
+import { AppState, Category } from '../types';
+import { colorConstants, navigationConstants, translationConstants } from '../constants';
+import { NavigationDrawerProp } from 'react-navigation-drawer';
+import { NavigationParams, NavigationState } from 'react-navigation';
 
 interface Props {
+  navigation: NavigationDrawerProp<NavigationState, NavigationParams>;
   intl: IntlShape;
-  changeAppCurrentLanguage: typeof changeCurrentLanguageAction;
   getProjectCategories: typeof getProjectCategoriesAction;
   changeActiveCategory: typeof changeActiveCategoryAction;
   app: AppState;
@@ -29,33 +30,35 @@ class DrawerContent extends PureComponent<Props> {
 
   constructor(props) {
     super(props);
-    console.log('content ctor');
+    console.log(props);
   }
 
   async componentDidMount() {
     await this.props.getProjectCategories();
   }
 
-  onChangeAppLanguage = () => {
-    const nextLanguage = this.props.app.language.currentLanguage === Languages.En ? Languages.Ar : Languages.En;
-    this.props.changeAppCurrentLanguage(nextLanguage);
+  navigateToSettings = () => {
+    this.props.navigation.navigate(navigationConstants.SCREEN_SETTINGS);
   };
 
   _onCategoryItemPress = (category) => {
-    this.props.changeActiveCategory(category)
+    this.props.changeActiveCategory && this.props.changeActiveCategory(category);
+    this.props.navigation.closeDrawer();
   };
 
   render() {
     return (
       <ScrollView contentContainerStyle={styles.container}>
-        <TouchableOpacity onPress={this.onChangeAppLanguage} style={styles.item}>
-          <Icon containerStyle={{ marginBottom: 10 }} name={'language'} type={'material'} size={22}/>
-          <Text style={styles.label}><FormattedMessage id={translationConstants.APP_LANGUAGE}/></Text>
+        <TouchableOpacity onPress={this.navigateToSettings} style={styles.item}>
+          <Text style={styles.label}><FormattedMessage id={translationConstants.SETTINGS}/></Text>
+          <Icon containerStyle={{ marginBottom: 10 }} name={'md-options'} type={'ionicon'} size={22}/>
         </TouchableOpacity>
-        {this.props.categories.categoriesList.map(item =>
-          <TouchableOpacity key={item.id} onPress={() => this._onCategoryItemPress(item)} style={styles.item}>
+        {this.props.categories.categoriesList && this.props.categories.categoriesList.map(item =>
+          <TouchableOpacity key={item.id}
+                            onPress={() => this._onCategoryItemPress(item)}
+                            style={[styles.item, item.id === this.props.categories.activeCategory.id && styles.activeItem]}>
+            <Text style={[styles.label, item.id === this.props.categories.activeCategory.id && styles.activeLabel]}>{item.name}</Text>
             <Icon containerStyle={{ marginBottom: 10 }} name={'language'} type={'material'} size={22}/>
-            <Text style={styles.label}>{item.name}</Text>
           </TouchableOpacity>,
         )}
       </ScrollView>
@@ -70,7 +73,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     width: '100%',
     height: '100%',
-    backgroundColor: '#fff',
+    backgroundColor: colorConstants.PRIMARY_WHITE,
     alignItems: 'flex-start',
     padding: 10,
   },
@@ -80,14 +83,21 @@ const styles = StyleSheet.create({
     paddingTop: 20,
     width: '100%',
     alignItems: 'center',
-    borderBottomColor: '#000',
+    borderBottomColor: colorConstants.PRIMARY_BLACK,
     borderBottomWidth: 1,
+  },
+  activeItem: {
+    borderBottomColor: colorConstants.PRIMARY_GRAY,
+    borderBottomWidth: 3,
   },
   label: {
     textAlign: 'left',
     fontSize: 16,
     marginBottom: 10,
-    color: 'rgba(0, 0, 0, .87)',
+    color: colorConstants.PRIMARY_BLACK,
+  },
+  activeLabel: {
+    // color: colorConstants.PRIMARY_GRAY,
   },
   iconContainer: {
     marginHorizontal: 16,
@@ -107,7 +117,6 @@ const mapStateToProps = (state: ApplicationState) => {
 };
 
 export default connect(mapStateToProps, {
-  changeAppCurrentLanguage: changeCurrentLanguageAction,
   getProjectCategories: getProjectCategoriesAction,
   changeActiveCategory: changeActiveCategoryAction,
-}) (injectIntl(DrawerContent));
+})(injectIntl(DrawerContent));

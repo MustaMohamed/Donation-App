@@ -74,10 +74,11 @@ export const projectsReducer: Reducer<ProjectsState, ProjectsActions> = (state: 
         },
       };
     case projectsActionsConstants.CHANGE_ACTIVE_CATEGORY:
+      const { categories:category } = state;
       return {
         ...state,
         categories: {
-          ...categories,
+          ...category,
           activeCategory: action.payload,
         },
       };

@@ -119,7 +119,7 @@ export const changeActiveCategoryAction: ActionCreator<ProjectsThunkAction> = (a
   return async (dispatch: Dispatch) => {
     try {
       dispatch({
-        type: projectsActionsConstants.GET_PROJECT_CATEGORIES,
+        type: projectsActionsConstants.CHANGE_ACTIVE_CATEGORY,
         payload: activeCategory,
       });
     } catch (e) {

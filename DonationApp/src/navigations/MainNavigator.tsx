@@ -12,11 +12,6 @@ export const MainNavigator = createStackNavigator({
         const title = screenProps.intl.formatMessage({ id: translationConstants.APP_TITLE, defaultMessage: 'Home' });
         return {
           title: title,
-          /*headerLeft: <Icon onPress={() => navigation.navigate(navigationConstants.SCREEN_SETTINGS)}
-                            name={'list'}
-                            color={colorConstants.PRIMARY_BLACK}
-                            type={'entypo'}
-                            size={28}/>,*/
           headerLeft: <DrawerToggle onTogglePress={() => navigation.openDrawer()}/>,
           headerLeftContainerStyle: { padding: 10 },
         };
