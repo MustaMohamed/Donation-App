@@ -47,6 +47,19 @@ export const getDoneProjects = async (localLang: string, pageNumber?: number): P
   }
 };
 
+export const getProjectById = async (projectId: number, localLang: string): Promise<any> => {
+  try {
+    const { data } = await requestFactory.get(`${apiConstants.PROJECT_BY_ID}/${projectId}`, {
+      locale: localLang,
+    });
+    console.log(data);
+    const projects = mapResponseToProjectList(data.data);
+    return projects[0];
+  } catch (e) {
+    throw new Error('Check Your Internet Connection!' + e.errorMessage);
+  }
+};
+
 export const getAllProjects = async (): Promise<any> => {
   return requestFactory.all([getDonationProjects(), getExecutionProjects(), getDoneProjects()]);
 };
@@ -67,14 +80,12 @@ export const getRelatedProjects = async (relatedToType: string, relatedToId: num
 };
 
 export const getProjectCategories = async (localLang: string) => {
-  // TODO: add get categories request
-  return [{ name: 'A', id: 1 }, { name: 'B', id: 2 }, { name: 'C', id: 3 }];
   try {
-    const { data } = await requestFactory.get(apiConstants.RELATED_PROJECTS, {
+    const { data } = await requestFactory.get(apiConstants.CATEGORIES, {
       locale: localLang,
     });
     const categories = data.data.map(item => ({ name: item.name, id: item.id }));
-    return { categories };
+    return categories;
   } catch (e) {
     throw new Error('Check Your Internet Connection!' + e.errorMessage);
   }
@@ -131,4 +142,5 @@ export default {
   getAllProjects,
   donateForProject,
   getProjectCategories,
+  getProjectById,
 };

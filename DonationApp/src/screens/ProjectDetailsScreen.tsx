@@ -30,12 +30,7 @@ interface State {
 
 class ProjectDetailsScreen extends PureComponent<Props, State> {
   state = {
-    project: {
-      village: {
-        id: 1,
-        name: 'dummy',
-      },
-    } as Project,
+    project: null,
     relatedCategoryProjects: [],
     relatedVillageProjects: [],
   };
@@ -48,23 +43,14 @@ class ProjectDetailsScreen extends PureComponent<Props, State> {
   };
 
   async componentDidMount() {
-    this.props.showUiLoader();
+   /* this.props.showUiLoader();
     try {
-      const project: Project = this.props.navigation.getParam(navigationConstants.SCREEN_PARAM_PROJECT);
-      this.setState({ project });
-      const relatedVillageType = apiConstants.RELATED_PROJECTS_VILLAGE;
-      const relatedCategoryType = apiConstants.RELATED_PROJECTS_CATEGORY;
-      const relatedVillageProjects: ProjectsWithPagination = await projectsService.getRelatedProjects(relatedVillageType, project.village.id, this.props.intl.locale);
-      const relatedCategoryProjects: ProjectsWithPagination = await projectsService.getRelatedProjects(relatedCategoryType, project.projectCategory.id, this.props.intl.locale);
-      this.setState({
-        relatedVillageProjects: relatedVillageProjects.projects.filter((item, idx) => idx < 5),
-        relatedCategoryProjects: relatedCategoryProjects.projects.filter((item, idx) => idx < 5),
-      });
+      await this._getProjectDetails();
     } catch (e) {
       console.log(e);
     } finally {
       this.props.hideUiLoader();
-    }
+    }*/
   }
 
   _onRelatedProjectsActionPress = () => {
@@ -91,25 +77,44 @@ class ProjectDetailsScreen extends PureComponent<Props, State> {
     this.props.navigation.navigate(navigationConstants.SCREEN_DONATION_PROJECTS);
   };
 
-  _renderGalleryItem({ item, index }) {
-    return (
-      <Image
-        containerStyle={styles.image}
-        source={{ uri: item }}
-      />
-    );
-  }
+  _getProjectDetails = async () => {
+    const project: Project = this.props.navigation.getParam(navigationConstants.SCREEN_PARAM_PROJECT);
+    const projectDetails = await projectsService.getProjectById(project.id, this.props.intl.locale);
+    this.setState({ project: projectDetails });
+    const relatedVillageType = apiConstants.RELATED_PROJECTS_VILLAGE;
+    const relatedCategoryType = apiConstants.RELATED_PROJECTS_CATEGORY;
+    const relatedVillageProjects: ProjectsWithPagination =
+      await projectsService.getRelatedProjects(relatedVillageType, projectDetails.village.id, this.props.intl.locale);
+    const relatedCategoryProjects: ProjectsWithPagination =
+      await projectsService.getRelatedProjects(relatedCategoryType, projectDetails.projectCategory.id, this.props.intl.locale);
+    this.setState({
+      relatedVillageProjects: relatedVillageProjects.projects.filter((item, idx) => idx < 5),
+      relatedCategoryProjects: relatedCategoryProjects.projects.filter((item, idx) => idx < 5),
+    });
+  };
+
+  _onNavigationDidFocus = async () => {
+    console.log('component focused');
+    this.props.showUiLoader();
+    try {
+      await this._getProjectDetails();
+    } catch (e) {
+      console.log(e);
+    } finally {
+      this.props.hideUiLoader();
+    }
+  };
 
   render() {
     return (
       <View style={styles.detailsContainer}>
         <NavigationEvents
           onWillFocus={payload => console.log('will focus', payload)}
-          onDidFocus={payload => console.log('did focus', payload)}
+          onDidFocus={this._onNavigationDidFocus}
           onWillBlur={payload => console.log('will blur', payload)}
           onDidBlur={payload => console.log('did blur', payload)}
         />
-        <ScrollView>
+        {this.state.project && <ScrollView>
           <Image source={{ uri: this.state.project.image }} containerStyle={styles.image}/>
           <View style={styles.projectTitleView}>
             <Text style={styles.projectTitle}>{this.state.project.name}</Text>
@@ -125,7 +130,6 @@ class ProjectDetailsScreen extends PureComponent<Props, State> {
 
 
           </View>
-
           <View>
             <RelatedProjectsList
               listTitle={this.props.intl.formatMessage({
@@ -160,8 +164,7 @@ class ProjectDetailsScreen extends PureComponent<Props, State> {
                       id: translationConstants.DONATE,
                     })} onPress={this.state.project.isCostCollectedDone ? this._navigateToHome : this._onDonateActionPress}/>
           </View>
-        </ScrollView>
-
+        </ScrollView>}
       </View>
     );
   }

@@ -7,4 +7,6 @@ export const apiConstants = {
   RELATED_PROJECTS_VILLAGE: 'village_id',
   RELATED_PROJECTS_CATEGORY: 'project_category_id',
   DONATE: 'donate',
+  PROJECT_BY_ID: 'projects',
+  CATEGORIES: 'categories',
 };

@@ -121,7 +121,7 @@ class ExecutionProjectsScreen extends PureComponent<Props, State> {
 
   onProjectItemPress = (item: Project) => {
     this.props.navigation.navigate(navigationConstants.SCREEN_PROJECT_DETAILS, {
-      [navigationConstants.SCREEN_PARAM_PROJECT]: item,
+      [navigationConstants.SCREEN_PARAM_PROJECT]: { name: item.name, id: item.id },
     });
   };
 

@@ -30,7 +30,6 @@ class DrawerContent extends PureComponent<Props> {
 
   constructor(props) {
     super(props);
-    console.log(props);
   }
 
   async componentDidMount() {
