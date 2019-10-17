@@ -43,27 +43,34 @@ class ProjectDetailsScreen extends PureComponent<Props, State> {
   };
 
   async componentDidMount() {
-   /* this.props.showUiLoader();
-    try {
-      await this._getProjectDetails();
-    } catch (e) {
-      console.log(e);
-    } finally {
-      this.props.hideUiLoader();
-    }*/
+    /* this.props.showUiLoader();
+     try {
+       await this._getProjectDetails();
+     } catch (e) {
+       console.log(e);
+     } finally {
+       this.props.hideUiLoader();
+     }*/
   }
 
-  _onRelatedProjectsActionPress = () => {
+  _onRelatedCategoryProjectsActionPress = () => {
     this.props.navigation.push(navigationConstants.SCREEN_RELATED_PROJECTS, {
       [navigationConstants.SCREEN_PARAM_PROJECT]: this.state.project,
       [navigationConstants.SCREEN_PARAM_RELATED_PROJECT_TYPE]: RelatedProjectsType.Category,
     });
   };
 
-  _onPrevProjectsActionPress = (project?: Project) => {
+  _onRelatedVillageProjectsActionPress = () => {
     this.props.navigation.push(navigationConstants.SCREEN_RELATED_PROJECTS, {
-      [navigationConstants.SCREEN_PARAM_PROJECT]: project ? project : this.state.project,
+      [navigationConstants.SCREEN_PARAM_PROJECT]: this.state.project,
       [navigationConstants.SCREEN_PARAM_RELATED_PROJECT_TYPE]: RelatedProjectsType.Village,
+    });
+  };
+
+  _onPrevProjectsActionPress = (project?: Project) => {
+    this.props.navigation.push(navigationConstants.SCREEN_PROJECT_DETAILS, {
+      [navigationConstants.SCREEN_PARAM_PROJECT]: project ?
+        { name: project.name, id: project.id } : { name: this.state.project.name, id: this.state.project.id },
     });
   };
 
@@ -127,8 +134,6 @@ class ProjectDetailsScreen extends PureComponent<Props, State> {
           </View>
           {this.state.project && <ProjectDetails project={this.state.project}/>}
           <View style={styles.actionsView}>
-
-
           </View>
           <View>
             <RelatedProjectsList
@@ -141,7 +146,7 @@ class ProjectDetailsScreen extends PureComponent<Props, State> {
                                 titleStyle={styles.actionBtnText}
                                 title={this.props.intl.formatMessage({
                                   id: translationConstants.VIEW_MORE,
-                                })} onPress={this._onRelatedProjectsActionPress}/>}
+                                })} onPress={this._onRelatedCategoryProjectsActionPress}/>}
             />
 
             <RelatedProjectsList
@@ -152,7 +157,7 @@ class ProjectDetailsScreen extends PureComponent<Props, State> {
                                 titleStyle={styles.actionBtnText}
                                 title={this.props.intl.formatMessage({
                                   id: translationConstants.VIEW_MORE,
-                                })} onPress={this._onPrevProjectsActionPress}/>}
+                                })} onPress={this._onRelatedVillageProjectsActionPress}/>}
             />
           </View>
           <View style={styles.donateView}>
