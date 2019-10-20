@@ -1,8 +1,10 @@
-import projectsService from './projects.service';
 import validationService from './validation.service';
 
-export * from './filter.service';
+import ProjectsFilterService from './filter.service';
+import ProjectsService from './projects.service';
+
 export {
-  projectsService,
   validationService,
+  ProjectsFilterService,
+  ProjectsService,
 };

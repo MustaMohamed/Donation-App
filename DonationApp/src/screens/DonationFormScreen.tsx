@@ -11,7 +11,7 @@ import { NavigationParams, NavigationState } from 'react-navigation';
 import { colorConstants, navigationConstants, translationConstants, validationConstants } from '../constants';
 import { PaymentMethod, ValidationField } from '../types';
 import PhoneInput from 'react-native-phone-input';
-import { projectsService, validationService } from '../services';
+import { ProjectsService, validationService } from '../services';
 import { connect } from 'react-redux';
 import { hideUiLoaderAction, showUiLoaderAction } from '../redux-store/actions';
 import { TextInputMask } from 'react-native-masked-text';
@@ -161,7 +161,7 @@ class DonationFormScreen extends PureComponent<Props, State> {
     if (this._formValidation()) {
       this.props.showUiLoader();
       const project = this.props.navigation.getParam(navigationConstants.SCREEN_PARAM_PROJECT);
-      const message = await projectsService.donateForProject({
+      const message = await ProjectsService.donateForProject({
         project_id: project.id,
         amount: this.state.donationAmount.value,
         name: this.state.donorDetailsIsVisible ? this.state.donorName.value : 'a',

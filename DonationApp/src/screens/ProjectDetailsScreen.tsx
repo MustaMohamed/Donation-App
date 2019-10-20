@@ -13,7 +13,7 @@ import { NavigationStackProp } from 'react-navigation-stack';
 import { ProjectDetails, RelatedProjectsList } from '../components';
 import { hideUiLoaderAction, showUiLoaderAction } from '../redux-store/actions';
 import { connect } from 'react-redux';
-import { projectsService } from '../services';
+import { ProjectsService } from '../services';
 
 interface Props {
   navigation: NavigationStackProp<NavigationState, NavigationParams>;
@@ -86,14 +86,14 @@ class ProjectDetailsScreen extends PureComponent<Props, State> {
 
   _getProjectDetails = async () => {
     const project: Project = this.props.navigation.getParam(navigationConstants.SCREEN_PARAM_PROJECT);
-    const projectDetails = await projectsService.getProjectById(project.id, this.props.intl.locale);
+    const projectDetails = await ProjectsService.getProjectById(project.id, this.props.intl.locale);
     this.setState({ project: projectDetails });
     const relatedVillageType = apiConstants.RELATED_PROJECTS_VILLAGE;
     const relatedCategoryType = apiConstants.RELATED_PROJECTS_CATEGORY;
     const relatedVillageProjects: ProjectsWithPagination =
-      await projectsService.getRelatedProjects(relatedVillageType, projectDetails.village.id, this.props.intl.locale);
+      await ProjectsService.getRelatedProjects(relatedVillageType, projectDetails.village.id, this.props.intl.locale);
     const relatedCategoryProjects: ProjectsWithPagination =
-      await projectsService.getRelatedProjects(relatedCategoryType, projectDetails.projectCategory.id, this.props.intl.locale);
+      await ProjectsService.getRelatedProjects(relatedCategoryType, projectDetails.projectCategory.id, this.props.intl.locale);
     this.setState({
       relatedVillageProjects: relatedVillageProjects.projects.filter((item, idx) => idx < 5),
       relatedCategoryProjects: relatedCategoryProjects.projects.filter((item, idx) => idx < 5),

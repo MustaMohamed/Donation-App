@@ -10,16 +10,15 @@
 import { ActionCreator, Dispatch } from 'redux';
 import { Category, Languages, ProjectsActions, ProjectsState, ProjectsWithPagination } from '../../types';
 import { ThunkAction } from 'redux-thunk';
-import { projects } from '../../utils';
 import { appActionsConstants, projectsActionsConstants } from '../../constants';
-import { projectsService } from '../../services';
+import { ProjectsService } from '../../services';
 
 type ProjectsThunkAction = ThunkAction<Promise<any>, ProjectsState, null, ProjectsActions>;
 
 export const getDonationProjectsAction: ActionCreator<ProjectsThunkAction> = (localLang: Languages, categoryId?: number, pageNumber?: number): ProjectsThunkAction => {
   return async (dispatch: Dispatch) => {
     try {
-      const results: ProjectsWithPagination = await projectsService.getDonationProjects(localLang, categoryId, pageNumber);
+      const results: ProjectsWithPagination = await ProjectsService.getDonationProjects(localLang, categoryId, pageNumber);
       dispatch({
         type: projectsActionsConstants.GET_DONATION_PROJECTS,
         payload: {
@@ -39,7 +38,7 @@ export const getDonationProjectsAction: ActionCreator<ProjectsThunkAction> = (lo
 export const getExecutionProjectsAction: ActionCreator<ProjectsThunkAction> = (localLang: Languages, categoryId?: number, pageNumber?): ProjectsThunkAction => {
   return async (dispatch: Dispatch) => {
     try {
-      const results: ProjectsWithPagination = await projectsService.getExecutionProjects(localLang, categoryId, pageNumber);
+      const results: ProjectsWithPagination = await ProjectsService.getExecutionProjects(localLang, categoryId, pageNumber);
       dispatch({
         type: projectsActionsConstants.GET_EXECUTION_PROJECTS,
         payload: {
@@ -59,7 +58,7 @@ export const getExecutionProjectsAction: ActionCreator<ProjectsThunkAction> = (l
 export const getDoneProjectsAction: ActionCreator<ProjectsThunkAction> = (localLang: Languages, categoryId?: number, pageNumber?): ProjectsThunkAction => {
   return async (dispatch: Dispatch) => {
     try {
-      const results: ProjectsWithPagination = await projectsService.getDoneProjects(localLang, categoryId, pageNumber);
+      const results: ProjectsWithPagination = await ProjectsService.getFinishedProjects(localLang, categoryId, pageNumber);
       dispatch({
         type: projectsActionsConstants.GET_DONE_PROJECTS,
         payload: {
@@ -76,27 +75,11 @@ export const getDoneProjectsAction: ActionCreator<ProjectsThunkAction> = (localL
   };
 };
 
-export const getAllProjectsAction: ActionCreator<ProjectsThunkAction> = (): ProjectsThunkAction => {
-  return async (dispatch: Dispatch) => {
-    try {
-      const results = await projectsService.getAllProjects();
-      dispatch({
-        type: projectsActionsConstants.GET_ALL_PROJECTS,
-        payload: projects,
-      });
-    } catch (e) {
-      dispatch({
-        type: appActionsConstants.HIDE_APP_LOADER,
-      });
-      throw new Error(e.message);
-    }
-  };
-};
 
 export const getProjectCategoriesAction: ActionCreator<ProjectsThunkAction> = (localLang: string): ProjectsThunkAction => {
   return async (dispatch: Dispatch) => {
     try {
-      const results = await projectsService.getProjectCategories(localLang);
+      const results = await ProjectsService.getProjectCategories(localLang);
       dispatch({
         type: projectsActionsConstants.GET_PROJECT_CATEGORIES,
         payload: results,

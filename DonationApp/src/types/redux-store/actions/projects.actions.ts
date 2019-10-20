@@ -18,7 +18,7 @@ export interface GetExecutionProjectsAction extends Action {
 }
 
 
-export interface GetDoneProjectsAction extends Action {
+export interface GetFinishedProjectsAction extends Action {
   type: typeof projectsActionsConstants.GET_DONE_PROJECTS;
   payload: ProjectsActionsPayload;
 }
@@ -33,4 +33,4 @@ export interface ChangeActiveCategoryAction {
   payload: Category;
 }
 
-export type ProjectsActions = GetDonationProjectsAction | GetExecutionProjectsAction | GetDoneProjectsAction | GetProjectCategoriesAction | ChangeActiveCategoryAction;
+export type ProjectsActions = GetDonationProjectsAction | GetExecutionProjectsAction | GetFinishedProjectsAction | GetProjectCategoriesAction | ChangeActiveCategoryAction;
