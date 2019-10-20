@@ -20,6 +20,7 @@
     "react-native-country-picker-modal": "^0.8.0",
     "react-native-elements": "^1.2.0",
     "react-native-gesture-handler": "^1.4.1",
+    "react-native-image-layout": "^5.4.0",
     "react-native-lightbox": "^0.8.0",
     "react-native-linear-gradient": "^2.5.6",
     "react-native-masked-text": "^1.13.0",

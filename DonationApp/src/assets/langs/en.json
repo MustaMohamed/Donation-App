@@ -20,6 +20,7 @@
   "REASON": "Reason",
   "DESCRIPTION": "Description",
   "COST": "Cost",
+  "CATEGORY": "Category",
   "COLLECTED_DONATION": "Collected Donation",
   "EXECUTION_DURATION": "Execution Duration",
   "RESULT": "Result",

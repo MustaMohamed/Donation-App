@@ -8,12 +8,13 @@ import { NavigationEvents, NavigationParams, NavigationState } from 'react-navig
 import { Project, ProjectsWithPagination, RelatedProjectsType } from '../types';
 import { injectIntl, IntlShape } from 'react-intl';
 import { apiConstants, colorConstants, navigationConstants, translationConstants } from '../constants';
-import { Badge, Button, Image } from 'react-native-elements';
+import { Badge, Button, Icon, Image, ListItem } from 'react-native-elements';
 import { NavigationStackProp } from 'react-navigation-stack';
 import { ProjectDetails, RelatedProjectsList } from '../components';
 import { hideUiLoaderAction, showUiLoaderAction } from '../redux-store/actions';
 import { connect } from 'react-redux';
 import { ProjectsService } from '../services';
+import ImagesGallery from '../components/ImagesGallery';
 
 interface Props {
   navigation: NavigationStackProp<NavigationState, NavigationParams>;
@@ -33,6 +34,141 @@ class ProjectDetailsScreen extends PureComponent<Props, State> {
     project: null,
     relatedCategoryProjects: [],
     relatedVillageProjects: [],
+    images: [
+      {
+        id: 1,
+        description: 'Lorem ipsum dolor sit amet.',
+        thumbnail: 'https://placekitten.com/120/120',
+        title: 'Image Title',
+        uri: 'https://placekitten.com/640/360',
+      },
+      {
+        id: 2,
+        description: 'Lorem ipsum dolor sit amet.',
+        thumbnail: 'https://placekitten.com/120/120',
+        title: 'Image Title',
+        uri: 'https://placekitten.com/140/360',
+      },
+      {
+        id: 3,
+        description: 'Lorem ipsum dolor sit amet.',
+        thumbnail: 'https://placekitten.com/120/120',
+        title: 'Image Title',
+        uri: 'https://placekitten.com/340/360',
+      },
+      {
+        id: 3,
+        description: 'Lorem ipsum dolor sit amet.',
+        thumbnail: 'https://placekitten.com/120/120',
+        title: 'Image Title',
+        uri: 'https://placekitten.com/540/360',
+      },
+      {
+        id: 3,
+        description: 'Lorem ipsum dolor sit amet.',
+        thumbnail: 'https://placekitten.com/120/120',
+        title: 'Image Title',
+        uri: 'https://placekitten.com/340/660',
+      },
+      {
+        id: 3,
+        description: 'Lorem ipsum dolor sit amet.',
+        thumbnail: 'https://placekitten.com/120/120',
+        title: 'Image Title',
+        uri: 'https://placekitten.com/640/860',
+      },
+      {
+        id: 3,
+        description: 'Lorem ipsum dolor sit amet.',
+        thumbnail: 'https://placekitten.com/120/120',
+        title: 'Image Title',
+        uri: 'https://placekitten.com/640/360',
+      },
+      {
+        id: 3,
+        description: 'Lorem ipsum dolor sit amet.',
+        thumbnail: 'https://placekitten.com/120/120',
+        title: 'Image Title',
+        uri: 'https://placekitten.com/640/360',
+      },
+      {
+        id: 3,
+        description: 'Lorem ipsum dolor sit amet.',
+        thumbnail: 'https://placekitten.com/120/120',
+        title: 'Image Title',
+        uri: 'https://placekitten.com/640/360',
+      },
+      {
+        id: 3,
+        description: 'Lorem ipsum dolor sit amet.',
+        thumbnail: 'https://placekitten.com/120/120',
+        title: 'Image Title',
+        uri: 'https://placekitten.com/640/360',
+      },
+      {
+        id: 3,
+        description: 'Lorem ipsum dolor sit amet.',
+        thumbnail: 'https://placekitten.com/120/120',
+        title: 'Image Title',
+        uri: 'https://placekitten.com/140/460',
+      },
+      {
+        id: 3,
+        description: 'Lorem ipsum dolor sit amet.',
+        thumbnail: 'https://placekitten.com/120/120',
+        title: 'Image Title',
+        uri: 'https://placekitten.com/640/360',
+      },
+      {
+        id: 3,
+        description: 'Lorem ipsum dolor sit amet.',
+        thumbnail: 'https://placekitten.com/120/120',
+        title: 'Image Title',
+        uri: 'https://placekitten.com/640/360',
+      },
+      {
+        id: 3,
+        description: 'Lorem ipsum dolor sit amet.',
+        thumbnail: 'https://placekitten.com/120/120',
+        title: 'Image Title',
+        uri: 'https://placekitten.com/240/460',
+      },
+      {
+        id: 3,
+        description: 'Lorem ipsum dolor sit amet.',
+        thumbnail: 'https://placekitten.com/120/120',
+        title: 'Image Title',
+        uri: 'https://placekitten.com/640/360',
+      },
+      {
+        id: 3,
+        description: 'Lorem ipsum dolor sit amet.',
+        thumbnail: 'https://placekitten.com/120/120',
+        title: 'Image Title',
+        uri: 'https://placekitten.com/640/360',
+      },
+      {
+        id: 3,
+        description: 'Lorem ipsum dolor sit amet.',
+        thumbnail: 'https://placekitten.com/120/120',
+        title: 'Image Title',
+        uri: 'https://placekitten.com/640/360',
+      },
+      {
+        id: 3,
+        description: 'Lorem ipsum dolor sit amet.',
+        thumbnail: 'https://placekitten.com/120/120',
+        title: 'Image Title',
+        uri: 'https://placekitten.com/640/360',
+      },
+      {
+        id: 3,
+        description: 'Lorem ipsum dolor sit amet.',
+        thumbnail: 'https://placekitten.com/120/120',
+        title: 'Image Title',
+        uri: 'https://placekitten.com/640/360',
+      },
+    ],
   };
   static navigationOptions = ({ screenProps, navigation }) => {
     const project = navigation.getParam(navigationConstants.SCREEN_PARAM_PROJECT);
@@ -111,6 +247,44 @@ class ProjectDetailsScreen extends PureComponent<Props, State> {
     }
   };
 
+  _renderPageHeader = (image, index, onClose) => {
+    return (
+      <View>
+        <ListItem
+          title={this.state.images[index].title + this.state.images[index].id}
+          titleStyle={{ color: colorConstants.PRIMARY_WHITE }}
+          leftIcon={<Icon name={'closecircleo'} type={'antdesign'} onPress={() => onClose()} color={colorConstants.PRIMARY_WHITE}/>}
+          containerStyle={{ backgroundColor: 'transparent' }}
+        />
+      </View>
+    );
+  };
+  _renderPageFooter = (image, index, onClose) => {
+    return (
+      <View>
+        <ListItem
+          title={this.state.images[index].title + this.state.images[index].id}
+          titleStyle={styles.whiteText}
+          subtitle={this.state.images[index].description}
+          subtitleStyle={styles.whiteText}
+          containerStyle={{ backgroundColor: 'transparent' }}
+        />
+        <Text style={{ color: colorConstants.PRIMARY_WHITE }}>{this.state.images[index].description}</Text>
+      </View>
+    );
+  };
+  _renderRelatedCountryListRightComponent = (item: Project) => {
+    return (
+      <Text style={{ color: colorConstants.PRIMARY_BLACK, fontSize: 12 }}>{`${item.country}, ${item.village.name}`}</Text>
+    );
+  };
+
+  _renderRelatedCategoryListRightComponent = (item: Project) => {
+    return (
+      <Text style={{ color: colorConstants.PRIMARY_BLACK, fontSize: 12 }}>{`${item.projectCategory.category}`}</Text>
+    );
+  };
+
   render() {
     return (
       <View style={styles.detailsContainer}>
@@ -132,23 +306,30 @@ class ProjectDetailsScreen extends PureComponent<Props, State> {
           <View style={styles.actionsView}>
           </View>
           <View>
+            <ImagesGallery images={this.state.images}
+                           renderPageHeader={this._renderPageHeader}
+                           renderPageFooter={this._renderPageFooter}
+                           gallerySectionTitle={'Project Gallery'}/>
             <RelatedProjectsList
               listTitle={this.props.intl.formatMessage({
                 id: translationConstants.PROJECT_ACTION_TEXT_PREV_PROJECT_WORK,
               })}
               projects={this.state.relatedCategoryProjects}
               onItemPress={this._onPrevProjectsActionPress}
+              // renderRightTitle={() => this.props.intl.formatMessage({ id: translationConstants.COUNTRY })}
+              renderRightSubtitle={this._renderRelatedCountryListRightComponent}
               children={<Button buttonStyle={styles.actionBtn}
                                 titleStyle={styles.actionBtnText}
                                 title={this.props.intl.formatMessage({
                                   id: translationConstants.VIEW_MORE,
                                 })} onPress={this._onRelatedCategoryProjectsActionPress}/>}
             />
-
             <RelatedProjectsList
               listTitle={this.props.intl.formatMessage({
                 id: translationConstants.PROJECT_ACTION_TEXT_VILLAGE_PREV_PROJECTS,
               })} projects={this.state.relatedVillageProjects}
+              // renderRightTitle={() => this.props.intl.formatMessage({ id: translationConstants.CATEGORY })}
+              renderRightSubtitle={this._renderRelatedCategoryListRightComponent}
               children={<Button buttonStyle={styles.actionBtn}
                                 titleStyle={styles.actionBtnText}
                                 title={this.props.intl.formatMessage({
@@ -184,6 +365,13 @@ const styles = StyleSheet.create({
   image: {
     height: Dimensions.get('window').height / 3,
     borderRadius: 10,
+  },
+  galleryImage: {
+    backgroundColor: 'transparent',
+  },
+  whiteText: {
+    color: colorConstants.PRIMARY_WHITE,
+    textAlign: 'left',
   },
   actionsView: {
     flexDirection: 'row',

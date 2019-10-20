@@ -116,6 +116,7 @@ export default class ProjectsService {
       id: item.id,
       name: item.name,
       description: item.description,
+      country: item.country || 'Egypt',
       cause: item.cause,
       cost: item.cost,
       collectedDonation: item.collected,
@@ -123,7 +124,7 @@ export default class ProjectsService {
       isExecutionDone: !!item.end_at,
       village: {
         id: item.village_id,
-        name: item.village,
+        name: item.village || 'Cairo',
       },
       projectCategory: {
         id: item.project_category_id,

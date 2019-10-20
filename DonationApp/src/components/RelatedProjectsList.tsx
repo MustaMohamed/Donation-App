@@ -2,28 +2,35 @@
  * created by musta at 10/6/2019
  */
 
-import React, { Component } from 'react';
-import { FlatList, StyleSheet, View } from 'react-native';
+import React, { Component, ReactElement } from 'react';
+import { FlatList, StyleSheet, Text, View } from 'react-native';
 import { Image, ListItem } from 'react-native-elements';
 import { Project } from '../types';
 import { injectIntl, IntlShape } from 'react-intl';
 import { List } from 'react-native-paper';
+import { colorConstants } from '../constants';
+import { Progress } from './ProgressBar';
 
 interface Props {
   projects: Project[];
   onItemPress?: Function;
+  renderRightComponent?: Function;
+  renderRightTitle?: Function;
+  renderRightSubtitle?: Function;
+  rightTitle?: any;
+  rightSubtitle?: any;
   intl: IntlShape;
   listTitle?: string;
   moreComponent?: any;
 }
 
 interface State {
-  collapsed: boolean;
+  isCollapsed: boolean;
 }
 
 class RelatedProjectsList extends Component<Props, State> {
   state = {
-    collapsed: false,
+    isCollapsed: false,
   };
 
   _onItemPress = (item: Project) => {
@@ -31,14 +38,26 @@ class RelatedProjectsList extends Component<Props, State> {
   };
 
   _toggleCollapse = () => {
-    this.setState(prevState => ({ collapsed: !prevState.collapsed }));
+    this.setState(prevState => ({ isCollapsed: !prevState.isCollapsed }));
+  };
+
+  _renderRightComponent = (item) => {
+    return this.props.renderRightComponent ? this.props.renderRightComponent(item) : null;
+  };
+
+  _renderRightTitle = (item): string | ReactElement => {
+    return this.props.renderRightTitle && this.props.renderRightTitle(item);
+  };
+
+  _renderRightSubtitle = (item): string | ReactElement => {
+    return this.props.renderRightSubtitle && this.props.renderRightSubtitle(item);
   };
 
   render() {
     return (
       <View style={{ marginVertical: 10, flex: 1 }}>
         {/*<Text onPress={() => {}} style={[styles.text, styles.listTitle]}>{this.props.listTitle}</Text>*/}
-        <List.Accordion onPress={this._toggleCollapse} title={this.props.listTitle} expanded={this.state.collapsed}>
+        <List.Accordion onPress={this._toggleCollapse} title={this.props.listTitle} expanded={this.state.isCollapsed}>
           <FlatList
             data={this.props.projects}
             renderItem={({ item }) => {
@@ -46,10 +65,25 @@ class RelatedProjectsList extends Component<Props, State> {
                 onPress={() => this._onItemPress(item)}
                 title={item.name}
                 titleStyle={styles.text}
-                subtitle={`$ ${this.props.intl.formatNumber(item.cost)}`}
+                subtitle={<View>
+                  <Text>{`$ ${this.props.intl.formatNumber(item.cost)}`}</Text>
+                  <Progress isRTL
+                            style={styles.progress}
+                            color={colorConstants.PRIMARY_BLUE}
+                            lineWidth={8}
+                            percent={Math.min(item.collectedDonation / item.cost * 100, 100)}
+                            showInfo={false}
+                            type={'line'}/>
+                </View>}
                 subtitleStyle={styles.text}
+                rightTitle={this._renderRightTitle(item)}
+                rightSubtitle={this._renderRightSubtitle(item)}
+                rightElement={this._renderRightComponent(item)}
                 leftElement={<View style={{ width: 80, height: 50 }}>
-                  <Image containerStyle={{ borderRadius: 10 }} style={{ width: 80, height: 50, borderRadius: 10 }} source={{ uri: item.image }}/>
+                  <Image containerStyle={{ borderRadius: 10 }}
+                         style={{ width: 80, height: 50, borderRadius: 10 }}
+                         source={{ uri: item.image }}
+                  />
                 </View>}
               />;
             }}
@@ -71,6 +105,10 @@ const styles = StyleSheet.create({
   listTitle: {
     fontSize: 18,
     marginLeft: 20,
+  },
+  progress: {
+    marginVertical: 10,
+    width: '70%',
   },
 });
 
