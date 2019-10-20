@@ -40,8 +40,6 @@ interface State {
 
 class ExecutionProjectsScreen extends PureComponent<Props, State> {
 
-  private _filterService: ProjectsFilterService = new ProjectsFilterService();
-
   constructor(props) {
     super(props);
     this.state = {
@@ -101,7 +99,7 @@ class ExecutionProjectsScreen extends PureComponent<Props, State> {
   };
 
   private _constructProjectsCountries = () => {
-    const countries = this._filterService
+    const countries = ProjectsFilterService
       .constructCountriesFilter(this.props.executionProjects.projects);
     countries.unshift({
       value: this.props.intl
@@ -112,7 +110,7 @@ class ExecutionProjectsScreen extends PureComponent<Props, State> {
   };
 
   private _constructCostFilterRanges = () => {
-    const costRangeFilter = this._filterService
+    const costRangeFilter = ProjectsFilterService
       .constructRangesFilter(this.props.executionProjects.projects)
       .map((item =>
         ({
@@ -123,9 +121,9 @@ class ExecutionProjectsScreen extends PureComponent<Props, State> {
   };
 
   private _applyProjectsFilter = () => {
-    const countryFilteredProjects = this._filterService
+    const countryFilteredProjects = ProjectsFilterService
       .applyCountryFilter(this.props.executionProjects.projects, this.state.countiesFilterValue);
-    const rangesFilteredProjects = this._filterService
+    const rangesFilteredProjects = ProjectsFilterService
       .applyRangeFilter(countryFilteredProjects, this.state.costFilterRangeValue);
     this.setState({ projects: rangesFilteredProjects });
   };

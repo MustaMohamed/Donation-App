@@ -1,9 +1,9 @@
-import { CountryType, ICountriesFilterService, ICountryFilter, IRangeFilter, IRangeFilterService, Project } from '../types';
+import { CountryType, ICountryFilter, IRangeFilter, Project } from '../types';
 
 
-export class ProjectsFilterService implements IRangeFilterService, ICountriesFilterService {
+export default class ProjectsFilterService {
 
-  constructRangesFilter(projects: Project[]): IRangeFilter[] {
+  public static constructRangesFilter(projects: Project[]): IRangeFilter[] {
     const sortedItem: number[] = projects
       .sort((first, second) =>
         (first.cost > second.cost ? 1 : (first.cost < second.cost ? -1 : 0)))
@@ -32,12 +32,11 @@ export class ProjectsFilterService implements IRangeFilterService, ICountriesFil
     return filterRanges;
   }
 
-  applyRangeFilter(projects: Project[], filterConstraints: IRangeFilter): Project[] {
+  public static applyRangeFilter(projects: Project[], filterConstraints: IRangeFilter): Project[] {
     return projects.filter(item => (item.cost <= filterConstraints.to && item.cost >= filterConstraints.from));
   }
 
-
-  constructCountriesFilter(projects: Project[]): ICountryFilter[] {
+  public static constructCountriesFilter(projects: Project[]): ICountryFilter[] {
     let countriesList: string[] = projects
       .map(item => (item.country));
     let countries = Array
@@ -47,7 +46,7 @@ export class ProjectsFilterService implements IRangeFilterService, ICountriesFil
     return countries;
   }
 
-  applyCountryFilter(projects: Project[], country: ICountryFilter): Project[] {
+  public static applyCountryFilter(projects: Project[], country: ICountryFilter): Project[] {
     return projects.filter(item => (item.country === country.value || country.id === CountryType.AllCountries));
   }
 }

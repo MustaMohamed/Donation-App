@@ -13,8 +13,8 @@ interface Props {
   projects: Project[];
   onItemPress?: Function;
   intl: IntlShape;
-  listTitle: any;
-  moreComponent: any;
+  listTitle?: string;
+  moreComponent?: any;
 }
 
 interface State {
