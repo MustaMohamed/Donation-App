@@ -7,11 +7,11 @@ import { StyleSheet, ToastAndroid, View } from 'react-native';
 import { ProjectsList } from '../components';
 import { NavigationParams, NavigationState } from 'react-navigation';
 import { NavigationStackProp } from 'react-navigation-stack';
-import { Language, Project, ProjectFilterType, ProjectsWithPagination, RelatedProjectsType } from '../types';
+import { Language, Project, ProjectFilterStatusType, ProjectsWithPagination, RelatedProjectsType } from '../types';
 import { apiConstants, colorConstants, navigationConstants, translationConstants } from '../constants';
 import { connect } from 'react-redux';
 import { hideUiLoaderAction, showUiLoaderAction } from '../redux-store/actions';
-import { ProjectsService } from '../services';
+import { ProjectsFilterService, ProjectsService } from '../services';
 import SegmentedControlTab from 'react-native-segmented-control-tab';
 import { injectIntl, IntlShape } from 'react-intl';
 import { ApplicationState } from '../redux-store/store';
@@ -48,11 +48,45 @@ class RelatedProjectsScreen extends Component<Props, State> {
   };
 
   async componentDidMount() {
-    this.props.showUiLoader();
-    await this._refreshProjectsList();
-    this.props.hideUiLoader();
+    await this._requestProjects();
   }
 
+  /**
+   * helper methods
+   * */
+  private _requestProjects = async () => {
+    try {
+      this.props.showUiLoader();
+      const relatedProjects = await this._getProjects();
+      this.setState({ relatedProjects: relatedProjects }, () => this.handleIndexChange(this.state.selectedIndex));
+    } catch (e) {
+      ToastAndroid.show(e.message, ToastAndroid.SHORT);
+    } finally {
+      this.props.hideUiLoader();
+    }
+  };
+
+  private _getProjects = async (pageNumber?: number) => {
+    const relatedProjectsType: RelatedProjectsType =
+      this.props.navigation.getParam(navigationConstants.SCREEN_PARAM_RELATED_PROJECT_TYPE);
+    const project: Project = this.props.navigation.getParam(navigationConstants.SCREEN_PARAM_PROJECT);
+    const relatedType = relatedProjectsType === RelatedProjectsType.Village ?
+      apiConstants.RELATED_PROJECTS_VILLAGE :
+      apiConstants.RELATED_PROJECTS_CATEGORY;
+    const relatedId = relatedProjectsType === RelatedProjectsType.Village ?
+      project.village.id : project.projectCategory.id;
+    const relatedProjects: ProjectsWithPagination = await ProjectsService
+      .getRelatedProjects(relatedType, relatedId, this.props.language.currentLanguage, pageNumber);
+    return relatedProjects;
+  };
+
+  private _evaluateProjectFiltering = (projects: Project[], filterType: ProjectFilterStatusType) => {
+    return ProjectsFilterService.applyProjectsStatusFilter(projects, filterType);
+  };
+
+  /**
+   * events and callbacks
+   * */
   onProjectItemPress = (item: Project) => {
     this.props.navigation.push(navigationConstants.SCREEN_PROJECT_DETAILS, {
       [navigationConstants.SCREEN_PARAM_PROJECT]: item,
@@ -60,55 +94,42 @@ class RelatedProjectsScreen extends Component<Props, State> {
   };
 
   onProjectsListRefresh = async () => {
-    await this._refreshProjectsList();
-  };
-
-  onEndReached = async () => {
-    const currentPageNumber = this.state.relatedProjects.pagination.page;
-    const totalPages = this.state.relatedProjects.pagination.totalPages;
-    if (currentPageNumber < totalPages) {
-      this.props.showUiLoader();
-      await this._refreshProjectsList(currentPageNumber + 1);
-      this.props.hideUiLoader();
-    }
-  };
-
-  _refreshProjectsList = async (pageNumber?: number) => {
-    const relatedProjectsType: RelatedProjectsType = this.props.navigation.getParam(navigationConstants.SCREEN_PARAM_RELATED_PROJECT_TYPE);
-    const project: Project = this.props.navigation.getParam(navigationConstants.SCREEN_PARAM_PROJECT);
-
-    const relatedType = relatedProjectsType ===
-    RelatedProjectsType.Village ? apiConstants.RELATED_PROJECTS_VILLAGE : apiConstants.RELATED_PROJECTS_CATEGORY;
-    const relatedId = relatedProjectsType === RelatedProjectsType.Village ? project.village.id : project.projectCategory.id;
     try {
-      const relatedProjects: ProjectsWithPagination = await ProjectsService.getRelatedProjects(relatedType, relatedId, this.props.language.currentLanguage, pageNumber);
+      const relatedProjects = await this._getProjects();
       this.setState({ relatedProjects: relatedProjects }, () => this.handleIndexChange(this.state.selectedIndex));
     } catch (e) {
       ToastAndroid.show(e.message, ToastAndroid.SHORT);
     }
   };
 
-  handleIndexChange = index => {
-    this.setState({
-      ...this.state,
-      selectedIndex: index,
-      selectedProjects: this.state.relatedProjects.projects.filter(item => {
-        return this._evaluateProjectFiltering(item, index);
-      }),
-    });
+  onEndReached = async () => {
+    const currentPageNumber = this.state.relatedProjects.pagination.page;
+    const totalPages = this.state.relatedProjects.pagination.totalPages;
+    if (currentPageNumber < totalPages) {
+      try {
+        this.props.showUiLoader();
+        const relatedProjects = await this._getProjects(currentPageNumber + 1);
+        this.setState(prevState => ({
+          relatedProjects: {
+            pagination: relatedProjects.pagination,
+            projects: [...prevState.relatedProjects.projects, ...relatedProjects.projects],
+          },
+        }), () => this.handleIndexChange(this.state.selectedIndex));
+      } catch (e) {
+        ToastAndroid.show(e.message, ToastAndroid.SHORT);
+      } finally {
+        this.props.hideUiLoader();
+      }
+    }
   };
 
-  _evaluateProjectFiltering = (item: Project, filterType: number) => {
-    if (filterType === ProjectFilterType.Donation) {
-      return !item.isCostCollectedDone;
-    }
-    if (filterType === ProjectFilterType.Execution) {
-      return item.isCostCollectedDone;
-    }
-    if (filterType === ProjectFilterType.Finished) {
-      return item.isCostCollectedDone && item.isExecutionDone;
-    }
+  handleIndexChange = index => {
+    this.setState(prevState => ({
+      selectedIndex: index,
+      selectedProjects: this._evaluateProjectFiltering(prevState.relatedProjects.projects, index),
+    }));
   };
+
 
   render() {
     return (

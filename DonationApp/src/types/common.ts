@@ -8,7 +8,7 @@ export enum RelatedProjectsType {
   Village
 }
 
-export enum ProjectFilterType {
+export enum ProjectFilterStatusType {
   Donation,
   Execution,
   Finished

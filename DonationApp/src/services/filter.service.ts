@@ -1,4 +1,4 @@
-import { CountryType, ICountryFilter, IRangeFilter, Project } from '../types';
+import { CountryType, ICountryFilter, IRangeFilter, Project, ProjectFilterStatusType } from '../types';
 
 
 export default class ProjectsFilterService {
@@ -48,5 +48,20 @@ export default class ProjectsFilterService {
 
   public static applyCountryFilter(projects: Project[], country: ICountryFilter): Project[] {
     return projects.filter(item => (item.country === country.value || country.id === CountryType.AllCountries));
+  }
+
+  public static applyProjectsStatusFilter(projects: Project[], statusType: ProjectFilterStatusType): Project[] {
+    return projects.filter(item => {
+      if (statusType === ProjectFilterStatusType.Donation) {
+        return !item.isCostCollectedDone;
+      }
+      if (statusType === ProjectFilterStatusType.Execution) {
+        return item.isCostCollectedDone;
+      }
+      if (statusType === ProjectFilterStatusType.Finished) {
+        return item.isCostCollectedDone && item.isExecutionDone;
+      }
+    });
+
   }
 }
