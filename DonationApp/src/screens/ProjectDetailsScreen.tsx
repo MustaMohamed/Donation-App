@@ -3,7 +3,7 @@
  */
 
 import React, { PureComponent } from 'react';
-import { Dimensions, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Dimensions, ScrollView, StyleSheet, Text, ToastAndroid, View } from 'react-native';
 import { NavigationEvents, NavigationParams, NavigationState } from 'react-navigation';
 import { Project, ProjectsWithPagination, RelatedProjectsType } from '../types';
 import { injectIntl, IntlShape } from 'react-intl';
@@ -107,6 +107,7 @@ class ProjectDetailsScreen extends PureComponent<Props, State> {
       await this._getProjectDetails();
     } catch (e) {
       console.log(e.message);
+      ToastAndroid.show(e.message, ToastAndroid.SHORT);
     } finally {
       this.props.hideUiLoader();
     }
@@ -116,10 +117,7 @@ class ProjectDetailsScreen extends PureComponent<Props, State> {
     return (
       <View style={styles.detailsContainer}>
         <NavigationEvents
-          onWillFocus={payload => console.log('will focus', payload)}
           onDidFocus={this._onNavigationDidFocus}
-          onWillBlur={payload => console.log('will blur', payload)}
-          onDidBlur={payload => console.log('did blur', payload)}
         />
         {this.state.project && <ScrollView>
           <Image source={{ uri: this.state.project.image }} containerStyle={styles.image}/>

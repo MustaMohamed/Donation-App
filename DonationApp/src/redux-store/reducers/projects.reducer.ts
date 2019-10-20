@@ -2,6 +2,7 @@ import { ProjectsActions, ProjectsState } from '../../types/redux-store';
 import { Reducer } from 'redux';
 import { projectsActionsConstants } from '../../constants/redux-store/actions';
 import { ProjectsWithPagination } from '../../types/models';
+import { CategoryType } from '../../types';
 
 
 const initialState: ProjectsState = {
@@ -20,7 +21,7 @@ const initialState: ProjectsState = {
   categories: {
     activeCategory: {
       name: '',
-      id: -1,
+      id: CategoryType.AllCategories,
     },
     categoriesList: [],
   },
@@ -74,7 +75,7 @@ export const projectsReducer: Reducer<ProjectsState, ProjectsActions> = (state: 
         },
       };
     case projectsActionsConstants.CHANGE_ACTIVE_CATEGORY:
-      const { categories:category } = state;
+      const { categories: category } = state;
       return {
         ...state,
         categories: {

@@ -2,107 +2,151 @@ import { requestFactory } from '../utils';
 import { Pagination, Project, ProjectsWithPagination } from '../types';
 import { apiConstants } from '../constants';
 
-export const getDonationProjects = async (localLang: string, pageNumber?: number): Promise<ProjectsWithPagination> => {
+export const getDonationProjects = async (localLang: string, categoryId?: number, pageNumber?: number): Promise<ProjectsWithPagination> => {
   try {
-    const { data } = await requestFactory.get(apiConstants.PROJECTS_BY_STATUS, {
+    const res = await requestFactory.get(apiConstants.PROJECTS_BY_STATUS, {
       status: apiConstants.PROJECTS_STATUS_DONATION,
+      category_id: categoryId,
       locale: localLang,
       page: pageNumber,
     });
-    const projects = mapResponseToProjectList(data.data);
-    const pagination = mapResponseToPagination(data.meta);
-    return { projects, pagination };
+    if (res) {
+      const { data: responseData } = res;
+      const { data, meta } = responseData;
+      const projects = mapResponseToProjectList(data);
+      const pagination = mapResponseToPagination(meta);
+      return { projects, pagination };
+    } else {
+      throw new Error('Unexpected Error, Check Your Internet Connection or communicate with support!');
+    }
   } catch (e) {
-    throw new Error('Check Your Internet Connection! ' + e.message);
+    console.log(e);
+    throw new Error('Check Your Internet Connection! ' + e.data);
   }
 };
 
-export const getExecutionProjects = async (localLang: string, pageNumber?: number): Promise<ProjectsWithPagination> => {
+export const getExecutionProjects = async (localLang: string, categoryId?: number, pageNumber?: number): Promise<ProjectsWithPagination> => {
   try {
-    const { data } = await requestFactory.get(apiConstants.PROJECTS_BY_STATUS, {
+    console.log('category Id => ', categoryId);
+    const res = await requestFactory.get(apiConstants.PROJECTS_BY_STATUS, {
       status: apiConstants.PROJECT_STATUS_EXECUTION,
+      category_id: categoryId,
       locale: localLang,
       page: pageNumber,
     });
-    const projects = mapResponseToProjectList(data.data);
-    const pagination = mapResponseToPagination(data.meta);
-    return { projects, pagination };
+    if (res) {
+      const { data: responseData } = res;
+      const { data, meta } = responseData;
+      const projects = mapResponseToProjectList(data);
+      const pagination = mapResponseToPagination(meta);
+      return { projects, pagination };
+    } else {
+      throw new Error('Unexpected Error, Check Your Internet Connection or communicate with support!');
+    }
   } catch (e) {
-    throw new Error('Check Your Internet Connection! ' + e.message);
+    console.log(e);
+    throw new Error('Check Your Internet Connection! ' + e.data || e.message);
   }
 };
 
-export const getDoneProjects = async (localLang: string, pageNumber?: number): Promise<ProjectsWithPagination> => {
+export const getDoneProjects = async (localLang: string, categoryId?: number, pageNumber?: number): Promise<ProjectsWithPagination> => {
   try {
-    const { data } = await requestFactory.get(apiConstants.PROJECTS_BY_STATUS, {
+    const res = await requestFactory.get(apiConstants.PROJECTS_BY_STATUS, {
       status: apiConstants.PROJECT_STATUS_FINISHED,
+      category_id: categoryId,
       locale: localLang,
       page: pageNumber,
     });
-    const projects = mapResponseToProjectList(data.data);
-    const pagination = mapResponseToPagination(data.meta);
-    return { projects, pagination };
+    if (res) {
+      const { data: responseData } = res;
+      const { data, meta } = responseData;
+      const projects = mapResponseToProjectList(data);
+      const pagination = mapResponseToPagination(meta);
+      return { projects, pagination };
+    } else {
+      throw new Error('Unexpected Error, Check Your Internet Connection or communicate with support!');
+    }
   } catch (e) {
-    throw new Error('Check Your Internet Connection! ' + e.message);
+    console.log(e);
+    throw new Error('Check Your Internet Connection! ' + e.data);
   }
 };
 
 export const getProjectById = async (projectId: number, localLang: string): Promise<any> => {
   try {
-    const { data } = await requestFactory.get(`${apiConstants.PROJECT_BY_ID}/${projectId}`, {
+    const res = await requestFactory.get(`${apiConstants.PROJECT_BY_ID}/${projectId}`, {
       locale: localLang,
     });
+    console.log(res);
+    const { data } = res;
     const projects = mapResponseToProjectList(data.data);
     return projects[0];
   } catch (e) {
-    throw new Error('Check Your Internet Connection! ' + e.message);
+    console.log(e);
+    throw new Error('Check Your Internet Connection! ' + e.data);
   }
 };
 
 export const getAllProjects = async (): Promise<any> => {
-  return requestFactory.all([getDonationProjects(), getExecutionProjects(), getDoneProjects()]);
+  // return requestFactory.all([getDonationProjects(), getExecutionProjects(), getDoneProjects()]);
 };
 
 export const getRelatedProjects = async (relatedToType: string, relatedToId: number, localLang: string, pageNumber?: number): Promise<any> => {
   try {
-    const { data } = await requestFactory.get(apiConstants.RELATED_PROJECTS, {
+    const res = await requestFactory.get(apiConstants.RELATED_PROJECTS, {
       [relatedToType]: relatedToId,
       locale: localLang,
       page: pageNumber,
     });
-    const projects = mapResponseToProjectList(data.data);
-    const pagination = mapResponseToPagination(data.meta);
-    return { projects, pagination };
+    if (res) {
+      const { data: responseData } = res;
+      const { data, meta } = responseData;
+      const projects = mapResponseToProjectList(data);
+      const pagination = mapResponseToPagination(meta);
+      return { projects, pagination };
+    } else {
+      throw new Error('Unexpected Error, Check Your Internet Connection or communicate with support!');
+    }
   } catch (e) {
-    throw new Error('Check Your Internet Connection! ' + e.message);
+    console.log(e);
+    throw new Error('Check Your Internet Connection! ' + e.data);
   }
 };
 
 export const getProjectCategories = async (localLang: string) => {
   try {
-    const { data } = await requestFactory.get(apiConstants.CATEGORIES, {
+    const res = await requestFactory.get(apiConstants.CATEGORIES, {
       locale: localLang,
     });
-    const categories = data.data.map(item => ({ name: item.name, id: item.id }));
-    return categories;
+    if (res) {
+      const { data: responseData } = res;
+      const { data } = responseData;
+      const categories = data.map(item => ({ name: item.name, id: item.id }));
+      return categories;
+    } else {
+      throw new Error('Unexpected Error, Check Your Internet Connection or communicate with support!');
+    }
   } catch (e) {
     console.log('from categories ! ', e);
-    throw new Error('Check Your Internet Connection! ' + e.message);
+    throw new Error('Check Your Internet Connection! ' + e.data);
   }
 };
 
 export const donateForProject = async (donationData): Promise<any> => {
   try {
     const res = await requestFactory.post(apiConstants.DONATE, donationData);
-    const { message } = res.data;
+    console.log(res);
+    const { data } = res;
+    const { message } = data;
     return message;
   } catch (e) {
-    throw new Error('Check Your Internet Connection! ' + e.message);
+    console.log(e);
+    throw new Error('Check Your Internet Connection! ' + e.data);
   }
 };
 
 const mapResponseToProjectList = (data): Project[] => {
-  return data.map((item): Project => ({
+  return data ? data.map((item): Project => ({
     id: item.id,
     name: item.name,
     description: item.description,
@@ -125,17 +169,17 @@ const mapResponseToProjectList = (data): Project[] => {
     executionDuration: item.execution_period,
     image: item.cover_photo || 'https://placekitten.com/640/360',
     gallery: ['https://placekitten.com/640/360', 'https://placekitten.com/640/360', 'https://placekitten.com/640/360'],
-  }));
+  })) : [];
 };
 
 const mapResponseToPagination = (meta): Pagination => {
-  return {
+  return meta ? {
     count: meta.pagination.count,
     page: meta.pagination.current_page,
     countPerPage: meta.pagination.per_page,
     totalCount: meta.pagination.total,
     totalPages: meta.pagination.total_pages,
-  };
+  } : null;
 };
 
 export default {

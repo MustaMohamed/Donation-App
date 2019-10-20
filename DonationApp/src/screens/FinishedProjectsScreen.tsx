@@ -13,13 +13,15 @@ import { Filters, ProjectsList } from '../components';
 import { Project, ProjectsWithPagination } from '../types/models';
 import { connect } from 'react-redux';
 import { ApplicationState } from '../redux-store/store';
-import { FilterRange, Language, Languages } from '../types';
+import { Category, CategoryType, CountryType, IRangeFilter, Language, Languages } from '../types';
+import { ProjectsFilterService } from '../services';
 
 interface Props {
   navigation: NavigationStackProp<NavigationState, NavigationParams>;
   getDoneProjects: typeof getDoneProjectsAction;
   showUiLoader: typeof showUiLoaderAction;
   hideUiLoader: typeof hideUiLoaderAction;
+  activeCategory: Category;
   language: Language;
   intl: IntlShape;
   doneProjects: ProjectsWithPagination;
@@ -30,19 +32,22 @@ interface State {
     value: string;
     id: number;
   };
-  costFilterRangeValue: FilterRange;
+  costFilterRangeValue: IRangeFilter;
   countries: { value: string, id: number }[];
-  filtersRanges: FilterRange[];
+  filtersRanges: IRangeFilter[];
   projects: Project[];
 }
 
 class FinishedProjectsScreen extends PureComponent<Props, State> {
+
+  private _filterService: ProjectsFilterService = new ProjectsFilterService();
+
   constructor(props) {
     super(props);
     this.state = {
       countiesFilterValue: {
         value: this.props.intl.formatMessage({ id: translationConstants.FILTER_ALL_COUNTRIES }),
-        id: -1,
+        id: CountryType.AllCountries,
       },
       costFilterRangeValue: { from: 0, to: 2000, value: 'ِAll', id: 0 },
       countries: [],
@@ -55,102 +60,114 @@ class FinishedProjectsScreen extends PureComponent<Props, State> {
     const title = screenProps.intl.formatMessage({ id: translationConstants.SCREEN_DONE_PROJECTS_TAB_TITLE });
     return {
       title: title,
-      // tabBarButtonComponent: (props) => <TabItem title={title} {...props} />,
+      tabBarLabel: title,
     };
   };
 
   async componentDidMount() {
-    try {
-      this.props.showUiLoader();
-      await this._refreshProjectsList();
-      this.props.hideUiLoader();
-    } catch (e) {
-      ToastAndroid.show(e, ToastAndroid.SHORT);
-    }
+    await this._requestProjects();
   }
 
-  componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<State>, snapshot?: any): void {
+  async componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<State>, snapshot?: any) {
+    if (this.props.activeCategory !== prevProps.activeCategory) {
+      await this._requestProjects();
+    }
     if (this.props.doneProjects !== prevProps.doneProjects) {
       this._constructProjectsCountries();
       this._constructCostFilterRanges();
-      this._applyProjectsFilter();
+      this._applyProjectsFilters();
     }
   }
 
-
-  _constructProjectsCountries = () => {
-    let countries = this.props.doneProjects.projects.map((item, idx) => ({ value: item.country, id: idx })).filter(item => item.value !== undefined);
-    countries.unshift({ value: this.props.intl.formatMessage({ id: translationConstants.FILTER_ALL_COUNTRIES }), id: -1 });
-    this.setState({ countries: [...new Set(countries)] });
+  /**
+   * helper methods
+   * */
+  private _requestProjects = async () => {
+    try {
+      this.props.showUiLoader();
+      await this._getProjects();
+    } catch (e) {
+      ToastAndroid.show(e.message, ToastAndroid.SHORT);
+    } finally {
+      this.props.hideUiLoader();
+    }
   };
 
-  _constructCostFilterRanges = () => {
-    const sortedItem = this.props.doneProjects.projects.sort((first, second) => (first.cost > second.cost ? 1 : (first.cost < second.cost ? -1 : 0)))
-      .map(item => item.cost);
-    const distinct = new Set<number>(sortedItem);
-    const costsList = [...distinct];
-    let lastSelectedRange = 0;
-    const filterRanges: FilterRange[] = costsList.map((item, idx) => {
-      if (idx % 4 == 0 || costsList.length === idx + 1) {
-        const last = lastSelectedRange;
-        lastSelectedRange = item;
-        return {
-          value: `$${this.props.intl.formatNumber(last)}-${this.props.intl.formatNumber(lastSelectedRange)}`,
-          from: last,
-          to: lastSelectedRange,
-          id: idx,
-        };
-      }
-    });
-    filterRanges.unshift({
-      value: `$${this.props.intl.formatNumber(0)}-${this.props.intl.formatNumber(lastSelectedRange)}`,
-      from: 0,
-      to: lastSelectedRange,
-      id: -1,
-    });
-    this.setState({ filtersRanges: filterRanges });
+  private _getProjects = async (page?: number) => {
+    await this.props.getDoneProjects(
+      this.props.language.currentLanguage || Languages.En,
+      this.props.activeCategory.id !== CategoryType.AllCategories ? this.props.activeCategory.id : null,
+      page);
   };
 
-  _applyProjectsFilter = () => {
-    this.setState({
-      projects: this.props.doneProjects.projects.filter(
-        item => (((item.cost <= this.state.costFilterRangeValue.to && item.cost >= this.state.costFilterRangeValue.from) || this.state.costFilterRangeValue.id === -1)
-          && (item.country === this.state.countiesFilterValue.value || this.state.countiesFilterValue.id === -1))),
+  private _constructProjectsCountries = () => {
+    const countries = this._filterService
+      .constructCountriesFilter(this.props.doneProjects.projects);
+    countries.unshift({
+      value: this.props.intl
+        .formatMessage({ id: translationConstants.FILTER_ALL_COUNTRIES }),
+      id: null,
     });
+    this.setState({ countries });
   };
 
-  onProjectItemPress = (item: Project) => {
+  private _constructCostFilterRanges = () => {
+    const costRangeFilter = this._filterService
+      .constructRangesFilter(this.props.doneProjects.projects)
+      .map((item =>
+        ({
+          ...item,
+          value: `$${this.props.intl.formatNumber(item.from)}-${this.props.intl.formatNumber(item.to)}`,
+        })));
+    this.setState({ filtersRanges: costRangeFilter });
+  };
+
+  private _applyProjectsFilters = () => {
+    const countryFilteredProjects = this._filterService
+      .applyCountryFilter(this.props.doneProjects.projects, this.state.countiesFilterValue);
+    const rangesFilterProjects = this._filterService
+      .applyRangeFilter(countryFilteredProjects, this.state.costFilterRangeValue);
+    this.setState({ projects: rangesFilterProjects });
+  };
+
+  /**
+   * events and callbacks
+   * */
+  public onProjectItemPress = (item: Project) => {
     this.props.navigation.navigate(navigationConstants.SCREEN_PROJECT_DETAILS, {
       [navigationConstants.SCREEN_PARAM_PROJECT]: { name: item.name, id: item.id },
     });
   };
 
-  onProjectsListRefresh = async () => {
-    await this._refreshProjectsList();
+  public onProjectsListRefresh = async () => {
+    try {
+      await this._getProjects();
+    } catch (e) {
+      ToastAndroid.show(e.message, ToastAndroid.SHORT);
+    }
   };
 
-  onEndReached = async () => {
-    const currentPageNumber = this.props.doneProjects.pagination.page;
-    const totalPages = this.props.doneProjects.pagination.totalPages;
-    if (currentPageNumber < totalPages) {
-      this.props.showUiLoader();
-      await this._refreshProjectsList(currentPageNumber + 1);
+  public onEndReached = async () => {
+    try {
+      const currentPageNumber = this.props.doneProjects.pagination.page;
+      const totalPages = this.props.doneProjects.pagination.totalPages;
+      if (currentPageNumber < totalPages) {
+        this.props.showUiLoader();
+        await this._getProjects(currentPageNumber + 1);
+      }
+    } catch (e) {
+      ToastAndroid.show(e.message, ToastAndroid.SHORT);
+    } finally {
       this.props.hideUiLoader();
     }
   };
 
-  _refreshProjectsList = async (page?: number) => {
-    await this.props.getDoneProjects(this.props.language.currentLanguage || Languages.En, page);
+  public onCountryMenuChange = (value) => {
+    this.setState({ countiesFilterValue: value }, this._applyProjectsFilters);
   };
 
-  onCountryMenuChange = (value) => {
-    this.setState({ countiesFilterValue: value });
-    this._applyProjectsFilter();
-  };
-
-  _onCostRangeMenuChange = (value) => {
-    this.setState({ costFilterRangeValue: value });
-    this._applyProjectsFilter();
+  public onCostRangeMenuChange = (value) => {
+    this.setState({ costFilterRangeValue: value }, this._applyProjectsFilters);
   };
 
   render() {
@@ -161,7 +178,7 @@ class FinishedProjectsScreen extends PureComponent<Props, State> {
                  defaultRangeValue={this.state.filtersRanges[0] && this.state.filtersRanges[0].value}
                  defaultCountryValue={this.state.countries[0] && this.state.countries[0].value}
                  onCountryValueChange={this.onCountryMenuChange}
-                 onFilterRangeChange={this._onCostRangeMenuChange}
+                 onFilterRangeChange={this.onCostRangeMenuChange}
 
         />
         <ProjectsList onItemPress={this.onProjectItemPress}
@@ -175,9 +192,10 @@ class FinishedProjectsScreen extends PureComponent<Props, State> {
 
 const mapStateToProps = (state: ApplicationState) => {
   const { projects, app } = state;
-  const { doneProjects } = projects;
+  const { doneProjects, categories } = projects;
+  const { activeCategory } = categories;
   const { language } = app;
-  return { doneProjects, language };
+  return { doneProjects, language, activeCategory };
 };
 export default connect(mapStateToProps, {
   getDoneProjects: getDoneProjectsAction,

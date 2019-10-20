@@ -12,7 +12,7 @@ export default {
         })
         .catch((error) => {
           reject({
-            data: error.response.data,
+            data: error.message,
           });
         });
     });
@@ -27,7 +27,7 @@ export default {
         })
         .catch((error) => {
           reject({
-            data: error.response.data,
+            data: error.message,
           });
         });
     });
@@ -36,13 +36,15 @@ export default {
     return new Promise((resolve, reject) => {
       API.get(endpoint, { params: params, headers })
         .then((response: any) => {
+          console.log('from request response => ', response);
           resolve({
             data: response.data,
           });
         })
         .catch((error) => {
+          console.log('from request error => ', error.message);
           reject({
-            data: error.response.data,
+            data: error.message,
           });
         });
     });
