@@ -11,7 +11,7 @@ import { Language, Project, ProjectFilterType, ProjectsWithPagination, RelatedPr
 import { apiConstants, colorConstants, navigationConstants, translationConstants } from '../constants';
 import { connect } from 'react-redux';
 import { hideUiLoaderAction, showUiLoaderAction } from '../redux-store/actions';
-import { projectsService } from '../services';
+import { ProjectsService } from '../services';
 import SegmentedControlTab from 'react-native-segmented-control-tab';
 import { injectIntl, IntlShape } from 'react-intl';
 import { ApplicationState } from '../redux-store/store';
@@ -54,7 +54,6 @@ class RelatedProjectsScreen extends Component<Props, State> {
   }
 
   onProjectItemPress = (item: Project) => {
-    // this.props.navigation.setParams({ relatedProject: item });
     this.props.navigation.push(navigationConstants.SCREEN_PROJECT_DETAILS, {
       [navigationConstants.SCREEN_PARAM_PROJECT]: item,
     });
@@ -82,7 +81,7 @@ class RelatedProjectsScreen extends Component<Props, State> {
     RelatedProjectsType.Village ? apiConstants.RELATED_PROJECTS_VILLAGE : apiConstants.RELATED_PROJECTS_CATEGORY;
     const relatedId = relatedProjectsType === RelatedProjectsType.Village ? project.village.id : project.projectCategory.id;
     try {
-      const relatedProjects: ProjectsWithPagination = await projectsService.getRelatedProjects(relatedType, relatedId, this.props.language.currentLanguage, pageNumber);
+      const relatedProjects: ProjectsWithPagination = await ProjectsService.getRelatedProjects(relatedType, relatedId, this.props.language.currentLanguage, pageNumber);
       this.setState({ relatedProjects: relatedProjects }, () => this.handleIndexChange(this.state.selectedIndex));
     } catch (e) {
       ToastAndroid.show(e.message, ToastAndroid.SHORT);
