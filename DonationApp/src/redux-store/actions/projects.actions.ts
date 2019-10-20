@@ -28,7 +28,6 @@ export const getDonationProjectsAction: ActionCreator<ProjectsThunkAction> = (lo
         },
       });
     } catch (e) {
-      console.log(e.message);
       dispatch({
         type: appActionsConstants.HIDE_APP_LOADER,
       });
@@ -49,7 +48,6 @@ export const getExecutionProjectsAction: ActionCreator<ProjectsThunkAction> = (l
         },
       });
     } catch (e) {
-      console.log(e.message);
       dispatch({
         type: appActionsConstants.HIDE_APP_LOADER,
       });
@@ -70,7 +68,6 @@ export const getDoneProjectsAction: ActionCreator<ProjectsThunkAction> = (localL
         },
       });
     } catch (e) {
-      console.log(e.message);
       dispatch({
         type: appActionsConstants.HIDE_APP_LOADER,
       });
@@ -88,7 +85,6 @@ export const getAllProjectsAction: ActionCreator<ProjectsThunkAction> = (): Proj
         payload: projects,
       });
     } catch (e) {
-      console.log(e.message);
       dispatch({
         type: appActionsConstants.HIDE_APP_LOADER,
       });
@@ -100,14 +96,12 @@ export const getAllProjectsAction: ActionCreator<ProjectsThunkAction> = (): Proj
 export const getProjectCategoriesAction: ActionCreator<ProjectsThunkAction> = (localLang: string): ProjectsThunkAction => {
   return async (dispatch: Dispatch) => {
     try {
-      console.log('categories Action');
       const results = await projectsService.getProjectCategories(localLang);
       dispatch({
         type: projectsActionsConstants.GET_PROJECT_CATEGORIES,
         payload: results,
       });
     } catch (e) {
-      console.log(e.message);
       dispatch({
         type: appActionsConstants.HIDE_APP_LOADER,
       });
@@ -124,7 +118,6 @@ export const changeActiveCategoryAction: ActionCreator<ProjectsThunkAction> = (a
         payload: activeCategory,
       });
     } catch (e) {
-      console.log(e.message);
       dispatch({
         type: appActionsConstants.HIDE_APP_LOADER,
       });

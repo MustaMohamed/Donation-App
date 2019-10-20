@@ -20,14 +20,12 @@ export const getDonationProjects = async (localLang: string, categoryId?: number
       throw new Error('Unexpected Error, Check Your Internet Connection or communicate with support!');
     }
   } catch (e) {
-    console.log(e);
     throw new Error('Check Your Internet Connection! ' + e.data);
   }
 };
 
 export const getExecutionProjects = async (localLang: string, categoryId?: number, pageNumber?: number): Promise<ProjectsWithPagination> => {
   try {
-    console.log('category Id => ', categoryId);
     const res = await requestFactory.get(apiConstants.PROJECTS_BY_STATUS, {
       status: apiConstants.PROJECT_STATUS_EXECUTION,
       category_id: categoryId,
@@ -44,7 +42,6 @@ export const getExecutionProjects = async (localLang: string, categoryId?: numbe
       throw new Error('Unexpected Error, Check Your Internet Connection or communicate with support!');
     }
   } catch (e) {
-    console.log(e);
     throw new Error('Check Your Internet Connection! ' + e.data || e.message);
   }
 };
@@ -67,7 +64,6 @@ export const getDoneProjects = async (localLang: string, categoryId?: number, pa
       throw new Error('Unexpected Error, Check Your Internet Connection or communicate with support!');
     }
   } catch (e) {
-    console.log(e);
     throw new Error('Check Your Internet Connection! ' + e.data);
   }
 };
@@ -77,12 +73,10 @@ export const getProjectById = async (projectId: number, localLang: string): Prom
     const res = await requestFactory.get(`${apiConstants.PROJECT_BY_ID}/${projectId}`, {
       locale: localLang,
     });
-    console.log(res);
     const { data } = res;
     const projects = mapResponseToProjectList(data.data);
     return projects[0];
   } catch (e) {
-    console.log(e);
     throw new Error('Check Your Internet Connection! ' + e.data);
   }
 };
@@ -108,7 +102,6 @@ export const getRelatedProjects = async (relatedToType: string, relatedToId: num
       throw new Error('Unexpected Error, Check Your Internet Connection or communicate with support!');
     }
   } catch (e) {
-    console.log(e);
     throw new Error('Check Your Internet Connection! ' + e.data);
   }
 };
@@ -127,7 +120,6 @@ export const getProjectCategories = async (localLang: string) => {
       throw new Error('Unexpected Error, Check Your Internet Connection or communicate with support!');
     }
   } catch (e) {
-    console.log('from categories ! ', e);
     throw new Error('Check Your Internet Connection! ' + e.data);
   }
 };
@@ -135,12 +127,10 @@ export const getProjectCategories = async (localLang: string) => {
 export const donateForProject = async (donationData): Promise<any> => {
   try {
     const res = await requestFactory.post(apiConstants.DONATE, donationData);
-    console.log(res);
     const { data } = res;
     const { message } = data;
     return message;
   } catch (e) {
-    console.log(e);
     throw new Error('Check Your Internet Connection! ' + e.data);
   }
 };
