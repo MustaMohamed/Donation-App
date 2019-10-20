@@ -3,7 +3,7 @@
  */
 
 import React, { Component } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, ToastAndroid, View } from 'react-native';
 import { ProjectsList } from '../components';
 import { NavigationParams, NavigationState } from 'react-navigation';
 import { NavigationStackProp } from 'react-navigation-stack';
@@ -80,14 +80,12 @@ class RelatedProjectsScreen extends Component<Props, State> {
 
     const relatedType = relatedProjectsType ===
     RelatedProjectsType.Village ? apiConstants.RELATED_PROJECTS_VILLAGE : apiConstants.RELATED_PROJECTS_CATEGORY;
-
     const relatedId = relatedProjectsType === RelatedProjectsType.Village ? project.village.id : project.projectCategory.id;
     try {
       const relatedProjects: ProjectsWithPagination = await projectsService.getRelatedProjects(relatedType, relatedId, this.props.language.currentLanguage, pageNumber);
       this.setState({ relatedProjects: relatedProjects }, () => this.handleIndexChange(this.state.selectedIndex));
-
     } catch (e) {
-      console.log(e);
+      ToastAndroid.show(e.message, ToastAndroid.SHORT);
     }
   };
 

@@ -125,10 +125,8 @@ class ExecutionProjectsScreen extends PureComponent<Props, State> {
   private _applyProjectsFilter = () => {
     const countryFilteredProjects = this._filterService
       .applyCountryFilter(this.props.executionProjects.projects, this.state.countiesFilterValue);
-    console.log('country filtered => ', countryFilteredProjects);
     const rangesFilteredProjects = this._filterService
       .applyRangeFilter(countryFilteredProjects, this.state.costFilterRangeValue);
-    console.log('country filtered => ', rangesFilteredProjects);
     this.setState({ projects: rangesFilteredProjects });
   };
 

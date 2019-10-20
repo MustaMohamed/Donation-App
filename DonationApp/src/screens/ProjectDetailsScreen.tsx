@@ -101,12 +101,10 @@ class ProjectDetailsScreen extends PureComponent<Props, State> {
   };
 
   _onNavigationDidFocus = async () => {
-    console.log('component focused');
     this.props.showUiLoader();
     try {
       await this._getProjectDetails();
     } catch (e) {
-      console.log(e.message);
       ToastAndroid.show(e.message, ToastAndroid.SHORT);
     } finally {
       this.props.hideUiLoader();
