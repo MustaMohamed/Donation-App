@@ -34,141 +34,6 @@ class ProjectDetailsScreen extends PureComponent<Props, State> {
     project: null,
     relatedCategoryProjects: [],
     relatedVillageProjects: [],
-    images: [
-      {
-        id: 1,
-        description: 'Lorem ipsum dolor sit amet.',
-        thumbnail: 'https://placekitten.com/120/120',
-        title: 'Image Title',
-        uri: 'https://placekitten.com/640/360',
-      },
-      {
-        id: 2,
-        description: 'Lorem ipsum dolor sit amet.',
-        thumbnail: 'https://placekitten.com/120/120',
-        title: 'Image Title',
-        uri: 'https://placekitten.com/140/360',
-      },
-      {
-        id: 3,
-        description: 'Lorem ipsum dolor sit amet.',
-        thumbnail: 'https://placekitten.com/120/120',
-        title: 'Image Title',
-        uri: 'https://placekitten.com/340/360',
-      },
-      {
-        id: 3,
-        description: 'Lorem ipsum dolor sit amet.',
-        thumbnail: 'https://placekitten.com/120/120',
-        title: 'Image Title',
-        uri: 'https://placekitten.com/540/360',
-      },
-      {
-        id: 3,
-        description: 'Lorem ipsum dolor sit amet.',
-        thumbnail: 'https://placekitten.com/120/120',
-        title: 'Image Title',
-        uri: 'https://placekitten.com/340/660',
-      },
-      {
-        id: 3,
-        description: 'Lorem ipsum dolor sit amet.',
-        thumbnail: 'https://placekitten.com/120/120',
-        title: 'Image Title',
-        uri: 'https://placekitten.com/640/860',
-      },
-      {
-        id: 3,
-        description: 'Lorem ipsum dolor sit amet.',
-        thumbnail: 'https://placekitten.com/120/120',
-        title: 'Image Title',
-        uri: 'https://placekitten.com/640/360',
-      },
-      {
-        id: 3,
-        description: 'Lorem ipsum dolor sit amet.',
-        thumbnail: 'https://placekitten.com/120/120',
-        title: 'Image Title',
-        uri: 'https://placekitten.com/640/360',
-      },
-      {
-        id: 3,
-        description: 'Lorem ipsum dolor sit amet.',
-        thumbnail: 'https://placekitten.com/120/120',
-        title: 'Image Title',
-        uri: 'https://placekitten.com/640/360',
-      },
-      {
-        id: 3,
-        description: 'Lorem ipsum dolor sit amet.',
-        thumbnail: 'https://placekitten.com/120/120',
-        title: 'Image Title',
-        uri: 'https://placekitten.com/640/360',
-      },
-      {
-        id: 3,
-        description: 'Lorem ipsum dolor sit amet.',
-        thumbnail: 'https://placekitten.com/120/120',
-        title: 'Image Title',
-        uri: 'https://placekitten.com/140/460',
-      },
-      {
-        id: 3,
-        description: 'Lorem ipsum dolor sit amet.',
-        thumbnail: 'https://placekitten.com/120/120',
-        title: 'Image Title',
-        uri: 'https://placekitten.com/640/360',
-      },
-      {
-        id: 3,
-        description: 'Lorem ipsum dolor sit amet.',
-        thumbnail: 'https://placekitten.com/120/120',
-        title: 'Image Title',
-        uri: 'https://placekitten.com/640/360',
-      },
-      {
-        id: 3,
-        description: 'Lorem ipsum dolor sit amet.',
-        thumbnail: 'https://placekitten.com/120/120',
-        title: 'Image Title',
-        uri: 'https://placekitten.com/240/460',
-      },
-      {
-        id: 3,
-        description: 'Lorem ipsum dolor sit amet.',
-        thumbnail: 'https://placekitten.com/120/120',
-        title: 'Image Title',
-        uri: 'https://placekitten.com/640/360',
-      },
-      {
-        id: 3,
-        description: 'Lorem ipsum dolor sit amet.',
-        thumbnail: 'https://placekitten.com/120/120',
-        title: 'Image Title',
-        uri: 'https://placekitten.com/640/360',
-      },
-      {
-        id: 3,
-        description: 'Lorem ipsum dolor sit amet.',
-        thumbnail: 'https://placekitten.com/120/120',
-        title: 'Image Title',
-        uri: 'https://placekitten.com/640/360',
-      },
-      {
-        id: 3,
-        description: 'Lorem ipsum dolor sit amet.',
-        thumbnail: 'https://placekitten.com/120/120',
-        title: 'Image Title',
-        uri: 'https://placekitten.com/640/360',
-      },
-      {
-        id: 3,
-        description: 'Lorem ipsum dolor sit amet.',
-        thumbnail: 'https://placekitten.com/120/120',
-        title: 'Image Title',
-        uri: 'https://placekitten.com/640/360',
-      },
-    ],
   };
   static navigationOptions = ({ screenProps, navigation }) => {
     const project = navigation.getParam(navigationConstants.SCREEN_PARAM_PROJECT);
@@ -251,7 +116,7 @@ class ProjectDetailsScreen extends PureComponent<Props, State> {
     return (
       <View>
         <ListItem
-          title={this.state.images[index].title + this.state.images[index].id}
+          title={this.state.project.gallery.images[index].title + this.state.project.gallery.images[index].id}
           titleStyle={{ color: colorConstants.PRIMARY_WHITE }}
           leftIcon={<Icon name={'closecircleo'} type={'antdesign'} onPress={() => onClose()} color={colorConstants.PRIMARY_WHITE}/>}
           containerStyle={{ backgroundColor: 'transparent' }}
@@ -263,13 +128,13 @@ class ProjectDetailsScreen extends PureComponent<Props, State> {
     return (
       <View>
         <ListItem
-          title={this.state.images[index].title + this.state.images[index].id}
+          title={this.state.project.[index].title + this.state.images[index].id}
           titleStyle={styles.whiteText}
-          subtitle={this.state.images[index].description}
+          subtitle={this.state.project.gallery.images[index].description}
           subtitleStyle={styles.whiteText}
           containerStyle={{ backgroundColor: 'transparent' }}
         />
-        <Text style={{ color: colorConstants.PRIMARY_WHITE }}>{this.state.images[index].description}</Text>
+        <Text style={{ color: colorConstants.PRIMARY_WHITE }}>{this.state.project.gallery.images[index].description}</Text>
       </View>
     );
   };
@@ -303,10 +168,10 @@ class ProjectDetailsScreen extends PureComponent<Props, State> {
           <View style={styles.actionsView}>
           </View>
           <View>
-            <ImagesGallery images={this.state.images}
+            <ImagesGallery images={this.state.project.gallery.images}
                            renderPageHeader={this._renderPageHeader}
                            renderPageFooter={this._renderPageFooter}
-                           gallerySectionTitle={'Project Gallery'}/>
+                           gallerySectionTitle={this.props.intl.formatMessage({ id: translationConstants.PROJECT_GALLERY })}/>
             <RelatedProjectsList projects={this.state.relatedCategoryProjects}
                                  listTitle={this.props.intl.formatMessage({
                                    id: translationConstants.PROJECT_ACTION_TEXT_PREV_PROJECT_WORK,
