@@ -68,7 +68,7 @@ class DrawerContent extends PureComponent<Props, State> {
           <Text style={styles.label}><FormattedMessage id={translationConstants.SETTINGS}/></Text>
           <Icon containerStyle={{ marginBottom: 10 }} name={'md-options'} type={'ionicon'} size={22}/>
         </TouchableOpacity>
-        <List.Accordion title={'Categories'}
+        <List.Accordion title={this.props.intl.formatMessage({id: translationConstants.CATEGORIES})}
                         style={[styles.item, styles.accordion]}
                         titleStyle={styles.accordionTitle}
                         expanded={this.state.isCategoriesListOpen} onPress={this._toggleCategoriesListOpen}>

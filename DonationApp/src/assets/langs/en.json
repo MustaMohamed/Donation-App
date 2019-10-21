@@ -21,6 +21,7 @@
   "DESCRIPTION": "Description",
   "COST": "Cost",
   "CATEGORY": "Category",
+  "CATEGORIES": "Categories",
   "COLLECTED_DONATION": "Collected Donation",
   "EXECUTION_DURATION": "Execution Duration",
   "RESULT": "Result",
