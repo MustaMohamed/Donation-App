@@ -3,8 +3,8 @@
  */
 
 import React, { Component, ReactElement } from 'react';
-import { FlatList, StyleSheet, Text, View } from 'react-native';
-import { Image, ListItem } from 'react-native-elements';
+import { FlatList, Image, StyleSheet, Text, View } from 'react-native';
+import { ListItem } from 'react-native-elements';
 import { Project } from '../types';
 import { injectIntl, IntlShape } from 'react-intl';
 import { List } from 'react-native-paper';
@@ -78,8 +78,7 @@ class RelatedProjectsList extends Component<Props, State> {
                 rightTitle={this._renderRightTitle(item)}
                 rightSubtitle={this._renderRightSubtitle(item)}
                 rightElement={this._renderRightComponent(item)}
-                leftElement={<Image containerStyle={styles.listItemImageContainer}
-                                    style={styles.listItemImage}
+                leftElement={<Image style={styles.listItemImage}
                                     source={{ uri: item.image }}/>}
               />;
             }}
@@ -113,7 +112,7 @@ const styles = StyleSheet.create({
     width: '70%',
   },
   listItemImage: {
-    width: 80, height: 50, borderRadius: 10,
+    width: 90, height: 55, borderRadius: 5,
   },
   listItemImageContainer: {
     borderRadius: 10,
