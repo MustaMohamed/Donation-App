@@ -65,7 +65,7 @@ class RelatedProjectsList extends Component<Props, State> {
                 title={item.name}
                 titleStyle={styles.text}
                 subtitle={<View>
-                  <Text>{`$ ${this.props.intl.formatNumber(item.cost)}`}</Text>
+                  <Text style={styles.text}>{`$ ${this.props.intl.formatNumber(item.cost)}`}</Text>
                   <Progress isRTL
                             style={styles.progress}
                             color={colorConstants.PRIMARY_BLUE}
