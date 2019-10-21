@@ -324,6 +324,7 @@ class ProjectDetailsScreen extends PureComponent<Props, State> {
                                  listTitle={this.props.intl.formatMessage({
                                    id: translationConstants.PROJECT_ACTION_TEXT_VILLAGE_PREV_PROJECTS,
                                  })}
+                                 onItemPress={this._onPrevProjectsActionPress}
               // renderRightTitle={() => this.props.intl.formatMessage({ id: translationConstants.CATEGORY })}
                                  renderRightSubtitle={this._renderRelatedCategoryListRightComponent}>
               <Button buttonStyle={styles.actionBtn}

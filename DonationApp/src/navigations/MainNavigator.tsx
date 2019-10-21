@@ -31,7 +31,9 @@ export const MainNavigator = createStackNavigator({
       },
       headerTitleStyle: {
         fontWeight: 'bold',
+        textTransform: 'capitalize',
         color: colorConstants.PRIMARY_BLACK,
       },
     },
+    headerLayoutPreset: 'center',
   });
