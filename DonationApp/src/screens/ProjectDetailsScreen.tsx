@@ -168,10 +168,10 @@ class ProjectDetailsScreen extends PureComponent<Props, State> {
           <View style={styles.actionsView}>
           </View>
           <View>
-            <ImagesGallery images={this.state.project.gallery.images}
-                           renderPageHeader={this._renderPageHeader}
-                           renderPageFooter={this._renderPageFooter}
-                           gallerySectionTitle={this.props.intl.formatMessage({ id: translationConstants.PROJECT_GALLERY })}/>
+            {this.state.project.gallery.length && <ImagesGallery images={this.state.project.gallery}
+                                                                 renderPageHeader={this._renderPageHeader}
+                                                                 renderPageFooter={this._renderPageFooter}
+                                                                 gallerySectionTitle={this.props.intl.formatMessage({ id: translationConstants.PROJECT_GALLERY })}/>}
             <RelatedProjectsList projects={this.state.relatedCategoryProjects}
                                  listTitle={this.props.intl.formatMessage({
                                    id: translationConstants.PROJECT_ACTION_TEXT_PREV_PROJECT_WORK,
