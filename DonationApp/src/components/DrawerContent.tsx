@@ -13,6 +13,7 @@ import { AppState, Category } from '../types';
 import { colorConstants, navigationConstants, translationConstants } from '../constants';
 import { NavigationDrawerProp } from 'react-navigation-drawer';
 import { NavigationParams, NavigationState } from 'react-navigation';
+import { List } from 'react-native-paper';
 
 interface Props {
   navigation: NavigationDrawerProp<NavigationState, NavigationParams>;
@@ -26,10 +27,17 @@ interface Props {
   }
 }
 
-class DrawerContent extends PureComponent<Props> {
+interface State {
+  isCategoriesListOpen: boolean;
+}
+
+class DrawerContent extends PureComponent<Props, State> {
 
   constructor(props) {
     super(props);
+    this.state = {
+      isCategoriesListOpen: false,
+    };
   }
 
   async componentDidMount() {
@@ -49,6 +57,10 @@ class DrawerContent extends PureComponent<Props> {
     this.props.navigation.closeDrawer();
   };
 
+  _toggleCategoriesListOpen = () => {
+    this.setState(prevState => ({ isCategoriesListOpen: !prevState.isCategoriesListOpen }));
+  };
+
   render() {
     return (
       <ScrollView contentContainerStyle={styles.container}>
@@ -56,14 +68,19 @@ class DrawerContent extends PureComponent<Props> {
           <Text style={styles.label}><FormattedMessage id={translationConstants.SETTINGS}/></Text>
           <Icon containerStyle={{ marginBottom: 10 }} name={'md-options'} type={'ionicon'} size={22}/>
         </TouchableOpacity>
-        {this.props.categories.categoriesList && this.props.categories.categoriesList.map(item =>
-          <TouchableOpacity key={item.id}
-                            onPress={() => this._onCategoryItemPress(item)}
-                            style={[styles.item, item.id === this.props.categories.activeCategory.id && styles.activeItem]}>
-            <Text style={[styles.label, item.id === this.props.categories.activeCategory.id && styles.activeLabel]}>{item.name}</Text>
-            <Icon containerStyle={{ marginBottom: 10 }} name={'language'} type={'material'} size={22}/>
-          </TouchableOpacity>,
-        )}
+        <List.Accordion title={'Categories'}
+                        style={[styles.item, styles.accordion]}
+                        titleStyle={{ marginHorizontal: -8 }}
+                        expanded={this.state.isCategoriesListOpen} onPress={this._toggleCategoriesListOpen}>
+          {this.props.categories.categoriesList.map(item =>
+            <TouchableOpacity key={item.id}
+                              onPress={() => this._onCategoryItemPress(item)}
+                              style={[styles.item, styles.accordionItem, item.id === this.props.categories.activeCategory.id && styles.activeItem]}>
+              <Text style={[styles.label, item.id === this.props.categories.activeCategory.id && styles.activeLabel]}>{item.name}</Text>
+              <Icon containerStyle={{ marginBottom: 10 }} name={'language'} type={'material'} size={22}/>
+            </TouchableOpacity>,
+          )}
+        </List.Accordion>
       </ScrollView>
     );
   }
@@ -112,6 +129,13 @@ const styles = StyleSheet.create({
     height: 24,
   },
   title: {},
+  accordion: {
+    paddingHorizontal: 0,
+  },
+  accordionItem: {
+    width: '93%',
+    marginLeft: '5%',
+  },
 });
 const mapStateToProps = (state: ApplicationState) => {
   const { app, projects } = state;
