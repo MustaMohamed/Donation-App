@@ -42,6 +42,7 @@ class ProjectCard extends PureComponent<Props, State> {
     return this.props.project &&
       (<Card containerStyle={styles.cardContainer}
              wrapperStyle={styles.cardWrapper}
+             imageWrapperStyle={styles.imageWrapper}
              image={{ uri: this.props.project.image }}
       >
         <TouchableOpacity activeOpacity={0.8} onPress={this._toggleCollapse}>
@@ -97,6 +98,10 @@ const styles = StyleSheet.create({
   },
   cardWrapper: {
     borderRadius: 10,
+  },
+  imageWrapper: {
+    borderTopRightRadius: 10,
+    borderTopLeftRadius: 10,
   },
   projectView: {
     flex: 1,
