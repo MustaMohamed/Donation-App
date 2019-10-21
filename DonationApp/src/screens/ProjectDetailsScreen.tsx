@@ -128,7 +128,7 @@ class ProjectDetailsScreen extends PureComponent<Props, State> {
     return (
       <View>
         <ListItem
-          title={this.state.project.[index].title + this.state.images[index].id}
+          title={this.state.project.gallery.images[index].title + this.state.project.gallery.images[index].id}
           titleStyle={styles.whiteText}
           subtitle={this.state.project.gallery.images[index].description}
           subtitleStyle={styles.whiteText}
