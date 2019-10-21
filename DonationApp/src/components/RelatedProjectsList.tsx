@@ -55,8 +55,7 @@ class RelatedProjectsList extends Component<Props, State> {
 
   render() {
     return (
-      <View style={{ marginVertical: 10, flex: 1 }}>
-        {/*<Text onPress={() => {}} style={[styles.text, styles.listTitle]}>{this.props.listTitle}</Text>*/}
+      <View style={styles.container}>
         <List.Accordion onPress={this._toggleCollapse} title={this.props.listTitle} expanded={this.state.isCollapsed}>
           <FlatList
             data={this.props.projects}
@@ -79,17 +78,14 @@ class RelatedProjectsList extends Component<Props, State> {
                 rightTitle={this._renderRightTitle(item)}
                 rightSubtitle={this._renderRightSubtitle(item)}
                 rightElement={this._renderRightComponent(item)}
-                leftElement={<View style={{ width: 80, height: 50 }}>
-                  <Image containerStyle={{ borderRadius: 10 }}
-                         style={{ width: 80, height: 50, borderRadius: 10 }}
-                         source={{ uri: item.image }}
-                  />
-                </View>}
+                leftElement={<Image containerStyle={styles.listItemImageContainer}
+                                    style={styles.listItemImage}
+                                    source={{ uri: item.image }}/>}
               />;
             }}
             keyExtractor={item => 'x_' + item.id}
           />
-          <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+          <View style={styles.childrenContainer}>
             {this.props.children}
           </View>
         </List.Accordion>
@@ -99,6 +95,12 @@ class RelatedProjectsList extends Component<Props, State> {
 }
 
 const styles = StyleSheet.create({
+  container: {
+    marginVertical: 10, flex: 1,
+  },
+  childrenContainer: {
+    flex: 1, justifyContent: 'center', alignItems: 'center',
+  },
   text: {
     textAlign: 'left',
   },
@@ -109,6 +111,12 @@ const styles = StyleSheet.create({
   progress: {
     marginVertical: 10,
     width: '70%',
+  },
+  listItemImage: {
+    width: 80, height: 50, borderRadius: 10,
+  },
+  listItemImageContainer: {
+    borderRadius: 10,
   },
 });
 

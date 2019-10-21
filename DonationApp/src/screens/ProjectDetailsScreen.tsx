@@ -288,9 +288,7 @@ class ProjectDetailsScreen extends PureComponent<Props, State> {
   render() {
     return (
       <View style={styles.detailsContainer}>
-        <NavigationEvents
-          onDidFocus={this._onNavigationDidFocus}
-        />
+        <NavigationEvents onDidFocus={this._onNavigationDidFocus}/>
         {this.state.project && <ScrollView>
           <Image source={{ uri: this.state.project.image }} containerStyle={styles.image}/>
           <View style={styles.projectTitleView}>
@@ -299,8 +297,7 @@ class ProjectDetailsScreen extends PureComponent<Props, State> {
                                                value={`$ ${this.props.intl.formatNumber(this.state.project.cost)}`}
                                                textStyle={styles.badgeText}
                                                badgeStyle={styles.badge}
-                                               containerStyle={styles.badgeContainer}
-            />}
+                                               containerStyle={styles.badgeContainer}/>}
           </View>
           {this.state.project && <ProjectDetails project={this.state.project}/>}
           <View style={styles.actionsView}>
@@ -310,32 +307,31 @@ class ProjectDetailsScreen extends PureComponent<Props, State> {
                            renderPageHeader={this._renderPageHeader}
                            renderPageFooter={this._renderPageFooter}
                            gallerySectionTitle={'Project Gallery'}/>
-            <RelatedProjectsList
-              listTitle={this.props.intl.formatMessage({
-                id: translationConstants.PROJECT_ACTION_TEXT_PREV_PROJECT_WORK,
-              })}
-              projects={this.state.relatedCategoryProjects}
-              onItemPress={this._onPrevProjectsActionPress}
+            <RelatedProjectsList projects={this.state.relatedCategoryProjects}
+                                 listTitle={this.props.intl.formatMessage({
+                                   id: translationConstants.PROJECT_ACTION_TEXT_PREV_PROJECT_WORK,
+                                 })}
+                                 onItemPress={this._onPrevProjectsActionPress}
               // renderRightTitle={() => this.props.intl.formatMessage({ id: translationConstants.COUNTRY })}
-              renderRightSubtitle={this._renderRelatedCountryListRightComponent}
-              children={<Button buttonStyle={styles.actionBtn}
-                                titleStyle={styles.actionBtnText}
-                                title={this.props.intl.formatMessage({
-                                  id: translationConstants.VIEW_MORE,
-                                })} onPress={this._onRelatedCategoryProjectsActionPress}/>}
-            />
-            <RelatedProjectsList
-              listTitle={this.props.intl.formatMessage({
-                id: translationConstants.PROJECT_ACTION_TEXT_VILLAGE_PREV_PROJECTS,
-              })} projects={this.state.relatedVillageProjects}
+                                 renderRightSubtitle={this._renderRelatedCountryListRightComponent}>
+              <Button buttonStyle={styles.actionBtn}
+                      titleStyle={styles.actionBtnText}
+                      title={this.props.intl.formatMessage({
+                        id: translationConstants.VIEW_MORE,
+                      })} onPress={this._onRelatedCategoryProjectsActionPress}/>
+            </RelatedProjectsList>
+            <RelatedProjectsList projects={this.state.relatedVillageProjects}
+                                 listTitle={this.props.intl.formatMessage({
+                                   id: translationConstants.PROJECT_ACTION_TEXT_VILLAGE_PREV_PROJECTS,
+                                 })}
               // renderRightTitle={() => this.props.intl.formatMessage({ id: translationConstants.CATEGORY })}
-              renderRightSubtitle={this._renderRelatedCategoryListRightComponent}
-              children={<Button buttonStyle={styles.actionBtn}
-                                titleStyle={styles.actionBtnText}
-                                title={this.props.intl.formatMessage({
-                                  id: translationConstants.VIEW_MORE,
-                                })} onPress={this._onRelatedVillageProjectsActionPress}/>}
-            />
+                                 renderRightSubtitle={this._renderRelatedCategoryListRightComponent}>
+              <Button buttonStyle={styles.actionBtn}
+                      titleStyle={styles.actionBtnText}
+                      title={this.props.intl.formatMessage({
+                        id: translationConstants.VIEW_MORE,
+                      })} onPress={this._onRelatedVillageProjectsActionPress}/>
+            </RelatedProjectsList>
           </View>
           <View style={styles.donateView}>
             <Button buttonStyle={styles.donateBtn}
