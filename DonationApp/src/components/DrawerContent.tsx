@@ -70,7 +70,7 @@ class DrawerContent extends PureComponent<Props, State> {
         </TouchableOpacity>
         <List.Accordion title={'Categories'}
                         style={[styles.item, styles.accordion]}
-                        titleStyle={{ marginHorizontal: -8 }}
+                        titleStyle={styles.accordionTitle}
                         expanded={this.state.isCategoriesListOpen} onPress={this._toggleCategoriesListOpen}>
           {this.props.categories.categoriesList.map(item =>
             <TouchableOpacity key={item.id}
@@ -135,6 +135,9 @@ const styles = StyleSheet.create({
   accordionItem: {
     width: '93%',
     marginLeft: '5%',
+  },
+  accordionTitle: {
+    marginLeft: -8,
   },
 });
 const mapStateToProps = (state: ApplicationState) => {
