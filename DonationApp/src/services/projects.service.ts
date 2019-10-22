@@ -107,16 +107,18 @@ export default class ProjectsService {
         throw new Error('Unexpected Error, Check Your Internet Connection or communicate with support!');
       }
     } catch (e) {
+      console.log(e);
       throw new Error('Check Your Internet Connection! ' + e.data || e.message);
     }
   }
 
   private static mapResponseToProjectList(data): Project[] {
+    console.log(data);
     return data ? data.map((item): Project => ({
       id: item.id,
       name: item.name,
       description: item.description,
-      country: item.country || 'مصر',
+      country: item.country || item.village,
       cause: item.cause,
       cost: item.cost,
       collectedDonation: item.collected,

@@ -1,4 +1,4 @@
-import { CountryType, FiltersMenuConstructFactor, ICountryFilter, IRangeFilter, Project, ProjectFilterStatusType } from '../types';
+import { CountryType, FiltersMenuConstructFactor, ICountryFilter, IRangeFilter, Project, ProjectFilterStatusType, RangeFilterType } from '../types';
 import ValidationService from './validation.service';
 
 export default class ProjectsFilterService {
@@ -29,13 +29,17 @@ export default class ProjectsFilterService {
       value: ``,
       from: 0,
       to: lastSelectedRange,
-      id: -1,
+      id: RangeFilterType.AllRanges,
     });
     return filterRanges;
   }
 
   public static applyRangeFilter(projects: Project[], filterConstraints: IRangeFilter): Project[] {
-    return projects.filter(item => (item.cost <= filterConstraints.to && item.cost >= filterConstraints.from));
+    const newProjects = projects.filter(item => {
+      const filterResult = ((item.cost <= filterConstraints.to && item.cost >= filterConstraints.from) || item.id === RangeFilterType.AllRanges);
+      return filterResult;
+    });
+    return projects.filter(item => ((item.cost <= filterConstraints.to && item.cost >= filterConstraints.from) || item.id === RangeFilterType.AllRanges));
   }
 
   public static constructCountriesFilter(projects: Project[]): ICountryFilter[] {

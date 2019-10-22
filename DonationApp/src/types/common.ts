@@ -51,6 +51,10 @@ export enum CountryType {
   AllCountries = -1
 }
 
+export enum RangeFilterType {
+  AllRanges = -1
+}
+
 export enum FiltersMenuConstructFactor {
   Ranges = 4,
   Countries = 1

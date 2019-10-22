@@ -77,6 +77,9 @@ class DonationProjectsScreen extends PureComponent<Props, State> {
       this._constructCostFilterRanges();
       this._applyProjectsFilters();
     }
+    if (this.state.costFilterRangeValue != prevState.costFilterRangeValue) {
+      this._applyProjectsFilters();
+    }
   }
 
   /**
@@ -106,7 +109,7 @@ class DonationProjectsScreen extends PureComponent<Props, State> {
     countries.unshift({
       value: this.props.intl
         .formatMessage({ id: translationConstants.FILTER_ALL_COUNTRIES }),
-      id: null,
+      id: CountryType.AllCountries,
     });
     this.setState({ countries });
   };
@@ -119,7 +122,8 @@ class DonationProjectsScreen extends PureComponent<Props, State> {
           ...item,
           value: `$${this.props.intl.formatNumber(item.from)}-${this.props.intl.formatNumber(item.to)}`,
         })));
-    this.setState({ filtersRanges: costRangeFilter });
+    const last = costRangeFilter[costRangeFilter.length - 1];
+    this.setState({ filtersRanges: costRangeFilter, costFilterRangeValue: last });
   };
 
   private _applyProjectsFilters = () => {

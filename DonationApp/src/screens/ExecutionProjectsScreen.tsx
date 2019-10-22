@@ -73,7 +73,10 @@ class ExecutionProjectsScreen extends PureComponent<Props, State> {
     if (this.props.executionProjects !== prevProps.executionProjects) {
       this._constructProjectsCountries();
       this._constructCostFilterRanges();
-      this._applyProjectsFilter();
+      this._applyProjectsFilters();
+    }
+    if (this.state.costFilterRangeValue != prevState.costFilterRangeValue) {
+      this._applyProjectsFilters();
     }
   }
 
@@ -104,7 +107,7 @@ class ExecutionProjectsScreen extends PureComponent<Props, State> {
     countries.unshift({
       value: this.props.intl
         .formatMessage({ id: translationConstants.FILTER_ALL_COUNTRIES }),
-      id: -1,
+      id: CountryType.AllCountries,
     });
     this.setState({ countries });
   };
@@ -117,10 +120,12 @@ class ExecutionProjectsScreen extends PureComponent<Props, State> {
           ...item,
           value: `$${this.props.intl.formatNumber(item.from)}-${this.props.intl.formatNumber(item.to)}`,
         })));
-    this.setState({ filtersRanges: costRangeFilter });
+    const last = costRangeFilter[costRangeFilter.length - 1];
+    this.setState({ filtersRanges: costRangeFilter, costFilterRangeValue: last });
+
   };
 
-  private _applyProjectsFilter = () => {
+  private _applyProjectsFilters = () => {
     const countryFilteredProjects = ProjectsFilterService
       .applyCountryFilter(this.props.executionProjects.projects, this.state.countiesFilterValue);
     const rangesFilteredProjects = ProjectsFilterService
@@ -161,11 +166,11 @@ class ExecutionProjectsScreen extends PureComponent<Props, State> {
   };
 
   public onCountryMenuChange = (value) => {
-    this.setState({ countiesFilterValue: value }, this._applyProjectsFilter);
+    this.setState({ countiesFilterValue: value }, this._applyProjectsFilters);
   };
 
   public onCostRangeMenuChange = (value) => {
-    this.setState({ costFilterRangeValue: value }, this._applyProjectsFilter);
+    this.setState({ costFilterRangeValue: value }, this._applyProjectsFilters);
   };
 
   render() {
