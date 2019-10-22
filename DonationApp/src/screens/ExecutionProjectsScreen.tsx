@@ -104,7 +104,7 @@ class ExecutionProjectsScreen extends PureComponent<Props, State> {
     countries.unshift({
       value: this.props.intl
         .formatMessage({ id: translationConstants.FILTER_ALL_COUNTRIES }),
-      id: null,
+      id: -1,
     });
     this.setState({ countries });
   };

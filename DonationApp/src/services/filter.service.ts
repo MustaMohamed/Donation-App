@@ -1,5 +1,5 @@
-import { CountryType, ICountryFilter, IRangeFilter, Project, ProjectFilterStatusType } from '../types';
-
+import { CountryType, FiltersMenuConstructFactor, ICountryFilter, IRangeFilter, Project, ProjectFilterStatusType } from '../types';
+import ValidationService from './validation.service';
 
 export default class ProjectsFilterService {
 
@@ -12,17 +12,19 @@ export default class ProjectsFilterService {
     const costsList = Array.from(distinct);
     let lastSelectedRange = 0;
     const filterRanges: IRangeFilter[] = costsList.map((item, idx) => {
-      if (idx % 4 == 0 || costsList.length === idx + 1) {
+      if (idx % FiltersMenuConstructFactor.Ranges == 0 || costsList.length === idx + 1) {
         const last = lastSelectedRange;
         lastSelectedRange = item;
-        return {
-          value: ``,
-          from: last,
-          to: lastSelectedRange,
-          id: idx,
-        };
+        if (costsList.length >= FiltersMenuConstructFactor.Ranges) {
+          return {
+            value: ``,
+            from: last,
+            to: lastSelectedRange,
+            id: idx,
+          };
+        }
       }
-    });
+    }).filter(item => !ValidationService.isEmpty(item));
     filterRanges.unshift({
       value: ``,
       from: 0,
@@ -42,7 +44,7 @@ export default class ProjectsFilterService {
     let countries = Array
       .from(new Set<string>(countriesList))
       .map((item, idx) => ({ value: item, id: idx }))
-      .filter(item => item.value !== undefined);
+      .filter(item => !ValidationService.isEmpty(item));
     return countries;
   }
 

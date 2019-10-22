@@ -11,7 +11,7 @@ import { NavigationParams, NavigationState } from 'react-navigation';
 import { colorConstants, navigationConstants, translationConstants, validationConstants } from '../constants';
 import { PaymentMethod, ValidationField } from '../types';
 import PhoneInput from 'react-native-phone-input';
-import { ProjectsService, validationService } from '../services';
+import { ProjectsService, ValidationService } from '../services';
 import { connect } from 'react-redux';
 import { hideUiLoaderAction, showUiLoaderAction } from '../redux-store/actions';
 import { TextInputMask } from 'react-native-masked-text';
@@ -150,7 +150,7 @@ class DonationFormScreen extends PureComponent<Props, State> {
     let itemsToValidateKeys = ['donationAmount', ...optionalFields], validForm = true;
     for (let i = 0; i < itemsToValidateKeys.length; i++) {
       let key = itemsToValidateKeys[i], validKey = true;
-      validKey = validationService.validateInput(this.state[key].validationTypes, this.state[key].value);
+      validKey = ValidationService.validateInput(this.state[key].validationTypes, this.state[key].value);
       this.setState({ [key]: Object.assign({}, this.state[key], { hasError: !validKey }) });
       if (!validKey)
         validForm = false;
