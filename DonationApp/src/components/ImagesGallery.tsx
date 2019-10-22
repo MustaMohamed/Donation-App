@@ -6,6 +6,7 @@ import React, { PureComponent } from 'react';
 import { StyleSheet } from 'react-native';
 import { List } from 'react-native-paper';
 import ImageLayout from 'react-native-image-layout';
+import { colorConstants } from '../constants';
 
 interface Image {
   uri: string;
@@ -55,7 +56,10 @@ class ImagesGallery extends PureComponent<Props, State> {
       }),
     );
     return (
-      <List.Accordion onPress={this.toggleCollapse} title={this.props.gallerySectionTitle} expanded={this.state.isOpen}>
+      <List.Accordion onPress={this.toggleCollapse}
+                      title={this.props.gallerySectionTitle}
+                      titleStyle={this.state.isOpen ? styles.activeAccordionTitle : null}
+                      expanded={this.state.isOpen}>
         <ImageLayout images={imageURLs}
                      renderPageHeader={this.props.renderPageHeader}
                      renderPageFooter={this.props.renderPageFooter}
@@ -65,6 +69,10 @@ class ImagesGallery extends PureComponent<Props, State> {
   }
 }
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  activeAccordionTitle: {
+    color: colorConstants.PRIMARY_BLUE,
+  },
+});
 
 export default ImagesGallery;

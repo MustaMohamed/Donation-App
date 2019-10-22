@@ -57,7 +57,10 @@ class RelatedProjectsList extends Component<Props, State> {
   render() {
     return (
       <View style={styles.container}>
-        <List.Accordion onPress={this._toggleCollapse} title={this.props.listTitle} expanded={this.state.isCollapsed}>
+        <List.Accordion onPress={this._toggleCollapse}
+                        title={this.props.listTitle}
+                        titleStyle={this.state.isCollapsed ? styles.activeAccordionTitle : null}
+                        expanded={this.state.isCollapsed}>
           <FlatList
             data={this.props.projects}
             renderItem={({ item }) => {
@@ -117,6 +120,9 @@ const styles = StyleSheet.create({
   },
   listItemImageContainer: {
     borderRadius: 10,
+  },
+  activeAccordionTitle: {
+    color: colorConstants.PRIMARY_BLUE,
   },
 });
 

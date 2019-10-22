@@ -3,7 +3,7 @@
  */
 
 import React, { PureComponent } from 'react';
-import { ScrollView, StyleSheet, Text, ToastAndroid, TouchableOpacity } from 'react-native';
+import { ScrollView, StyleSheet, ToastAndroid, TouchableOpacity } from 'react-native';
 import { Icon } from 'react-native-elements';
 import { ApplicationState } from '../redux-store/store';
 import { connect } from 'react-redux';
@@ -69,9 +69,9 @@ class DrawerContent extends PureComponent<Props, State> {
           <AppText style={styles.label}><FormattedMessage id={translationConstants.SETTINGS}/></AppText>
           <Icon containerStyle={{ marginBottom: 10 }} name={'md-options'} type={'ionicon'} size={22}/>
         </TouchableOpacity>
-        <List.Accordion title={this.props.intl.formatMessage({id: translationConstants.CATEGORIES})}
+        <List.Accordion title={this.props.intl.formatMessage({ id: translationConstants.CATEGORIES })}
                         style={[styles.item, styles.accordion]}
-                        titleStyle={styles.accordionTitle}
+                        titleStyle={[styles.accordionTitle, this.state.isCategoriesListOpen ? styles.activeAccordionTitle : null]}
                         expanded={this.state.isCategoriesListOpen} onPress={this._toggleCategoriesListOpen}>
           {this.props.categories.categoriesList.map(item =>
             <TouchableOpacity key={item.id}
@@ -139,6 +139,9 @@ const styles = StyleSheet.create({
   },
   accordionTitle: {
     marginLeft: -8,
+  },
+  activeAccordionTitle: {
+    color: colorConstants.PRIMARY_BLUE,
   },
 });
 const mapStateToProps = (state: ApplicationState) => {
