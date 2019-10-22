@@ -3,14 +3,14 @@
  */
 
 import React, { PureComponent } from 'react';
-import { Dimensions, ScrollView, StyleSheet, Text, ToastAndroid, View } from 'react-native';
+import { Dimensions, ScrollView, StyleSheet, ToastAndroid, View } from 'react-native';
 import { NavigationEvents, NavigationParams, NavigationState } from 'react-navigation';
 import { Project, ProjectsWithPagination, RelatedProjectsType } from '../types';
 import { injectIntl, IntlShape } from 'react-intl';
 import { apiConstants, colorConstants, navigationConstants, translationConstants } from '../constants';
 import { Badge, Button, Icon, Image, ListItem } from 'react-native-elements';
 import { NavigationStackProp } from 'react-navigation-stack';
-import { ProjectDetails, RelatedProjectsList } from '../components';
+import { AppText, ProjectDetails, RelatedProjectsList } from '../components';
 import { hideUiLoaderAction, showUiLoaderAction } from '../redux-store/actions';
 import { connect } from 'react-redux';
 import { ProjectsService } from '../services';
@@ -39,7 +39,7 @@ class ProjectDetailsScreen extends PureComponent<Props, State> {
     const project = navigation.getParam(navigationConstants.SCREEN_PARAM_PROJECT);
     return {
       title: project.name,
-      titleStyle: { textTransform: 'capitalize' },
+      headerTitle: <AppText style={{ fontSize: 18, textTransform: 'capitalize' }} bold text={project.name}/>,
     };
   };
 
@@ -134,19 +134,19 @@ class ProjectDetailsScreen extends PureComponent<Props, State> {
           subtitleStyle={styles.whiteText}
           containerStyle={{ backgroundColor: 'transparent' }}
         />
-        <Text style={{ color: colorConstants.PRIMARY_WHITE }}>{this.state.project.gallery.images[index].description}</Text>
+        <AppText style={{ color: colorConstants.PRIMARY_WHITE }}>{this.state.project.gallery.images[index].description}</AppText>
       </View>
     );
   };
   _renderRelatedCountryListRightComponent = (item: Project) => {
     return (
-      <Text style={{ color: colorConstants.PRIMARY_BLACK, fontSize: 12 }}>{`${item.country}, ${item.village.name}`}</Text>
+      <AppText style={{ color: colorConstants.PRIMARY_BLACK, fontSize: 12 }}>{`${item.country}, ${item.village.name}`}</AppText>
     );
   };
 
   _renderRelatedCategoryListRightComponent = (item: Project) => {
     return (
-      <Text style={{ color: colorConstants.PRIMARY_BLACK, fontSize: 12 }}>{`${item.projectCategory.category}`}</Text>
+      <AppText style={{ color: colorConstants.PRIMARY_BLACK, fontSize: 12 }}>{`${item.projectCategory.category}`}</AppText>
     );
   };
 
@@ -157,7 +157,7 @@ class ProjectDetailsScreen extends PureComponent<Props, State> {
         {this.state.project && <ScrollView>
           <Image source={{ uri: this.state.project.image }} containerStyle={styles.image}/>
           <View style={styles.projectTitleView}>
-            <Text style={styles.projectTitle}>{this.state.project.name}</Text>
+            <AppText bold style={styles.projectTitle}>{this.state.project.name}</AppText>
             {this.state.project.cost && <Badge status="success"
                                                value={`$ ${this.props.intl.formatNumber(this.state.project.cost)}`}
                                                textStyle={styles.badgeText}
@@ -181,9 +181,9 @@ class ProjectDetailsScreen extends PureComponent<Props, State> {
                                  renderRightSubtitle={this._renderRelatedCountryListRightComponent}>
               <Button buttonStyle={styles.actionBtn}
                       titleStyle={styles.actionBtnText}
-                      title={this.props.intl.formatMessage({
+                      title={<AppText bold text={this.props.intl.formatMessage({
                         id: translationConstants.VIEW_MORE,
-                      })} onPress={this._onRelatedCategoryProjectsActionPress}/>
+                      })}/>} onPress={this._onRelatedCategoryProjectsActionPress}/>
             </RelatedProjectsList>
             <RelatedProjectsList projects={this.state.relatedVillageProjects}
                                  listTitle={this.props.intl.formatMessage({
@@ -194,19 +194,19 @@ class ProjectDetailsScreen extends PureComponent<Props, State> {
                                  renderRightSubtitle={this._renderRelatedCategoryListRightComponent}>
               <Button buttonStyle={styles.actionBtn}
                       titleStyle={styles.actionBtnText}
-                      title={this.props.intl.formatMessage({
+                      title={<AppText bold text={this.props.intl.formatMessage({
                         id: translationConstants.VIEW_MORE,
-                      })} onPress={this._onRelatedVillageProjectsActionPress}/>
+                      })}/>} onPress={this._onRelatedVillageProjectsActionPress}/>
             </RelatedProjectsList>
           </View>
           <View style={styles.donateView}>
             <Button buttonStyle={styles.donateBtn}
                     titleStyle={styles.actionBtnText}
-                    title={this.state.project.isCostCollectedDone ? this.props.intl.formatMessage({
+                    title={<AppText bold text={this.state.project.isCostCollectedDone ? this.props.intl.formatMessage({
                       id: translationConstants.MORE_PROJECTS_WAITING,
                     }) : this.props.intl.formatMessage({
                       id: translationConstants.DONATE,
-                    })} onPress={this.state.project.isCostCollectedDone ? this._navigateToHome : this._onDonateActionPress}/>
+                    })}/>} onPress={this.state.project.isCostCollectedDone ? this._navigateToHome : this._onDonateActionPress}/>
           </View>
         </ScrollView>}
       </View>
@@ -256,14 +256,12 @@ const styles = StyleSheet.create({
   },
   actionBtnText: {
     fontSize: 14,
-    fontWeight: 'bold',
     color: colorConstants.PRIMARY_WHITE,
   },
   text: {
     textAlign: 'left',
   },
   listItemTitle: {
-    fontWeight: 'bold',
     fontSize: 16,
     color: colorConstants.PRIMARY_BLACK,
   },
@@ -271,7 +269,6 @@ const styles = StyleSheet.create({
     marginVertical: 10,
   },
   projectTitle: {
-    fontWeight: 'bold',
     fontSize: 18,
     color: colorConstants.PRIMARY_BLACK,
     margin: 10,
@@ -299,6 +296,7 @@ const styles = StyleSheet.create({
   },
   badgeText: {
     fontSize: 16,
+    fontFamily: 'Tajawal-Regular',
   },
 });
 

@@ -3,7 +3,7 @@ import { createStackNavigator } from 'react-navigation-stack';
 import { DonationFormScreen, ProjectDetailsScreen, RelatedProjectsScreen, SettingsScreen } from '../screens';
 import { colorConstants, navigationConstants, translationConstants } from '../constants';
 import { BottomTabsNavigator } from './BottomTabsNavigator';
-import { DrawerToggle } from '../components';
+import { AppText, DrawerToggle } from '../components';
 
 export const MainNavigator = createStackNavigator({
     [navigationConstants.SCREEN_HOME]: {
@@ -12,6 +12,10 @@ export const MainNavigator = createStackNavigator({
         const title = screenProps.intl.formatMessage({ id: translationConstants.APP_TITLE, defaultMessage: 'Home' });
         return {
           title: title,
+          headerTitle: <AppText style={{ fontSize: 18 }} bold text={title}/>,
+          titleStyle: {
+            fontFamily: 'Tajawal-Bold',
+          },
           headerLeft: <DrawerToggle onTogglePress={() => navigation.openDrawer()}/>,
           headerLeftContainerStyle: { padding: 10 },
         };

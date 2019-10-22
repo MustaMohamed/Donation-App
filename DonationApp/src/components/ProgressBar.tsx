@@ -14,6 +14,7 @@ import {
 import {Text} from '@rn-components-kit/text';
 import {Icon} from '@rn-components-kit/icon';
 import LinearGradient from 'react-native-linear-gradient';
+import AppText from './AppText';
 
 const COLORS = {
   success: '#52C41A',
@@ -138,7 +139,7 @@ export class Progress extends React.PureComponent {
     } else {
       let component = null;
       if(['normal', 'active'].includes(status)) {
-        component = <Text style={[styles.lineInfoText, lineInfoTextStyle]}>{percentFormatter(percent)}</Text>;
+        component = <AppText style={[styles.lineInfoText, lineInfoTextStyle]}>{percentFormatter(percent)}</AppText>;
       } else if(status === 'fail') {
         component = <Icon size={16} type={'close-circle-fill'} color={COLORS.fail}/>;
       } else if(status === 'success') {
@@ -187,7 +188,7 @@ export class Progress extends React.PureComponent {
       component = renderInfo();
     } else {
       if(['normal', 'active'].includes(status)) {
-        component = <Text style={[styles.circleInfoText, circleInfoTextStyle]}>{percentFormatter(percent)}</Text>;
+        component = <AppText style={[styles.circleInfoText, circleInfoTextStyle]}>{percentFormatter(percent)}</AppText>;
       } else if(status === 'fail') {
         component = <Icon size={25} type={'close'} color={COLORS.fail}/>;
       } else if(status === 'success') {

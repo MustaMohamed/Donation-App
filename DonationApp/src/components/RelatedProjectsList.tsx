@@ -3,13 +3,14 @@
  */
 
 import React, { Component, ReactElement } from 'react';
-import { FlatList, Image, StyleSheet, Text, View } from 'react-native';
+import { FlatList, Image, StyleSheet, View } from 'react-native';
 import { ListItem } from 'react-native-elements';
 import { Project } from '../types';
 import { injectIntl, IntlShape } from 'react-intl';
 import { List } from 'react-native-paper';
 import { colorConstants } from '../constants';
 import { Progress } from './ProgressBar';
+import AppText from './AppText';
 
 interface Props {
   projects: Project[];
@@ -62,10 +63,10 @@ class RelatedProjectsList extends Component<Props, State> {
             renderItem={({ item }) => {
               return <ListItem
                 onPress={() => this._onItemPress(item)}
-                title={item.name}
+                title={<AppText text={item.name}/>}
                 titleStyle={styles.text}
                 subtitle={<View>
-                  <Text style={styles.text}>{`$ ${this.props.intl.formatNumber(item.cost)}`}</Text>
+                  <AppText style={styles.text}>{`$ ${this.props.intl.formatNumber(item.cost)}`}</AppText>
                   <Progress isRTL
                             style={styles.progress}
                             color={colorConstants.PRIMARY_BLUE}

@@ -13,7 +13,7 @@ import { IntlProvider } from 'react-intl';
 import ReactNativeRestart from 'react-native-restart';
 import { LocalizedAppNavigator } from './navigations';
 import { ThemeProvider } from 'react-native-elements';
-import { Provider as PaperProvider } from 'react-native-paper';
+import { configureFonts, DefaultTheme, Provider as PaperProvider } from 'react-native-paper';
 import Loader from 'react-native-modal-loader';
 import 'intl';
 import 'intl/locale-data/jsonp/en';
@@ -28,6 +28,37 @@ const langs = {
   [Languages.Ar]: lang_ar,
 };
 
+/*
+* Paper them config
+* */
+
+const fontConfig = {
+  default: {
+    regular: {
+      fontFamily: 'Tajawal-Regular',
+      fontWeight: 'normal',
+    },
+    medium: {
+      fontFamily: 'Tajawal-Medium',
+      fontWeight: 'bold',
+    },
+    light: {
+      fontFamily: 'Tajawal-Light',
+      fontWeight: 'normal',
+    },
+    thin: {
+      fontFamily: 'Tajawal-ExtraLight',
+      fontWeight: 'normal',
+    },
+  },
+};
+
+const paperTheme = {
+  ...DefaultTheme,
+  fonts: configureFonts(fontConfig),
+};
+
+/******************/
 interface Props {
   app: AppState;
 }
@@ -94,7 +125,7 @@ class Startup extends PureComponent<Props, State> {
   render() {
     return (
       <IntlProvider messages={langs[this.state.localLang]} locale={this.state.localLang} defaultLocale={'en'}>
-        <PaperProvider>
+        <PaperProvider theme={paperTheme}>
           <StatusBar backgroundColor={colorConstants.PRIMARY_GRAY} barStyle='light-content'/>
           <Loader loading={this.state.isLoading} size={'large'} color={colorConstants.SECONDARY_RED}/>
           <ThemeProvider>

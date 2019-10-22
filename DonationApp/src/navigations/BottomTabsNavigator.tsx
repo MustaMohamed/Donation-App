@@ -7,6 +7,7 @@ import { NavigationParams, NavigationState } from 'react-navigation';
 import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5';
 import React from 'react';
 import { Icon } from 'react-native-elements';
+import { AppText } from '../components';
 
 
 export const BottomTabsNavigator = createMaterialBottomTabNavigator({
@@ -16,6 +17,7 @@ export const BottomTabsNavigator = createMaterialBottomTabNavigator({
         const title = screenProps.intl.formatMessage({ id: translationConstants.SCREEN_DONATION_PROJECTS_TAB_TITLE });
         return {
           title: title,
+          tabBarLabel: <AppText small text={title}/>,
           tabBarIcon: ({ focused, tintColor }) => {
             return <FontAwesome5Icon name={'donate'} size={22} color={tintColor}/>;
           },
@@ -28,6 +30,7 @@ export const BottomTabsNavigator = createMaterialBottomTabNavigator({
         const title = screenProps.intl.formatMessage({ id: translationConstants.SCREEN_EXECUTION_PROJECTS_TAB_TITLE });
         return {
           title: title,
+          tabBarLabel: <AppText small text={title}/>,
           tabBarIcon: ({ focused, tintColor }) => {
             return <Icon name={'progress-wrench'} type={'material-community'} color={tintColor}/>;
           },
@@ -40,6 +43,7 @@ export const BottomTabsNavigator = createMaterialBottomTabNavigator({
         const title = screenProps.intl.formatMessage({ id: translationConstants.SCREEN_DONE_PROJECTS_TAB_TITLE });
         return {
           title: title,
+          tabBarLabel: <AppText small text={title}/>,
           tabBarIcon: ({ focused, tintColor }) => {
             return <Icon name={'progress-check'} type={'material-community'} color={tintColor}/>;
           },

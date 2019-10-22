@@ -3,7 +3,7 @@
  */
 
 import React, { PureComponent } from 'react';
-import { KeyboardAvoidingView, Picker, ScrollView, StyleSheet, Switch, Text, ToastAndroid, TouchableOpacity, View } from 'react-native';
+import { KeyboardAvoidingView, ScrollView, StyleSheet, Switch, ToastAndroid, TouchableOpacity, View } from 'react-native';
 import { Button, Icon, Image, Input, ListItem } from 'react-native-elements';
 import { FormattedMessage, injectIntl, IntlShape } from 'react-intl';
 import { NavigationStackProp } from 'react-navigation-stack';
@@ -15,6 +15,7 @@ import { ProjectsService, validationService } from '../services';
 import { connect } from 'react-redux';
 import { hideUiLoaderAction, showUiLoaderAction } from '../redux-store/actions';
 import { TextInputMask } from 'react-native-masked-text';
+import { AppText } from '../components';
 
 interface Props {
   intl: IntlShape,
@@ -66,6 +67,7 @@ class DonationFormScreen extends PureComponent<Props, State> {
     const title: string = screenProps.intl.formatMessage({ id: translationConstants.DONATE });
     return {
       title: `${title} ${project.name}`,
+      headerTitle: <AppText style={{ fontSize: 18 }} bold text={`${title} ${project.name}`}/>,
     };
   };
 
@@ -178,7 +180,7 @@ class DonationFormScreen extends PureComponent<Props, State> {
       <View style={styles.container}>
         <View style={styles.switchView}>
           <ListItem
-            title={this.props.intl.formatMessage({ id: translationConstants.SWITCH_DONOR_PERSONAL_DETAILS })}
+            title={<AppText text={this.props.intl.formatMessage({ id: translationConstants.SWITCH_DONOR_PERSONAL_DETAILS })}/>}
             titleStyle={{ color: colorConstants.PRIMARY_GRAY }}
             containerStyle={styles.listItem}
             rightElement={<Switch style={styles.switch}
@@ -216,10 +218,10 @@ class DonationFormScreen extends PureComponent<Props, State> {
                         keyboardType={'numeric'}
                         textComponent={Input}
             />
-            {this.state.formError && this.state.donorNumber.hasError && <Text style={styles.errorText}>{
-              this.props.intl.formatMessage({ id: translationConstants.DONOR_PHONE_INPUT_ERROR_MESSAGE })}</Text>}
+            {this.state.formError && this.state.donorNumber.hasError && <AppText style={styles.errorText}>{
+              this.props.intl.formatMessage({ id: translationConstants.DONOR_PHONE_INPUT_ERROR_MESSAGE })}</AppText>}
           </View>}
-          <Text style={styles.donationText}><FormattedMessage id={translationConstants.YOUR_DONATION}/></Text>
+          <AppText style={styles.donationText}><FormattedMessage id={translationConstants.YOUR_DONATION}/></AppText>
           <KeyboardAvoidingView>
             <TextInputMask
               type={'money'}
@@ -274,7 +276,7 @@ class DonationFormScreen extends PureComponent<Props, State> {
           </View>
           <View>
             <Button buttonStyle={styles.donateBtn}
-                    title={this.props.intl.formatMessage({ id: translationConstants.DONATE })}
+                    title={<AppText bold text={ this.props.intl.formatMessage({ id: translationConstants.DONATE })}/>}
                     onPress={this.submitDonation}
             />
           </View>
@@ -310,6 +312,7 @@ const styles = StyleSheet.create({
   },
   input: {
     marginHorizontal: 10,
+    fontFamily: 'Tajawal-Regular',
   },
   donationText: {
     color: colorConstants.PRIMARY_GRAY,

@@ -3,7 +3,7 @@
  */
 
 import React, { PureComponent } from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { Badge, Button, Card, Icon } from 'react-native-elements';
 import { injectIntl, IntlShape } from 'react-intl';
 import { Project } from '../types';
@@ -11,6 +11,7 @@ import { colorConstants, translationConstants } from '../constants';
 import Collapsible from 'react-native-collapsible';
 import ProjectDetails from './ProjectDetails';
 import { Progress } from './ProgressBar';
+import AppText from './AppText';
 
 interface Props {
   intl: IntlShape;
@@ -48,9 +49,8 @@ class ProjectCard extends PureComponent<Props, State> {
         <TouchableOpacity activeOpacity={0.8} onPress={this._toggleCollapse}>
           <View style={styles.projectView}>
             <View style={styles.titlesView}>
-              <Text style={[styles.text, styles.projectCountry]}>{this.props.project.country || 'Egypt'}</Text>
-              <Text style={[styles.text, styles.projectTitle]}>{this.props.project.name}</Text>
-
+              <AppText bold style={{ color: colorConstants.PRIMARY_GRAY }} small>{this.props.project.country || 'مصر'}</AppText>
+              <AppText bold style={[styles.projectTitle]} text={this.props.project.name}/>
             </View>
             <View style={styles.costView}>
               {this.props.project.cost && <Badge status="success"
@@ -78,9 +78,12 @@ class ProjectCard extends PureComponent<Props, State> {
 
             <Button buttonStyle={styles.actionBtn}
                     titleStyle={styles.actionBtnText}
-                    title={this.props.intl.formatMessage({
+                    title={<AppText bold text={this.props.intl.formatMessage({
                       id: translationConstants.VIEW_MORE,
-                    })} onPress={this._onCardPress}/>
+                    })}/>}
+                    onPress={this._onCardPress}>
+
+            </Button>
           </View>
         </Collapsible>
       </Card>);
@@ -128,17 +131,15 @@ const styles = StyleSheet.create({
   badgeContainer: {},
   badgeText: {
     fontSize: 16,
+    fontFamily: 'Tajawal-Regular',
   },
   projectTitle: {
     fontSize: 18,
-    fontWeight: 'bold',
     color: colorConstants.PRIMARY_BLACK,
     textTransform: 'capitalize',
   },
   projectCountry: {
     color: colorConstants.PRIMARY_BLUE,
-    fontWeight: 'bold',
-    fontSize: 12,
   },
   actionBtn: {
     paddingHorizontal: 45,
@@ -149,7 +150,7 @@ const styles = StyleSheet.create({
   },
   actionBtnText: {
     fontSize: 14,
-    fontWeight: 'bold',
+    fontFamily: 'Tajawal-Regular',
     color: colorConstants.PRIMARY_WHITE,
   },
   actionBtnView: {

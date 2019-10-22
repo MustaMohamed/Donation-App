@@ -14,6 +14,7 @@ import { colorConstants, navigationConstants, translationConstants } from '../co
 import { NavigationDrawerProp } from 'react-navigation-drawer';
 import { NavigationParams, NavigationState } from 'react-navigation';
 import { List } from 'react-native-paper';
+import AppText from './AppText';
 
 interface Props {
   navigation: NavigationDrawerProp<NavigationState, NavigationParams>;
@@ -65,7 +66,7 @@ class DrawerContent extends PureComponent<Props, State> {
     return (
       <ScrollView contentContainerStyle={styles.container}>
         <TouchableOpacity onPress={this.navigateToSettings} style={styles.item}>
-          <Text style={styles.label}><FormattedMessage id={translationConstants.SETTINGS}/></Text>
+          <AppText style={styles.label}><FormattedMessage id={translationConstants.SETTINGS}/></AppText>
           <Icon containerStyle={{ marginBottom: 10 }} name={'md-options'} type={'ionicon'} size={22}/>
         </TouchableOpacity>
         <List.Accordion title={this.props.intl.formatMessage({id: translationConstants.CATEGORIES})}
@@ -76,7 +77,7 @@ class DrawerContent extends PureComponent<Props, State> {
             <TouchableOpacity key={item.id}
                               onPress={() => this._onCategoryItemPress(item)}
                               style={[styles.item, styles.accordionItem, item.id === this.props.categories.activeCategory.id && styles.activeItem]}>
-              <Text style={[styles.label, item.id === this.props.categories.activeCategory.id && styles.activeLabel]}>{item.name}</Text>
+              <AppText style={[styles.label, item.id === this.props.categories.activeCategory.id && styles.activeLabel]}>{item.name}</AppText>
               <Icon containerStyle={{ marginBottom: 10 }} name={'language'} type={'material'} size={22}/>
             </TouchableOpacity>,
           )}

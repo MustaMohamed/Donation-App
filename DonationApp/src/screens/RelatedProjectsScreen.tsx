@@ -4,7 +4,7 @@
 
 import React, { Component } from 'react';
 import { StyleSheet, ToastAndroid, View } from 'react-native';
-import { ProjectsList } from '../components';
+import { AppText, ProjectsList } from '../components';
 import { NavigationParams, NavigationState } from 'react-navigation';
 import { NavigationStackProp } from 'react-navigation-stack';
 import { Language, Project, ProjectFilterStatusType, ProjectsWithPagination, RelatedProjectsType } from '../types';
@@ -44,6 +44,7 @@ class RelatedProjectsScreen extends Component<Props, State> {
     const project: Project = navigation.getParam(navigationConstants.SCREEN_PARAM_PROJECT);
     return {
       title: project.name,
+      headerTitle: <AppText style={{ fontSize: 18 }} bold text={project.name}/>,
     };
   };
 

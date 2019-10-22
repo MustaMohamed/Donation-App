@@ -89,6 +89,7 @@ const styles = StyleSheet.create({
   },
   text: {
     textAlign: 'left',
+    fontFamily: 'Tajawal-Regular',
   },
   dropdownContainer: {
     backgroundColor: colorConstants.PRIMARY_WHITE,
@@ -103,10 +104,12 @@ const styles = StyleSheet.create({
   },
   dropdownInput: {
     width: '95%',
+    fontFamily: 'Tajawal-Regular',
   },
   dropdown: {
     borderRadius: 5,
     width: '47%',
+    fontFamily: 'Tajawal-Regular',
   },
 });
 

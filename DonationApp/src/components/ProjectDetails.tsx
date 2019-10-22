@@ -3,7 +3,7 @@
  */
 
 import React, { Fragment, PureComponent } from 'react';
-import { Dimensions, StyleSheet, Text, View } from 'react-native';
+import { Dimensions, StyleSheet, View } from 'react-native';
 import { ListItem } from 'react-native-elements';
 import { colorConstants, translationConstants } from '../constants';
 import { FormattedMessage, FormattedNumber, injectIntl, IntlShape } from 'react-intl';
@@ -11,6 +11,7 @@ import { NavigationStackProp } from 'react-navigation-stack';
 import { NavigationParams, NavigationState } from 'react-navigation';
 import { Project } from '../types';
 import { Progress } from './ProgressBar';
+import AppText from './AppText';
 
 
 interface Props {
@@ -26,8 +27,8 @@ class ProjectDetails extends PureComponent<Props> {
       <Fragment>
         {this.props.project.cost &&
         <View style={{ marginHorizontal: 10, flex: 1, flexDirection: 'column', justifyContent: 'center', alignContent: 'center', alignItems: 'center' }}>
-          <Text style={styles.fundText}><FormattedMessage id={translationConstants.COLLECTED_DONATION}/></Text>
-          <Text style={styles.collectedDonationText}>$ <FormattedNumber value={this.props.project.collectedDonation}/></Text>
+          <AppText style={styles.fundText}><FormattedMessage id={translationConstants.COLLECTED_DONATION}/></AppText>
+          <AppText bold style={styles.collectedDonationText}>$ <FormattedNumber value={this.props.project.collectedDonation}/></AppText>
           <Progress isRTL
                     style={styles.progress}
                     color={colorConstants.PRIMARY_BLUE}
@@ -37,78 +38,101 @@ class ProjectDetails extends PureComponent<Props> {
                     type={'line'}/>
         </View>}
         <ListItem
-          title={this.props.intl.formatMessage({ id: translationConstants.COUNTRY })}
+          title={<AppText bold text={this.props.intl.formatMessage({ id: translationConstants.COUNTRY })}/>}
+          titleStyle={[styles.text, styles.listItemTitle]}
           titleProps={{ style: [styles.text, styles.listItemTitle] }}
+          subtitleStyle={styles.text}
           containerStyle={styles.listItemStyle}
           rightSubtitle={this.props.project.country || 'Egypt'}
+          rightSubtitleStyle={styles.text}
+          bottomDivider
+        />
+        <ListItem
+          title={<AppText bold text={this.props.intl.formatMessage({ id: translationConstants.VILLAGE })}/>}
+          titleStyle={[styles.text, styles.listItemTitle]}
+          titleProps={{ style: [styles.text, styles.listItemTitle] }}
+          containerStyle={styles.listItemStyle}
+          rightSubtitle={this.props.project.village.name || 'Egypt'}
+          rightSubtitleStyle={styles.text}
           subtitleStyle={styles.text}
           bottomDivider
         />
         <ListItem
-          title={this.props.intl.formatMessage({ id: translationConstants.VILLAGE })}
+          title={<AppText bold text={this.props.intl.formatMessage({ id: translationConstants.DESCRIPTION })}/>}
+          titleStyle={[styles.text, styles.listItemTitle]}
           titleProps={{ style: [styles.text, styles.listItemTitle] }}
-          containerStyle={styles.listItemStyle} rightSubtitle={this.props.project.village.name || 'Egypt'}
+          containerStyle={styles.listItemStyle}
+          subtitle={this.props.project.description}
           subtitleStyle={styles.text}
           bottomDivider
         />
         <ListItem
-          title={this.props.intl.formatMessage({ id: translationConstants.DESCRIPTION })}
+          title={<AppText bold text={this.props.intl.formatMessage({ id: translationConstants.REASON })}/>}
+          titleStyle={[styles.text, styles.listItemTitle]}
           titleProps={{ style: [styles.text, styles.listItemTitle] }}
-          containerStyle={styles.listItemStyle} subtitle={this.props.project.description}
-          subtitleStyle={styles.text}
-          bottomDivider
-        />
-        <ListItem
-          title={this.props.intl.formatMessage({ id: translationConstants.REASON })}
-          titleProps={{ style: [styles.text, styles.listItemTitle] }}
-          containerStyle={styles.listItemStyle} subtitle={this.props.project.cause}
+          containerStyle={styles.listItemStyle}
+          subtitle={this.props.project.cause}
           subtitleStyle={styles.text}
           bottomDivider
         />
         {this.props.project.isCostCollectedDone && < ListItem
-          title={this.props.intl.formatMessage({ id: translationConstants.EXECUTION_DURATION })}
+          title={<AppText bold text={this.props.intl.formatMessage({ id: translationConstants.EXECUTION_DURATION })}/>}
+          titleStyle={[styles.text, styles.listItemTitle]}
           titleProps={{ style: [styles.text, styles.listItemTitle] }}
-          containerStyle={styles.listItemStyle} rightSubtitle={this.props.project.executionDuration}
+          containerStyle={styles.listItemStyle}
+          rightSubtitle={this.props.project.executionDuration}
+          rightSubtitleStyle={styles.text}
           subtitleStyle={styles.text}
           bottomDivider
         />}
         {this.props.project.isExecutionDone && this.props.project.result && <ListItem
-          title={this.props.intl.formatMessage({ id: translationConstants.RESULT })}
+          title={<AppText bold text={this.props.intl.formatMessage({ id: translationConstants.RESULT })}/>}
+          titleStyle={[styles.text, styles.listItemTitle]}
           titleProps={{ style: [styles.text, styles.listItemTitle] }}
-          containerStyle={styles.listItemStyle} subtitle={this.props.project.result}
+          containerStyle={styles.listItemStyle}
+          subtitle={this.props.project.result}
           subtitleStyle={styles.text}
           bottomDivider
         />}
         {this.props.project.isCostCollectedDone && <ListItem
-          title={this.props.intl.formatMessage({ id: translationConstants.START_AT })}
+          title={<AppText bold text={this.props.intl.formatMessage({ id: translationConstants.START_AT })}/>}
+          titleStyle={[styles.text, styles.listItemTitle]}
           titleProps={{ style: [styles.text, styles.listItemTitle] }}
-          containerStyle={styles.listItemStyle} rightSubtitle={this.props.intl.formatDate(this.props.project.startAt ? this.props.project.startAt : new Date(), {
-          year: 'numeric',
-          month: 'numeric',
-          day: 'numeric',
-        })}
+          containerStyle={styles.listItemStyle}
+          rightSubtitle={this.props.intl.formatDate(this.props.project.startAt ? this.props.project.startAt : new Date(), {
+            year: 'numeric',
+            month: 'numeric',
+            day: 'numeric',
+          })}
+          rightSubtitleStyle={styles.text}
           subtitleStyle={styles.text}
           bottomDivider
         />}
         {this.props.project.isCostCollectedDone && <ListItem
-          title={this.props.intl.formatMessage({ id: translationConstants.EXPECTED_END_AT })}
+          title={<AppText bold text={this.props.intl.formatMessage({ id: translationConstants.EXPECTED_END_AT })}/>}
+          titleStyle={[styles.text, styles.listItemTitle]}
           titleProps={{ style: [styles.text, styles.listItemTitle] }}
-          containerStyle={styles.listItemStyle} rightSubtitle={this.props.intl.formatDate(this.props.project.expectedEndAt ? this.props.project.expectedEndAt : new Date(), {
-          year: 'numeric',
-          month: 'numeric',
-          day: 'numeric',
-        })}
+          containerStyle={styles.listItemStyle}
+          rightSubtitle={this.props.intl.formatDate(this.props.project.expectedEndAt ? this.props.project.expectedEndAt : new Date(), {
+            year: 'numeric',
+            month: 'numeric',
+            day: 'numeric',
+          })}
+          rightSubtitleStyle={styles.text}
           subtitleStyle={styles.text}
           bottomDivider
         />}
         {this.props.project.isExecutionDone && <ListItem
-          title={this.props.intl.formatMessage({ id: translationConstants.END_AT })}
+          title={<AppText bold text={this.props.intl.formatMessage({ id: translationConstants.END_AT })}/>}
+          titleStyle={[styles.text, styles.listItemTitle]}
           titleProps={{ style: [styles.text, styles.listItemTitle] }}
-          containerStyle={styles.listItemStyle} rightSubtitle={this.props.intl.formatDate(this.props.project.endAt ? this.props.project.endAt : new Date(), {
-          year: 'numeric',
-          month: 'numeric',
-          day: 'numeric',
-        })}
+          containerStyle={styles.listItemStyle}
+          rightSubtitle={this.props.intl.formatDate(this.props.project.endAt ? this.props.project.endAt : new Date(), {
+            year: 'numeric',
+            month: 'numeric',
+            day: 'numeric',
+          })}
+          rightSubtitleStyle={styles.text}
           subtitleStyle={styles.text}
           bottomDivider
         />}
@@ -146,14 +170,13 @@ const styles = StyleSheet.create({
   },
   actionBtnText: {
     fontSize: 14,
-    fontWeight: 'bold',
     color: colorConstants.PRIMARY_WHITE,
   },
   text: {
     textAlign: 'left',
+    fontFamily: 'Tajawal-Regular',
   },
   listItemTitle: {
-    fontWeight: 'bold',
     fontSize: 16,
     color: colorConstants.PRIMARY_BLACK,
   },
@@ -165,10 +188,8 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: colorConstants.PRIMARY_GRAY,
     textAlign: 'center',
-
   },
   collectedDonationText: {
-    fontWeight: 'bold',
     fontSize: 28,
     color: colorConstants.PRIMARY_BLACK,
     textAlign: 'center',

@@ -6,6 +6,7 @@ import TabItem from './TabItem';
 import ProjectDetails from './ProjectDetails';
 import RelatedProjectsList from './RelatedProjectsList';
 import Filters from './Filters';
+import AppText from './AppText';
 
 export * from './ProgressBar';
 export {
@@ -17,4 +18,5 @@ export {
   ProjectDetails,
   RelatedProjectsList,
   Filters,
+  AppText,
 };

@@ -116,7 +116,7 @@ export default class ProjectsService {
       id: item.id,
       name: item.name,
       description: item.description,
-      country: item.country || 'Egypt',
+      country: item.country || 'مصر',
       cause: item.cause,
       cost: item.cost,
       collectedDonation: item.collected,

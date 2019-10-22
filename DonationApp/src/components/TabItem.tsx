@@ -3,15 +3,16 @@
  */
 
 import React from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { colorConstants } from '../constants';
+import AppText from './AppText';
 
 const TabItem = (props) => {
   return (
     <TouchableOpacity {...props} activeOpacity={0.9} style={[...props.style, styles.tab, props.focused ? styles.touchActive : styles.touch]}>
       <View style={styles.tab}>
         {props.icon && <props.icon/>}
-        <Text style={[styles.label, props.focused && styles.activeLabel]}>{props.title}</Text>
+        <AppText style={[styles.label, props.focused && styles.activeLabel]}>{props.title}</AppText>
       </View>
     </TouchableOpacity>
   );

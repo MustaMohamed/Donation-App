@@ -3,7 +3,7 @@
  */
 
 import React, { PureComponent } from 'react';
-import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { colorConstants, translationConstants } from '../constants';
 import { FormattedMessage } from 'react-intl';
 import { Icon } from 'react-native-elements';
@@ -11,6 +11,7 @@ import { AppState, Languages } from '../types';
 import { connect } from 'react-redux';
 import { ApplicationState } from '../redux-store/store';
 import { changeCurrentLanguageAction } from '../redux-store/actions';
+import { AppText } from '../components';
 
 interface Props {
   changeAppCurrentLanguage: typeof changeCurrentLanguageAction;
@@ -22,6 +23,7 @@ class SettingsScreen extends PureComponent<Props> {
     const title = screenProps.intl.formatMessage({ id: translationConstants.SCREEN_SETTINGS_TITLE });
     return {
       title: title,
+      headerTitle: <AppText style={{ fontSize: 18 }} bold text={title}/>,
     };
   };
 
@@ -36,7 +38,7 @@ class SettingsScreen extends PureComponent<Props> {
         <ScrollView contentContainerStyle={styles.container}>
           <TouchableOpacity onPress={this.onChangeAppLanguage} style={[styles.item, styles.itemRTL]}>
             <Icon containerStyle={{ marginBottom: 10 }} name={'language'} type={'material'} size={22}/>
-            <Text style={styles.label}><FormattedMessage id={translationConstants.APP_LANGUAGE}/></Text>
+            <AppText style={styles.label}><FormattedMessage id={translationConstants.APP_LANGUAGE}/></AppText>
           </TouchableOpacity>
         </ScrollView>
       </View>
