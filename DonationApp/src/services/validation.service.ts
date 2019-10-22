@@ -1,7 +1,7 @@
 import { validationConstants } from '../constants';
 
 export const isEmpty = (data: any): boolean => {
-  return data === undefined || data === null || (Object.keys(data).length === 0 && data.constructor === Object)|| data == [] || data === '' || data === "" || data === 0 || false;
+  return data === undefined || data === null || (Object.keys(data).length === 0 && data.constructor === Object) || data == [] || data === '' || data === '' || data === 0 || false;
 };
 
 export const isValidEmail = (email: string): boolean => {
@@ -32,9 +32,14 @@ export const validateInput = (validationTypes: any[], inputValue: any) => {
   return valid;
 };
 
-export default {
-  isEmpty,
-  isValidEmail,
-  validateInput,
-  containsSpecialCharacters
+
+export default class ValidationService {
+  public static isEmpty = isEmpty;
+
+  public static isValidEmail = isValidEmail;
+
+  public static validateInput = validateInput;
+
+  public static containsSpecialCharacters = containsSpecialCharacters;
+
 }
