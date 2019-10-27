@@ -3,7 +3,7 @@ import { Project } from '../types/models';
 export const projects: Project[] = [
   {
     id: 0,
-    name: 'Make new hospital #1',
+    name: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Doloribus, nobis, possimus? Dolor ipsam repudiandae veritatis',
     description: 'Lorem ipsum dolor sit amet.',
     cost: 500,
     collectedDonation: 70,

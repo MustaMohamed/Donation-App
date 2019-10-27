@@ -12,6 +12,7 @@ import Collapsible from 'react-native-collapsible';
 import ProjectDetails from './ProjectDetails';
 import { Progress } from './ProgressBar';
 import AppText from './AppText';
+import numeral from 'numeral';
 
 interface Props {
   intl: IntlShape;
@@ -39,6 +40,15 @@ class ProjectCard extends PureComponent<Props, State> {
     this.setState(prevState => ({ isDetailsCollapsed: !prevState.isDetailsCollapsed }));
   };
 
+  _renderCost = (cost?: number) => {
+    const formattedCost = numeral(cost * 1000000).format('0.0a');
+    const numbers = formattedCost.match(/\d+/g);
+    const integer = this.props.intl.formatNumber(numbers[0]);
+    const decimal = this.props.intl.formatNumber(numbers[1]);
+    const tag = formattedCost.replace(/[0-9|.|,]/g, '');
+    return `${integer}${numbers[1] != 0 ? '.' + decimal : ''} ${tag}`;
+  };
+
   render() {
     return this.props.project &&
       (<Card containerStyle={styles.cardContainer}
@@ -53,12 +63,13 @@ class ProjectCard extends PureComponent<Props, State> {
               <AppText bold style={[styles.projectTitle]} text={this.props.project.name}/>
             </View>
             <View style={styles.costView}>
-              {this.props.project.cost && <Badge status="success"
-                                                 value={`$ ${this.props.intl.formatNumber(this.props.project.cost)}`}
+              {this.props.project.cost && <Badge status='success'
+                                                 value={`$ ${this._renderCost(this.props.project.cost)}`}
                                                  textStyle={styles.badgeText}
                                                  badgeStyle={styles.badge}
                                                  containerStyle={styles.badgeContainer}
               />}
+
             </View>
             <View style={styles.collapsedIcon}>
               <Icon name={this.state.isDetailsCollapsed ? 'down' : 'up'} type={'antdesign'}/>
@@ -114,10 +125,10 @@ const styles = StyleSheet.create({
     marginVertical: 0,
   },
   titlesView: {
-    width: '70%',
+    width: '60%',
   },
   costView: {
-    width: '30%',
+    width: '40%',
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'flex-end',

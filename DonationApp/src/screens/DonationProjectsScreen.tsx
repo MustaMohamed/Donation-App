@@ -15,6 +15,7 @@ import { ApplicationState } from '../redux-store/store';
 import { connect } from 'react-redux';
 import { Icon } from 'react-native-elements';
 import { ProjectsFilterService } from '../services';
+import { projects } from '../utils';
 
 interface Props {
   navigation: NavigationStackProp<NavigationState, NavigationParams>;
@@ -91,6 +92,7 @@ class DonationProjectsScreen extends PureComponent<Props, State> {
       await this._getProjects();
     } catch (e) {
       ToastAndroid.show(e.message, ToastAndroid.SHORT);
+      this.setState({ projects: projects });
     } finally {
       this.props.hideUiLoader();
     }

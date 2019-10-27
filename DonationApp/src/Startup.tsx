@@ -4,8 +4,7 @@
 
 import React, { PureComponent } from 'react';
 import { I18nManager, LayoutAnimation, StatusBar, UIManager } from 'react-native';
-import lang_en from './assets/langs/en.json';
-import lang_ar from './assets/langs/ar.json';
+
 import { AppState, Languages } from './types';
 import { connect } from 'react-redux';
 import { ApplicationState, persistor } from './redux-store/store';
@@ -18,15 +17,35 @@ import Loader from 'react-native-modal-loader';
 import 'intl';
 import 'intl/locale-data/jsonp/en';
 import 'intl/locale-data/jsonp/ar';
+import 'intl-pluralrules';
+import lang_en from './assets/langs/en.json';
+import lang_ar from './assets/langs/ar.json';
 import { colorConstants } from './constants';
-// import '@formatjs/intl-relativetimeformat/polyfill';
-// import '@formatjs/intl-pluralrules/polyfill';
-// import '@formatjs/intl-pluralrules/polyfill-locales';
+import numeral from 'numeral';
 
 const langs = {
   [Languages.En]: lang_en,
   [Languages.Ar]: lang_ar,
 };
+
+
+// load a locale
+numeral.register('locale', Languages.Ar, {
+  delimiters: {
+    thousands: ' ',
+    decimal: ',',
+  },
+  abbreviations: {
+    thousand: 'الف',
+    million: 'مليون',
+    billion: 'مليار',
+    trillion: 'ترليون',
+  },
+  currency: {
+    symbol: '$',
+  },
+});
+
 
 /*
 * Paper them config
@@ -109,6 +128,9 @@ class Startup extends PureComponent<Props, State> {
     }
     if (this.props.app.language.currentLanguage !== this.state.localLang)
       this.updateLanguage(language, isRTL);
+
+    // switch between locales
+    numeral.locale(language);
   };
 
   updateLanguage = (language: string, isRTL: boolean) => {
