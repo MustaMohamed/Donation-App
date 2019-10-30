@@ -17,7 +17,6 @@ import Loader from 'react-native-modal-loader';
 import 'intl';
 import 'intl/locale-data/jsonp/en';
 import 'intl/locale-data/jsonp/ar';
-import 'intl-pluralrules';
 import lang_en from './assets/langs/en.json';
 import lang_ar from './assets/langs/ar.json';
 import { colorConstants } from './constants';
