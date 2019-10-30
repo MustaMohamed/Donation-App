@@ -47,7 +47,7 @@ class ProjectDetails extends PureComponent<Props> {
           rightSubtitleStyle={styles.text}
           bottomDivider
         />
-        <ListItem
+        {this.props.project.village &&<ListItem
           title={<AppText bold text={this.props.intl.formatMessage({ id: translationConstants.VILLAGE })}/>}
           titleStyle={[styles.text, styles.listItemTitle]}
           titleProps={{ style: [styles.text, styles.listItemTitle] }}
@@ -56,7 +56,7 @@ class ProjectDetails extends PureComponent<Props> {
           rightSubtitleStyle={styles.text}
           subtitleStyle={styles.text}
           bottomDivider
-        />
+        />}
         <ListItem
           title={<AppText bold text={this.props.intl.formatMessage({ id: translationConstants.DESCRIPTION })}/>}
           titleStyle={[styles.text, styles.listItemTitle]}

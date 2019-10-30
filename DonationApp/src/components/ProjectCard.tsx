@@ -41,7 +41,7 @@ class ProjectCard extends PureComponent<Props, State> {
   };
 
   _renderCost = (cost?: number) => {
-    const formattedCost = numeral(cost * 1000000).format('0.0a');
+    const formattedCost = numeral(cost).format('0.0a');
     const numbers = formattedCost.match(/\d+/g);
     const integer = this.props.intl.formatNumber(numbers[0]);
     const decimal = this.props.intl.formatNumber(numbers[1]);
