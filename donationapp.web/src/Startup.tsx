@@ -7,6 +7,8 @@ import lang_ar from './assets/langs/ar.json';
 import { Helmet } from 'react-helmet';
 import { ApplicationState, persistor } from './redux-store/store';
 import { connect } from 'react-redux';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { TopNavbar } from './components';
 
 const langs: { [key: string]: any } = {
   [Languages.En]: lang_en,
@@ -78,7 +80,17 @@ class Startup extends Component<Props | any, State> {
     return (
       <IntlProvider messages={langs[this.state.localLang]} locale={this.state.localLang} defaultLocale={Languages.En}>
         <Helmet htmlAttributes={{ lang: this.state.localLang, dir: this.state.isRTL ? LanguageDirection.Rtl : LanguageDirection.Ltr }}/>
-        <HomePage/>
+        <Router>
+          <TopNavbar/>
+          <Switch>
+            <Route exact path={['/', '/home']}>
+              <HomePage/>
+            </Route>
+            <Route path="*">
+              <div><h1>Not found</h1></div>
+            </Route>
+          </Switch>
+        </Router>
       </IntlProvider>
     );
   }

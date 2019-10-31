@@ -1,6 +1,8 @@
 {
-  "navigation.home" : "Home",
+  "navigation.home": "Home",
   "navigation.donation": "Donation",
   "navigation.execution": "Execution",
-  "navigation.completed": "Completed"
+  "navigation.completed": "Completed",
+  "language.arabic": "Arabic",
+  "language.english": "English"
 }

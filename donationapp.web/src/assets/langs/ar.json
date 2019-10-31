@@ -1,6 +1,8 @@
 {
-  "navigation.home" : "الرئيسية",
+  "navigation.home": "الرئيسية",
   "navigation.donation": "متاحة للتبرع",
   "navigation.execution": "قيد التنفيذ",
-  "navigation.completed": "اكتملت"
+  "navigation.completed": "اكتملت",
+  "language.arabic": "العربية",
+  "language.english": "English"
 }
