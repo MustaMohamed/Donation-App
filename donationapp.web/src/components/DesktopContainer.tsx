@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
-import { Button, Container, Menu, Responsive, Segment, Visibility } from 'semantic-ui-react';
+import { Container, Dropdown, Header, Icon, Menu, Responsive, Segment, Visibility } from 'semantic-ui-react';
+import { FormattedMessage, injectIntl, IntlShape } from 'react-intl';
+import { TranslationConstants } from '../constants';
+import { Languages } from '../types';
 
 interface Props {
-
+  intl: IntlShape;
 }
 
 interface State {
@@ -46,32 +49,36 @@ class DesktopContainer extends Component<Props, State> {
               inverted={!fixed}
               pointing={!fixed}
               secondary={!fixed}
-              size='large'
+              size='small'
             >
               <Container>
-                <Menu.Item as='a' active>
-                  Home
-                </Menu.Item>
-                <Menu.Item as='a'>Donation</Menu.Item>
-                <Menu.Item as='a'>Execution</Menu.Item>
-                <Menu.Item as='a'>Completed</Menu.Item>
+                <Menu.Item as='a' active><FormattedMessage id={TranslationConstants.NavigationHome}/></Menu.Item>
+                <Menu.Item as='a'><FormattedMessage id={TranslationConstants.NavigationDonations}/></Menu.Item>
+                <Menu.Item as='a'><FormattedMessage id={TranslationConstants.NavigationExecution}/></Menu.Item>
+                <Menu.Item as='a'><FormattedMessage id={TranslationConstants.NavigationCompleted}/></Menu.Item>
                 <Menu.Item position='right'>
-                  <Button as='a' inverted={!fixed}>
-                    Log in
-                  </Button>
-                  <Button as='a' inverted={!fixed} primary={fixed} style={{ marginLeft: '0.5em' }}>
-                    Sign Up
-                  </Button>
+                  <Header size={'tiny'} inverted>
+                    <Icon name='world'/>
+                    <Header.Content>
+                      <Dropdown
+                        inline
+                        options={[
+                          { key: 1, text: 'Arabic', value: Languages.Ar, active: this.props.intl.locale === Languages.Ar },
+                          { key: 2, text: 'English', value: Languages.En, active: this.props.intl.locale === Languages.En },
+                        ]}
+                        defaultValue={Languages.En}
+                      />
+                    </Header.Content>
+                  </Header>
                 </Menu.Item>
               </Container>
             </Menu>
           </Segment>
         </Visibility>
-
         {children}
       </Responsive>
     );
   }
 }
 
-export default DesktopContainer;
+export default injectIntl(DesktopContainer);
