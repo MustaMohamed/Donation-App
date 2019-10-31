@@ -3,19 +3,28 @@ import { Container, Dropdown, Header, Icon, Menu, Responsive, Segment, Visibilit
 import { FormattedMessage, injectIntl, IntlShape } from 'react-intl';
 import { TranslationConstants } from '../constants';
 import { Languages } from '../types';
+import { connect } from 'react-redux';
+import { changeCurrentLanguageAction } from '../redux-store/actions/';
 
 interface Props {
   intl: IntlShape;
+  changeCurrentLanguage: typeof changeCurrentLanguageAction;
 }
 
 interface State {
   fixed: boolean;
+  activeLang: string | Languages;
 }
 
 class DesktopContainer extends Component<Props, State> {
-  state = {
-    fixed: false,
-  };
+  constructor(props: any) {
+    super(props);
+    this.state = {
+      fixed: false,
+      activeLang: props.intl.locale,
+    };
+  }
+
 
   hideFixedMenu = () => this.setState({ fixed: false });
 
@@ -23,8 +32,12 @@ class DesktopContainer extends Component<Props, State> {
 
   getWidth = (): number => {
     const isSSR = typeof window === undefined;
-
     return (isSSR ? Responsive.onlyTablet.minWidth : window.innerWidth) as number;
+  };
+
+  onChangeLanguage = (e: React.SyntheticEvent, { value }: any) => {
+    this.setState({ activeLang: value });
+    this.props.changeCurrentLanguage(value);
   };
 
   render() {
@@ -67,6 +80,8 @@ class DesktopContainer extends Component<Props, State> {
                           { key: 2, text: 'English', value: Languages.En, active: this.props.intl.locale === Languages.En },
                         ]}
                         defaultValue={Languages.En}
+                        value={this.state.activeLang}
+                        onChange={this.onChangeLanguage}
                       />
                     </Header.Content>
                   </Header>
@@ -81,4 +96,6 @@ class DesktopContainer extends Component<Props, State> {
   }
 }
 
-export default injectIntl(DesktopContainer);
+export default connect(null, {
+  changeCurrentLanguage: changeCurrentLanguageAction,
+})(injectIntl(DesktopContainer));

@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 import { IntlProvider } from 'react-intl';
-import { Languages } from './types';
+import { AppState, LanguageDirection, Languages } from './types';
 import { HomePage } from './pages';
 import lang_en from './assets/langs/en.json';
 import lang_ar from './assets/langs/ar.json';
 import { Helmet } from 'react-helmet';
+import { ApplicationState, persistor } from './redux-store/store';
+import { connect } from 'react-redux';
 
 const langs: { [key: string]: any } = {
   [Languages.En]: lang_en,
@@ -13,7 +15,7 @@ const langs: { [key: string]: any } = {
 
 
 interface Props {
-  app: any;
+  app: AppState;
 }
 
 interface State {
@@ -22,25 +24,21 @@ interface State {
   isLoading: boolean;
 }
 
-
 class Startup extends Component<Props | any, State> {
-  constructor(props: Props) {
+  constructor(props: any) {
     super(props);
     this.state = {
-      // localLang: this.props.app.language.currentLanguage,
-      // isRTL: this.props.app.language.isRTL,
-      // isLoading: this.props.app.uiLoaderIsActive,
-      localLang: Languages.Ar,
-      isRTL: true,
-      isLoading: false,
+      localLang: this.props.app.language.currentLanguage,
+      isRTL: this.props.app.language.isRTL,
+      isLoading: this.props.app.uiLoaderIsActive,
     };
   }
 
   componentWillMount() {
     if (this.state.localLang === Languages.En) {
-      require('./styles/semantic-ui/semantic.min.css');
+      require('./styles/semantic/dist/semantic.min.css');
     } else {
-      require('./styles/semantic-ui/semantic.rtl.min.css');
+      require('./styles/semantic/dist/semantic.rtl.min.css');
     }
   }
 
@@ -49,36 +47,48 @@ class Startup extends Component<Props | any, State> {
       this.detectLocalLanguage();
   }
 
+  componentDidUpdate(prevProps: Readonly<Props | any>, prevState: Readonly<State>, snapshot?: any): void {
+    this.detectLocalLanguage();
+    if (this.state.isLoading !== this.props.app.uiLoaderIsActive)
+      this.setState({ isLoading: this.props.app.uiLoaderIsActive });
+  }
+
   detectLocalLanguage = () => {
     let language: string = Languages.En, isRTL: boolean = false;
-    // if (!this.props.app.language) {
-    //   language = Languages.En;
-    // } else {
-    //   language = this.props.app.language.currentLanguage;
-    //   isRTL = this.props.app.language.isRTL;
-    // }
-    // if (this.props.app.language.currentLanguage !== this.state.localLang)
-    //   this.updateLanguage(language, isRTL);
-
+    if (!this.props.app.language) {
+      language = Languages.En;
+    } else {
+      language = this.props.app.language.currentLanguage;
+      isRTL = this.props.app.language.isRTL;
+    }
+    if (this.props.app.language.currentLanguage !== this.state.localLang)
+      this.updateLanguage(language, isRTL);
   };
 
   updateLanguage = (language: string, isRTL: boolean) => {
     this.setState(prevState => {
       return { localLang: language, isRTL: isRTL };
     }, async () => {
-      // await persistor.flush();
+      await persistor.flush();
+      window.location.reload();
     });
   };
 
   render() {
     return (
       <IntlProvider messages={langs[this.state.localLang]} locale={this.state.localLang} defaultLocale={Languages.En}>
-        <Helmet htmlAttributes={{ lang: this.state.localLang, dir: this.state.isRTL ? 'rtl' : 'ltr' }}/>
-
+        <Helmet htmlAttributes={{ lang: this.state.localLang, dir: this.state.isRTL ? LanguageDirection.Rtl : LanguageDirection.Ltr }}/>
         <HomePage/>
       </IntlProvider>
     );
   }
 }
 
-export default Startup;
+const mapStateToProps = (state: ApplicationState) => {
+  const { app } = state;
+  return {
+    app,
+  };
+};
+
+export default connect(mapStateToProps)(Startup);
