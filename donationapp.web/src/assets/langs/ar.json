@@ -5,6 +5,12 @@
   "navigation.completed": "اكتملت",
   "language.arabic": "العربية",
   "language.english": "English",
-  "page.header.donation": "متاحة للتبرع",
-  "card.view-more": "المزيد"
+  "pages.header.donation": "متاحة للتبرع",
+  "pages.header.execution": "قيد التنفيذ",
+  "card.view-more": "المزيد",
+  "projectsList.filters.countriesPlaceHolder": "أختر البلد",
+  "projectsList.filters.rangesPlaceHolder": "اختر التكلفة",
+  "projectsList.filters.noResult": "لا يوجد نتيجة",
+  "projectsList.messages.noProjects.title": "لا يوجد مشاريع قابلة للتبرع",
+  "projectsList.messages.noProjects.body": "لا يوجد مشاريع للتبرع الان، سيتم اضافة العديد من المشاريع قريباً."
 }

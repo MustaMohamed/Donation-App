@@ -6,8 +6,6 @@ import { TranslationConstants } from '../constants';
 import { Languages } from '../types';
 import { connect } from 'react-redux';
 import { changeCurrentLanguageAction } from '../redux-store/actions';
-// @ts-ignore
-import styles from '../styles/topnavbar.module.less';
 
 interface Props {
   intl: IntlShape;
@@ -26,7 +24,6 @@ class TopNavbar extends Component<Props, State> {
       fixed: false,
       activeLang: props.intl.locale,
     };
-    console.log(styles.topNavbar);
   }
 
   onChangeLanguage = (e: React.SyntheticEvent, { value }: any) => {
@@ -36,7 +33,7 @@ class TopNavbar extends Component<Props, State> {
 
   render() {
     return (
-      <div className={styles.topNavbar}>
+      <div>
         <Menu secondary pointing size={'large'}>
           <Container>
             <Menu.Item as={NavLink} to={'/home'} activeClassName={'active'}>

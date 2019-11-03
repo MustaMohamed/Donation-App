@@ -3,9 +3,13 @@ import { Button, Card, Icon, Image, Progress, Statistic } from 'semantic-ui-reac
 import { Project } from '../types';
 import { FormattedMessage, FormattedNumber } from 'react-intl';
 import { TranslationConstants } from '../constants';
+import { hideUiLoaderAction, showUiLoaderAction } from '../redux-store/actions';
+import { connect } from 'react-redux';
 
 interface Props {
   project: Project;
+  showUiLoader: typeof showUiLoaderAction;
+  hideUiLoader: typeof hideUiLoaderAction;
 }
 
 class ProjectCard extends Component<Props> {
@@ -31,7 +35,11 @@ class ProjectCard extends Component<Props> {
           <Statistic horizontal size={'small'}>
             <Statistic.Value><Icon name='dollar sign'/><FormattedNumber value={this.props.project.cost}/></Statistic.Value>
           </Statistic>
-          <Button basic color='blue' floated={'right'}>
+          <Button basic color='blue' floated={'right'} onClick={() => {
+            this.props.showUiLoader();
+            setTimeout(() => this.props.hideUiLoader(), 3000);
+
+          }}>
             <FormattedMessage id={TranslationConstants.CardViewMore}/>
           </Button>
         </Card.Content>
@@ -40,4 +48,7 @@ class ProjectCard extends Component<Props> {
   }
 }
 
-export default ProjectCard;
+export default connect(null, {
+  showUiLoader: showUiLoaderAction,
+  hideUiLoader: hideUiLoaderAction,
+})(ProjectCard);

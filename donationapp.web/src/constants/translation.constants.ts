@@ -5,6 +5,12 @@ export enum TranslationConstants {
   NavigationCompleted = 'navigation.completed',
   LanguageArabic = 'language.arabic',
   LanguageEnglish = 'language.english',
-  PagesHeaderDonation = 'page.header.donation',
-  CardViewMore='card.view-more'
+  PagesHeaderDonation = 'pages.header.donation',
+  PagesHeaderExecution = 'pages.header.execution',
+  CardViewMore = 'card.view-more',
+  ProjectsListFilterCountriesPlaceHolder = 'projectsList.filters.countriesPlaceHolder',
+  ProjectsListFilterRangesPlaceHolder = 'projectsList.filters.rangesPlaceHolder',
+  ProjectsListFilterNoResult = 'projectsList.filters.noResult',
+  ProjectsListMessagesNoCardsTitle = 'projectsList.messages.noProjects.title',
+  ProjectsListMessagesNoCardsBody = 'projectsList.messages.noProjects.body'
 }
