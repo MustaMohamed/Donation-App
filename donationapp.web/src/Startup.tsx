@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { IntlProvider } from 'react-intl';
 import { AppState, LanguageDirection, Languages } from './types';
-import { HomePage } from './pages';
+import { DonationPage, HomePage } from './pages';
 import lang_en from './assets/langs/en.json';
 import lang_ar from './assets/langs/ar.json';
 import { Helmet } from 'react-helmet';
@@ -9,6 +9,7 @@ import { ApplicationState, persistor } from './redux-store/store';
 import { connect } from 'react-redux';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { TopNavbar } from './components';
+import 'utilities-css/dist/utilities-css.css';
 
 const langs: { [key: string]: any } = {
   [Languages.En]: lang_en,
@@ -85,6 +86,9 @@ class Startup extends Component<Props | any, State> {
           <Switch>
             <Route exact path={['/', '/home']}>
               <HomePage/>
+            </Route>
+            <Route path={'/donation'}>
+              <DonationPage/>
             </Route>
             <Route path="*">
               <div><h1>Not found</h1></div>

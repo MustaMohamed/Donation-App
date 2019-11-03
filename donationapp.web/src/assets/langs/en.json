@@ -4,5 +4,7 @@
   "navigation.execution": "Execution",
   "navigation.completed": "Completed",
   "language.arabic": "Arabic",
-  "language.english": "English"
+  "language.english": "English",
+  "page.header.donation": "Donation",
+  "card.view-more": "View More"
 }

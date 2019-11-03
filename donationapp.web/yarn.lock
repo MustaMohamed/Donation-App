@@ -12295,6 +12295,11 @@ utila@^0.4.0, utila@~0.4:
   resolved "https://registry.yarnpkg.com/utila/-/utila-0.4.0.tgz#8a16a05d445657a3aea5eecc5b12a4fa5379772c"
   integrity sha1-ihagXURWV6Oupe7MWxKk+lN5dyw=
 
+utilities-css@^4.0.1:
+  version "4.0.1"
+  resolved "https://registry.yarnpkg.com/utilities-css/-/utilities-css-4.0.1.tgz#77033344e95705a379ec4d68382f16f16229ec6d"
+  integrity sha512-ZiZTOhyyjOS4Ga4q9i6LEA1kXj0W1B+yvPI9SRb9CrwkGecCxXBQk3PjPfKDvOxnrOeQtRDIuRELOXCMm2DuGQ==
+
 utils-merge@1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/utils-merge/-/utils-merge-1.0.1.tgz#9f95710f50a267947b2ccc124741c1028427e713"

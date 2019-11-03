@@ -5,5 +5,6 @@ export enum TranslationConstants {
   NavigationCompleted = 'navigation.completed',
   LanguageArabic = 'language.arabic',
   LanguageEnglish = 'language.english',
-
+  PagesHeaderDonation = 'page.header.donation',
+  CardViewMore='card.view-more'
 }
