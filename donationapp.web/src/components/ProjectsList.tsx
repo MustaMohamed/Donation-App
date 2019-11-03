@@ -34,7 +34,7 @@ const ProjectsList: FC<Props> = ({
                 options={countiesFilterOptions.map((item, idx) => ({ key: item.id, text: item.value, value: idx }))}
       />}
       {rangesFilterOptions &&
-      <Dropdown selection search className={'ml-2 mt-2 mb-4'}
+      <Dropdown selection search className={'ml-sm-2 mt-2 mb-4'}
                 onChange={(e, data) => onRangeFilterChange(data)}
                 placeholder={intl.formatMessage({ id: TranslationConstants.ProjectsListFilterRangesPlaceHolder })}
                 noResultsMessage={intl.formatMessage({ id: TranslationConstants.ProjectsListFilterNoResult })}

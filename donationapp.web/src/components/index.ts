@@ -1,11 +1,11 @@
-import DesktopContainer from './DesktopContainer';
-import TopNavbar from './TopNavbar';
+import Layout from './Layout';
 import ProjectCard from './ProjectCard';
+import TopNavbar from './TopNavbar';
 import ProjectsList from './ProjectsList';
 
 export {
-  DesktopContainer,
-  TopNavbar,
+  Layout,
   ProjectCard,
+  TopNavbar,
   ProjectsList,
 };

@@ -49,8 +49,8 @@ class TopNavbar extends Component<Props, State> {
               <FormattedMessage id={TranslationConstants.NavigationCompleted}/>
             </Menu.Item>
             <Menu.Item position='right'>
-              <Header size={'tiny'}>
-                <Icon name='world'/>
+              <Header size={'small'}>
+                <Icon name='world' size={'small'}/>
                 <Header.Content>
                   <Dropdown inline
                             options={[
@@ -67,7 +67,6 @@ class TopNavbar extends Component<Props, State> {
                               },
                             ]}
                             defaultValue={Languages.En}
-                            value={this.state.activeLang}
                             onChange={this.onChangeLanguage}/>
                 </Header.Content>
               </Header>

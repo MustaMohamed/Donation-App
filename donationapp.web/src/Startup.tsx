@@ -8,7 +8,7 @@ import { Helmet } from 'react-helmet';
 import { ApplicationState, persistor } from './redux-store/store';
 import { connect } from 'react-redux';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import { TopNavbar } from './components';
+import { Layout } from './components';
 import { Loader, Modal } from 'semantic-ui-react';
 
 const langs: { [key: string]: any } = {
@@ -83,29 +83,29 @@ class Startup extends Component<Props, State> {
     return (
       <IntlProvider messages={langs[this.state.localLang]} locale={this.state.localLang} defaultLocale={Languages.En}>
         <Helmet htmlAttributes={{ lang: this.state.localLang, dir: this.state.isRTL ? LanguageDirection.Rtl : LanguageDirection.Ltr }}/>
-
         <Router>
-          <TopNavbar/>
-          <Modal open={this.props.app.uiLoaderIsActive} basic>
-            <Loader active={this.props.app.uiLoaderIsActive}>Loading</Loader>
-          </Modal>
-          <Switch>
-            <Route exact path={['/', '/home']}>
-              <HomePage/>
-            </Route>
-            <Route path={'/donation'}>
-              <DonationPage/>
-            </Route>
-            <Route path={'/execution'}>
-              <ExecutionPage/>
-            </Route>
-            <Route path={'/completed'}>
-              <CompletedPage/>
-            </Route>
-            <Route path="*">
-              <div><h1>Not found</h1></div>
-            </Route>
-          </Switch>
+          <Layout>
+            <Modal open={this.props.app.uiLoaderIsActive} basic>
+              <Loader active={this.props.app.uiLoaderIsActive}>Loading</Loader>
+            </Modal>
+            <Switch>
+              <Route exact path={['/', '/home']}>
+                <HomePage/>
+              </Route>
+              <Route path={'/donation'}>
+                <DonationPage/>
+              </Route>
+              <Route path={'/execution'}>
+                <ExecutionPage/>
+              </Route>
+              <Route path={'/completed'}>
+                <CompletedPage/>
+              </Route>
+              <Route path="*">
+                <div><h1>Not found</h1></div>
+              </Route>
+            </Switch>
+          </Layout>
         </Router>
       </IntlProvider>
     );
