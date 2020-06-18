@@ -9,7 +9,7 @@ export interface AppState {
 export interface ProjectsState {
   donationProjects: ProjectsWithPagination;
   executionProjects: ProjectsWithPagination;
-  doneProjects: ProjectsWithPagination;
+  completedProjects: ProjectsWithPagination;
   categories: {
     categoriesList: Category[];
     activeCategory: Category;

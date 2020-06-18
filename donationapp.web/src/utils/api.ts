@@ -6,6 +6,7 @@ export default axios.create({
   headers: {
     'Content-Type': 'application/json',
     'Accept': 'application/json',
+    'crossdomain': true
   },
   timeout: 8000,
 });

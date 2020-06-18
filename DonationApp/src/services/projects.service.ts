@@ -113,7 +113,6 @@ export default class ProjectsService {
   }
 
   private static mapResponseToProjectList(data): Project[] {
-    console.log(data);
     return data ? data.map((item): Project => ({
       id: item.id,
       name: item.name,

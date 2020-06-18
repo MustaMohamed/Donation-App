@@ -1,6 +1,16 @@
 {
-  "navigation.home" : "Home",
+  "navigation.home": "Home",
   "navigation.donation": "Donation",
   "navigation.execution": "Execution",
-  "navigation.completed": "Completed"
+  "navigation.completed": "Completed",
+  "language.arabic": "Arabic",
+  "language.english": "English",
+  "pages.header.donation": "Donation",
+  "pages.header.execution": "Execution",
+  "card.view-more": "View More",
+  "projectsList.filters.countriesPlaceHolder": "Select Country",
+  "projectsList.filters.rangesPlaceHolder": "Select Cost",
+  "projectsList.filters.noResult": "No Results",
+  "projectsList.messages.noProjects.title": "No Projects For Donation",
+  "projectsList.messages.noProjects.body": "There is no project to donate right now, There will be more projects to donate soon."
 }

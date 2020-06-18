@@ -1,12 +1,15 @@
 import React, { Component } from 'react';
 import { IntlProvider } from 'react-intl';
 import { AppState, LanguageDirection, Languages } from './types';
-import { HomePage } from './pages';
+import { CompletedPage, DonationPage, ExecutionPage, HomePage } from './pages';
 import lang_en from './assets/langs/en.json';
 import lang_ar from './assets/langs/ar.json';
 import { Helmet } from 'react-helmet';
 import { ApplicationState, persistor } from './redux-store/store';
 import { connect } from 'react-redux';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { Layout } from './components';
+import { Loader, Modal } from 'semantic-ui-react';
 
 const langs: { [key: string]: any } = {
   [Languages.En]: lang_en,
@@ -24,7 +27,7 @@ interface State {
   isLoading: boolean;
 }
 
-class Startup extends Component<Props | any, State> {
+class Startup extends Component<Props, State> {
   constructor(props: any) {
     super(props);
     this.state = {
@@ -37,8 +40,10 @@ class Startup extends Component<Props | any, State> {
   componentWillMount() {
     if (this.state.localLang === Languages.En) {
       require('./styles/semantic/dist/semantic.min.css');
+      require('./styles/bootstrap-utils.min.css');
     } else {
       require('./styles/semantic/dist/semantic.rtl.min.css');
+      require('./styles/bootstrap-utils.rtl.min.css');
     }
   }
 
@@ -78,7 +83,30 @@ class Startup extends Component<Props | any, State> {
     return (
       <IntlProvider messages={langs[this.state.localLang]} locale={this.state.localLang} defaultLocale={Languages.En}>
         <Helmet htmlAttributes={{ lang: this.state.localLang, dir: this.state.isRTL ? LanguageDirection.Rtl : LanguageDirection.Ltr }}/>
-        <HomePage/>
+        <Router>
+          <Layout>
+            <Modal open={this.props.app.uiLoaderIsActive} basic>
+              <Loader active={this.props.app.uiLoaderIsActive}>Loading</Loader>
+            </Modal>
+            <Switch>
+              <Route exact path={['/', '/home']}>
+                <HomePage/>
+              </Route>
+              <Route path={'/donation'}>
+                <DonationPage/>
+              </Route>
+              <Route path={'/execution'}>
+                <ExecutionPage/>
+              </Route>
+              <Route path={'/completed'}>
+                <CompletedPage/>
+              </Route>
+              <Route path="*">
+                <div><h1>Not found</h1></div>
+              </Route>
+            </Switch>
+          </Layout>
+        </Router>
       </IntlProvider>
     );
   }

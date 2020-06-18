@@ -1,7 +1,6 @@
 import { Reducer } from 'redux';
 import { ProjectsActionsConstants } from '../../constants';
-import { CategoryType, ProjectsActions, ProjectsState, ProjectsWithPagination } from '../../types';
-
+import { CategoryType, ProjectsActions, ProjectsState } from '../../types';
 
 const initialState: ProjectsState = {
   donationProjects: {
@@ -12,7 +11,7 @@ const initialState: ProjectsState = {
     projects: [],
     pagination: null,
   },
-  doneProjects: {
+  completedProjects: {
     projects: [],
     pagination: null,
   },
@@ -28,40 +27,25 @@ const initialState: ProjectsState = {
 export const projectsReducer: Reducer<ProjectsState, ProjectsActions> = (state: ProjectsState = initialState, action: ProjectsActions): ProjectsState => {
   switch (action.type) {
     case ProjectsActionsConstants.GetDonationProjects:
-      const { donationProjects } = state;
       return {
         ...state,
-        donationProjects: action.payload.withPages ? {
-          projects: [
-            ...donationProjects.projects,
-            ...action.payload.projects,
-          ],
-          pagination: { ...action.payload.pagination },
-        } as ProjectsWithPagination : {
+        donationProjects: {
           projects: action.payload.projects,
           pagination: action.payload.pagination,
         },
       };
     case ProjectsActionsConstants.GetExecutionProjects:
-      const { executionProjects } = state;
       return {
         ...state,
-        executionProjects: action.payload.withPages ? {
-          projects: [...executionProjects.projects, ...action.payload.projects],
-          pagination: { ...action.payload.pagination },
-        } as ProjectsWithPagination : {
+        executionProjects: {
           projects: action.payload.projects,
           pagination: action.payload.pagination,
         },
       };
     case ProjectsActionsConstants.GetCompletedProjects:
-      const { doneProjects } = state;
       return {
         ...state,
-        doneProjects: action.payload.withPages ? {
-          projects: [...doneProjects.projects, ...action.payload.projects],
-          pagination: { ...action.payload.pagination },
-        } as ProjectsWithPagination : {
+        completedProjects: {
           projects: action.payload.projects,
           pagination: action.payload.pagination,
         },
