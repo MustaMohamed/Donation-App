@@ -1,3 +1,2 @@
 # Donation-App
-
-Repo for react native Donation app
+React Native donation app
